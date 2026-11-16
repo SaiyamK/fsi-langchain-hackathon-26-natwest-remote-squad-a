@@ -1,0 +1,25 @@
+{
+  "version": "0.2.0",
+  "configurations": [    
+    {
+      "name": "KYC experiments",
+      "type": "debugpy",
+      "request": "launch",
+      "program": "${workspaceFolder}/01_kyc_agent/scripts/run_experiments.py",
+      "args": [],
+      "cwd": "${workspaceFolder}/01_kyc_agent",
+      "env": { "PYTHONPATH": "${workspaceFolder}/01_kyc_agent" },
+      "console": "integratedTerminal"
+    },
+    {
+      "name": "Transaction monitoring experiments",
+      "type": "debugpy",
+      "request": "launch",
+      "program": "${workspaceFolder}/02_transaction_monitoring_agent/scripts/run_experiments.py",
+      "args": [],
+      "cwd": "${workspaceFolder}/02_transaction_monitoring_agent",
+      "env": { "PYTHONPATH": "${workspaceFolder}/02_transaction_monitoring_agent" },
+      "console": "integratedTerminal"
+    }
+  ]
+}
