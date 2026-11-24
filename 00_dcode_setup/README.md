@@ -18,6 +18,12 @@ Install Deep Agents Code as a standalone tool, so it is available from any folde
 uv tool install deepagents-code
 ```
 
+or
+
+```bash
+curl -LsSf https://langch.in/dcode | bash
+```
+
 This puts two equivalent commands on your `PATH`: `dcode` and `deepagents-code`. Check the install:
 
 ```bash
