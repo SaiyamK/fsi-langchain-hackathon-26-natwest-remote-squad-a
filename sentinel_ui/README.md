@@ -64,7 +64,11 @@ In replay, a recorded pause still waits for the analyst, and their answer is sav
 
 https://sentinel-aml.justpush.cloud (basic auth, user `team`). Runs on the team VPS behind the Cloudflare tunnel and
 Traefik (`coolify` network, `http` entrypoint), from `/opt/sentinel-aml-ui` with [compose.yaml](compose.yaml).
-No model keys on the server: it runs offline, or replays `recordings/world0.json` once that's copied up.
+It runs in `replay` from [recordings/world0.json](recordings/world0.json) (15 recorded investigations, `gpt-6-sol`),
+so the demo makes no model calls. Flagged transactions with no recording, including Sophie's £18,000 credit, go
+straight to the analyst. To record more, set `SENTINEL_UI_MODE=record` in `sentinel_ui/.env` on the server and restart;
+the repo-root `.env` (chmod 600) holds the keys. The LangSmith gateway answered `402 blocked by gateway policies` on
+25 Nov, so check one model call works before recording.
 
 ```bash
 # update: sync the needed files, then rebuild (run from the repo root)

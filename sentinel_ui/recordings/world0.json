@@ -1,0 +1,4307 @@
+{
+ "recorded_at": "2026-11-25T09:59:34+00:00",
+ "model": "openai:gpt-6-sol",
+ "investigations": {
+  "TX-000072": {
+   "events": [
+    {
+     "t": 0.0,
+     "kind": "step",
+     "key": "supervisor",
+     "state": "working",
+     "finding": null,
+     "tool": null
+    },
+    {
+     "t": 2.69,
+     "kind": "step",
+     "key": "supervisor",
+     "state": null,
+     "finding": null,
+     "tool": "write_todos"
+    },
+    {
+     "t": 4.01,
+     "kind": "step",
+     "key": "supervisor",
+     "state": null,
+     "finding": null,
+     "tool": "get_transaction"
+    },
+    {
+     "t": 8.8,
+     "kind": "step",
+     "key": "supervisor",
+     "state": "done",
+     "finding": null,
+     "tool": "task \u2192 pattern-analyst"
+    },
+    {
+     "t": 8.8,
+     "kind": "step",
+     "key": "pattern-analyst",
+     "state": "working",
+     "finding": null,
+     "tool": null
+    },
+    {
+     "t": 8.8,
+     "kind": "step",
+     "key": "supervisor",
+     "state": "done",
+     "finding": null,
+     "tool": "task \u2192 kyc-precedent"
+    },
+    {
+     "t": 8.8,
+     "kind": "step",
+     "key": "kyc-precedent",
+     "state": "working",
+     "finding": null,
+     "tool": null
+    },
+    {
+     "t": 8.81,
+     "kind": "step",
+     "key": "supervisor",
+     "state": "done",
+     "finding": null,
+     "tool": "task \u2192 fund-flow"
+    },
+    {
+     "t": 8.81,
+     "kind": "step",
+     "key": "fund-flow",
+     "state": "working",
+     "finding": null,
+     "tool": null
+    },
+    {
+     "t": 10.06,
+     "kind": "step",
+     "key": "fund-flow",
+     "state": null,
+     "finding": null,
+     "tool": "get_transaction"
+    },
+    {
+     "t": 10.48,
+     "kind": "step",
+     "key": "pattern-analyst",
+     "state": null,
+     "finding": null,
+     "tool": "get_recent_transactions"
+    },
+    {
+     "t": 10.5,
+     "kind": "step",
+     "key": "pattern-analyst",
+     "state": null,
+     "finding": null,
+     "tool": "get_customer_profile"
+    },
+    {
+     "t": 10.5,
+     "kind": "step",
+     "key": "pattern-analyst",
+     "state": null,
+     "finding": null,
+     "tool": "get_transaction"
+    },
+    {
+     "t": 11.28,
+     "kind": "step",
+     "key": "fund-flow",
+     "state": null,
+     "finding": null,
+     "tool": "trace_fund_flows"
+    },
+    {
+     "t": 11.59,
+     "kind": "step",
+     "key": "kyc-precedent",
+     "state": null,
+     "finding": null,
+     "tool": "find_precedents"
+    },
+    {
+     "t": 11.59,
+     "kind": "step",
+     "key": "kyc-precedent",
+     "state": null,
+     "finding": null,
+     "tool": "screen_customer"
+    },
+    {
+     "t": 11.6,
+     "kind": "step",
+     "key": "kyc-precedent",
+     "state": null,
+     "finding": null,
+     "tool": "find_precedents"
+    },
+    {
+     "t": 11.6,
+     "kind": "step",
+     "key": "kyc-precedent",
+     "state": null,
+     "finding": null,
+     "tool": "get_customer_profile"
+    },
+    {
+     "t": 11.61,
+     "kind": "step",
+     "key": "kyc-precedent",
+     "state": null,
+     "finding": null,
+     "tool": "find_precedents"
+    },
+    {
+     "t": 11.61,
+     "kind": "step",
+     "key": "kyc-precedent",
+     "state": null,
+     "finding": null,
+     "tool": "find_precedents"
+    },
+    {
+     "t": 13.33,
+     "kind": "step",
+     "key": "fund-flow",
+     "state": "done",
+     "finding": "No confirmed ring",
+     "tool": null
+    },
+    {
+     "t": 13.46,
+     "kind": "step",
+     "key": "kyc-precedent",
+     "state": "done",
+     "finding": "KYC low \u00b7 0 valid precedent(s)",
+     "tool": null
+    },
+    {
+     "t": 15.74,
+     "kind": "step",
+     "key": "pattern-analyst",
+     "state": "done",
+     "finding": "none \u00b7 risk 25 \u00b7 TX-000060: 2026-10-02T14:28, \u00a3419.76 cash deposit at Bradford Broadway, reference 'Takings'; the only credit in the 30-day transactions returned.",
+     "tool": null
+    },
+    {
+     "t": 20.82,
+     "kind": "step",
+     "key": "verdict",
+     "state": "working",
+     "finding": null,
+     "tool": "record_decision"
+    },
+    {
+     "t": 20.84,
+     "kind": "step",
+     "key": "verdict",
+     "state": "working",
+     "finding": "Waiting for the analyst",
+     "tool": null
+    },
+    {
+     "t": 20.84,
+     "kind": "interrupt",
+     "question": {
+      "transaction_id": "TX-000072",
+      "risk_score": 20,
+      "model_confidence": 0.65,
+      "confidence": 0.65,
+      "agent_decision": "clear",
+      "pattern": "none",
+      "reason": "TX-000072 is a \u00a31,400 payment labelled 'Stock' to a wholesale supplier, following only a \u00a3419.76 cash deposit (TX-000060) in the returned 30-day activity; this does not establish that the payment was funded by or passed through from the deposit. The pattern and fund-flow reviews found no other senders, collector or confirmed ring, and a stock purchase is plausible for the takeaway business, although the supplier and invoice have not been verified.",
+      "why_review": [
+       "the agents' confidence (0.65) is below 0.7"
+      ],
+      "hard_flags": [],
+      "precedents": {
+       "valid": [],
+       "expired": [],
+       "overridden": []
+      },
+      "rule_score": 40,
+      "rule_reasons": [
+       "first payment with counterparty EXT-SUP-0102",
+       "sends on \u00a31,400 of \u00a3420 received in the last 24h"
+      ],
+      "question": "Clear or escalate? Reply with {'decision': 'clear' or 'escalate', 'note': 'optional'}"
+     }
+    },
+    {
+     "t": 130.97,
+     "kind": "step",
+     "key": "verdict",
+     "state": "working",
+     "finding": null,
+     "tool": "record_decision"
+    }
+   ],
+   "record": {
+    "transaction_id": "TX-000072",
+    "risk_score": 20,
+    "model_confidence": 0.65,
+    "confidence": 0.65,
+    "confidence_checks": [],
+    "agent_decision": "clear",
+    "final_decision": "clear",
+    "decided_by": "human",
+    "reason": "TX-000072 is a \u00a31,400 payment labelled 'Stock' to a wholesale supplier, following only a \u00a3419.76 cash deposit (TX-000060) in the returned 30-day activity; this does not establish that the payment was funded by or passed through from the deposit. The pattern and fund-flow reviews found no other senders, collector or confirmed ring, and a stock purchase is plausible for the takeaway business, although the supplier and invoice have not been verified.",
+    "pattern": "none",
+    "hard_flags": [],
+    "precedents_cited": [],
+    "precedents_relied_on": [],
+    "precedents_dropped": [],
+    "precedents_overridden": [],
+    "analyst_note": "Stock purchase from wholesale supplier, consistent with cash-business takings",
+    "rule_score": 40,
+    "rule_reasons": [
+     "first payment with counterparty EXT-SUP-0102",
+     "sends on \u00a31,400 of \u00a3420 received in the last 24h"
+    ],
+    "sar_id": null,
+    "trace_run_id": "bb8b6b64-2696-482d-b4c3-c7d0ff65039a",
+    "as_of": "2026-10-03T10:00"
+   },
+   "seconds": 133.0,
+   "sar": null,
+   "model_calls": 12,
+   "tokens": 24681,
+   "tool_calls": [
+    {
+     "name": "write_todos",
+     "subagent": null,
+     "id": "call_166d878468dc473ab72ca91d602c6d52"
+    },
+    {
+     "name": "get_transaction",
+     "subagent": null,
+     "id": "call_SO7eocNeemSvSopD0yvW98LR"
+    },
+    {
+     "name": "task",
+     "subagent": "pattern-analyst",
+     "id": "call_8A2ZqzjYW11h5Zl4VzgIHU3y"
+    },
+    {
+     "name": "task",
+     "subagent": "kyc-precedent",
+     "id": "call_uDsDWig8sgfAYLEdepRTy3lF"
+    },
+    {
+     "name": "task",
+     "subagent": "fund-flow",
+     "id": "call_F2yocZBUhlJEdE8Bs49nq1rc"
+    },
+    {
+     "name": "record_decision",
+     "subagent": null,
+     "id": "call_6KDW72WqWHrGrGAO5ZFlDBMi"
+    }
+   ],
+   "trace_run_id": "bb8b6b64-2696-482d-b4c3-c7d0ff65039a"
+  },
+  "TX-000073": {
+   "events": [
+    {
+     "t": 0.0,
+     "kind": "step",
+     "key": "supervisor",
+     "state": "working",
+     "finding": null,
+     "tool": null
+    },
+    {
+     "t": 2.1,
+     "kind": "step",
+     "key": "supervisor",
+     "state": null,
+     "finding": null,
+     "tool": "write_todos"
+    },
+    {
+     "t": 3.43,
+     "kind": "step",
+     "key": "supervisor",
+     "state": null,
+     "finding": null,
+     "tool": "get_transaction"
+    },
+    {
+     "t": 7.67,
+     "kind": "step",
+     "key": "supervisor",
+     "state": "done",
+     "finding": null,
+     "tool": "task \u2192 kyc-precedent"
+    },
+    {
+     "t": 7.67,
+     "kind": "step",
+     "key": "kyc-precedent",
+     "state": "working",
+     "finding": null,
+     "tool": null
+    },
+    {
+     "t": 7.67,
+     "kind": "step",
+     "key": "supervisor",
+     "state": "done",
+     "finding": null,
+     "tool": "task \u2192 pattern-analyst"
+    },
+    {
+     "t": 7.68,
+     "kind": "step",
+     "key": "pattern-analyst",
+     "state": "working",
+     "finding": null,
+     "tool": null
+    },
+    {
+     "t": 7.68,
+     "kind": "step",
+     "key": "supervisor",
+     "state": "done",
+     "finding": null,
+     "tool": "task \u2192 fund-flow"
+    },
+    {
+     "t": 7.68,
+     "kind": "step",
+     "key": "fund-flow",
+     "state": "working",
+     "finding": null,
+     "tool": null
+    },
+    {
+     "t": 8.93,
+     "kind": "step",
+     "key": "fund-flow",
+     "state": null,
+     "finding": null,
+     "tool": "get_transaction"
+    },
+    {
+     "t": 9.21,
+     "kind": "step",
+     "key": "pattern-analyst",
+     "state": null,
+     "finding": null,
+     "tool": "get_transaction"
+    },
+    {
+     "t": 9.21,
+     "kind": "step",
+     "key": "pattern-analyst",
+     "state": null,
+     "finding": null,
+     "tool": "get_recent_transactions"
+    },
+    {
+     "t": 9.22,
+     "kind": "step",
+     "key": "pattern-analyst",
+     "state": null,
+     "finding": null,
+     "tool": "get_customer_profile"
+    },
+    {
+     "t": 9.62,
+     "kind": "step",
+     "key": "kyc-precedent",
+     "state": null,
+     "finding": null,
+     "tool": "get_customer_profile"
+    },
+    {
+     "t": 10.13,
+     "kind": "step",
+     "key": "fund-flow",
+     "state": null,
+     "finding": null,
+     "tool": "trace_fund_flows"
+    },
+    {
+     "t": 10.85,
+     "kind": "step",
+     "key": "kyc-precedent",
+     "state": null,
+     "finding": null,
+     "tool": "screen_customer"
+    },
+    {
+     "t": 12.1,
+     "kind": "step",
+     "key": "fund-flow",
+     "state": "done",
+     "finding": "No confirmed ring",
+     "tool": null
+    },
+    {
+     "t": 12.49,
+     "kind": "step",
+     "key": "kyc-precedent",
+     "state": null,
+     "finding": null,
+     "tool": "find_precedents"
+    },
+    {
+     "t": 14.01,
+     "kind": "step",
+     "key": "pattern-analyst",
+     "state": "done",
+     "finding": "none \u00b7 risk 20 \u00b7 TX-000056: 2026-10-02T13:11, cash deposit in, 677.03 GBP, Manchester Market St, reference \"Takings\"; consistent with the customer's cafe-owner occupation and expected monthly cash of ",
+     "tool": null
+    },
+    {
+     "t": 14.86,
+     "kind": "step",
+     "key": "kyc-precedent",
+     "state": null,
+     "finding": null,
+     "tool": "find_precedents"
+    },
+    {
+     "t": 17.02,
+     "kind": "step",
+     "key": "kyc-precedent",
+     "state": "done",
+     "finding": "KYC low \u00b7 0 valid precedent(s)",
+     "tool": null
+    },
+    {
+     "t": 20.48,
+     "kind": "step",
+     "key": "verdict",
+     "state": "working",
+     "finding": null,
+     "tool": "record_decision"
+    },
+    {
+     "t": 20.5,
+     "kind": "step",
+     "key": "verdict",
+     "state": "working",
+     "finding": "Waiting for the analyst",
+     "tool": null
+    },
+    {
+     "t": 20.5,
+     "kind": "interrupt",
+     "question": {
+      "transaction_id": "TX-000073",
+      "risk_score": 20,
+      "model_confidence": 0.65,
+      "confidence": 0.65,
+      "agent_decision": "clear",
+      "pattern": "none",
+      "reason": "TX-000073 paid \u00a32,100 to EXT-SUP-0105 for 'Stock' after TX-000056 deposited \u00a3677.03 in cash; the deposit is consistent with the customer's caf\u00e9 takings but cannot alone fund the payment, and the supplier purchase remains unverified. The fund-flow review found no collector or confirmed ring, and KYC found no screening hits or applicable precedents; the available evidence does not establish a pass-through typology.",
+      "why_review": [
+       "the agents' confidence (0.65) is below 0.7"
+      ],
+      "hard_flags": [],
+      "precedents": {
+       "valid": [],
+       "expired": [],
+       "overridden": []
+      },
+      "rule_score": 40,
+      "rule_reasons": [
+       "first payment with counterparty EXT-SUP-0105",
+       "sends on \u00a32,100 of \u00a3677 received in the last 24h"
+      ],
+      "question": "Clear or escalate? Reply with {'decision': 'clear' or 'escalate', 'note': 'optional'}"
+     }
+    },
+    {
+     "t": 131.43,
+     "kind": "step",
+     "key": "verdict",
+     "state": "working",
+     "finding": null,
+     "tool": "record_decision"
+    }
+   ],
+   "record": {
+    "transaction_id": "TX-000073",
+    "risk_score": 20,
+    "model_confidence": 0.65,
+    "confidence": 0.65,
+    "confidence_checks": [],
+    "agent_decision": "clear",
+    "final_decision": "clear",
+    "decided_by": "human",
+    "reason": "TX-000073 paid \u00a32,100 to EXT-SUP-0105 for 'Stock' after TX-000056 deposited \u00a3677.03 in cash; the deposit is consistent with the customer's caf\u00e9 takings but cannot alone fund the payment, and the supplier purchase remains unverified. The fund-flow review found no collector or confirmed ring, and KYC found no screening hits or applicable precedents; the available evidence does not establish a pass-through typology.",
+    "pattern": "none",
+    "hard_flags": [],
+    "precedents_cited": [],
+    "precedents_relied_on": [],
+    "precedents_dropped": [],
+    "precedents_overridden": [],
+    "analyst_note": "Stock purchase from wholesale supplier, consistent with cash-business takings",
+    "rule_score": 40,
+    "rule_reasons": [
+     "first payment with counterparty EXT-SUP-0105",
+     "sends on \u00a32,100 of \u00a3677 received in the last 24h"
+    ],
+    "sar_id": null,
+    "trace_run_id": "b7157b05-1dc3-4a9c-ba75-9b69eff984ea",
+    "as_of": "2026-10-03T10:00"
+   },
+   "seconds": 133.5,
+   "sar": null,
+   "model_calls": 15,
+   "tokens": 27495,
+   "tool_calls": [
+    {
+     "name": "write_todos",
+     "subagent": null,
+     "id": "call_60afd8ab24974b3d9f36c253324bb69a"
+    },
+    {
+     "name": "get_transaction",
+     "subagent": null,
+     "id": "call_2sm9qIAIwF8ETFvbtjC4E1rm"
+    },
+    {
+     "name": "task",
+     "subagent": "kyc-precedent",
+     "id": "call_jIaEzjPUfM1WBXAqRYaiwwqb"
+    },
+    {
+     "name": "task",
+     "subagent": "pattern-analyst",
+     "id": "call_XC8juGG4GC3fwijtOFFfh9nS"
+    },
+    {
+     "name": "task",
+     "subagent": "fund-flow",
+     "id": "call_fUs9Z2AmsbT8ZMQMgo9bQr9Y"
+    },
+    {
+     "name": "record_decision",
+     "subagent": null,
+     "id": "call_iYI14bVrNDa0QzJf1StFqCgT"
+    }
+   ],
+   "trace_run_id": "b7157b05-1dc3-4a9c-ba75-9b69eff984ea"
+  },
+  "TX-000076": {
+   "events": [
+    {
+     "t": 0.0,
+     "kind": "step",
+     "key": "supervisor",
+     "state": "working",
+     "finding": null,
+     "tool": null
+    },
+    {
+     "t": 2.37,
+     "kind": "step",
+     "key": "supervisor",
+     "state": null,
+     "finding": null,
+     "tool": "write_todos"
+    },
+    {
+     "t": 3.84,
+     "kind": "step",
+     "key": "supervisor",
+     "state": null,
+     "finding": null,
+     "tool": "get_transaction"
+    },
+    {
+     "t": 9.01,
+     "kind": "step",
+     "key": "supervisor",
+     "state": "done",
+     "finding": null,
+     "tool": "task \u2192 fund-flow"
+    },
+    {
+     "t": 9.01,
+     "kind": "step",
+     "key": "fund-flow",
+     "state": "working",
+     "finding": null,
+     "tool": null
+    },
+    {
+     "t": 9.02,
+     "kind": "step",
+     "key": "supervisor",
+     "state": "done",
+     "finding": null,
+     "tool": "task \u2192 pattern-analyst"
+    },
+    {
+     "t": 9.02,
+     "kind": "step",
+     "key": "pattern-analyst",
+     "state": "working",
+     "finding": null,
+     "tool": null
+    },
+    {
+     "t": 9.02,
+     "kind": "step",
+     "key": "supervisor",
+     "state": "done",
+     "finding": null,
+     "tool": "task \u2192 kyc-precedent"
+    },
+    {
+     "t": 9.02,
+     "kind": "step",
+     "key": "kyc-precedent",
+     "state": "working",
+     "finding": null,
+     "tool": null
+    },
+    {
+     "t": 10.4,
+     "kind": "step",
+     "key": "fund-flow",
+     "state": null,
+     "finding": null,
+     "tool": "get_transaction"
+    },
+    {
+     "t": 10.57,
+     "kind": "step",
+     "key": "pattern-analyst",
+     "state": null,
+     "finding": null,
+     "tool": "get_recent_transactions"
+    },
+    {
+     "t": 10.58,
+     "kind": "step",
+     "key": "pattern-analyst",
+     "state": null,
+     "finding": null,
+     "tool": "get_customer_profile"
+    },
+    {
+     "t": 10.58,
+     "kind": "step",
+     "key": "pattern-analyst",
+     "state": null,
+     "finding": null,
+     "tool": "get_transaction"
+    },
+    {
+     "t": 11.02,
+     "kind": "step",
+     "key": "kyc-precedent",
+     "state": null,
+     "finding": null,
+     "tool": "get_customer_profile"
+    },
+    {
+     "t": 11.03,
+     "kind": "step",
+     "key": "kyc-precedent",
+     "state": null,
+     "finding": null,
+     "tool": "find_precedents"
+    },
+    {
+     "t": 11.03,
+     "kind": "step",
+     "key": "kyc-precedent",
+     "state": null,
+     "finding": null,
+     "tool": "screen_customer"
+    },
+    {
+     "t": 11.62,
+     "kind": "step",
+     "key": "fund-flow",
+     "state": null,
+     "finding": null,
+     "tool": "trace_fund_flows"
+    },
+    {
+     "t": 13.29,
+     "kind": "step",
+     "key": "kyc-precedent",
+     "state": null,
+     "finding": null,
+     "tool": "find_precedents"
+    },
+    {
+     "t": 13.29,
+     "kind": "step",
+     "key": "kyc-precedent",
+     "state": null,
+     "finding": null,
+     "tool": "find_precedents"
+    },
+    {
+     "t": 14.03,
+     "kind": "step",
+     "key": "fund-flow",
+     "state": "done",
+     "finding": "No confirmed ring",
+     "tool": null
+    },
+    {
+     "t": 15.72,
+     "kind": "step",
+     "key": "kyc-precedent",
+     "state": "done",
+     "finding": "KYC low \u00b7 0 valid precedent(s)",
+     "tool": null
+    },
+    {
+     "t": 16.17,
+     "kind": "step",
+     "key": "pattern-analyst",
+     "state": "done",
+     "finding": "none \u00b7 risk 25 \u00b7 TX-000076: \u00a32,100.0 outgoing faster payment on 2026-10-03T10:00 to EXT-SUP-0116 (Wholesale supplier), reference Stock; this counterparty does not appear elsewhere in the 30-day transa",
+     "tool": null
+    },
+    {
+     "t": 20.73,
+     "kind": "step",
+     "key": "verdict",
+     "state": "working",
+     "finding": null,
+     "tool": "record_decision"
+    },
+    {
+     "t": 20.76,
+     "kind": "step",
+     "key": "verdict",
+     "state": "working",
+     "finding": "Waiting for the analyst",
+     "tool": null
+    },
+    {
+     "t": 20.76,
+     "kind": "interrupt",
+     "question": {
+      "transaction_id": "TX-000076",
+      "risk_score": 25,
+      "model_confidence": 0.65,
+      "confidence": 0.65,
+      "agent_decision": "clear",
+      "pattern": "none",
+      "reason": "TX-000076 is a \u00a32,100 stock-referenced payment to a first-time wholesale supplier; the only identified preceding credit is \u00a3426.84 (TX-000052), so the rule's claim that \u00a32,100 was forwarded from that credit is unsupported. Pattern and fund-flow reviews found no demonstrated pass-through, fan-in or confirmed ring, and KYC found no screening hits or applicable precedents; a supplier purchase is plausible but unverified.",
+      "why_review": [
+       "the agents' confidence (0.65) is below 0.7"
+      ],
+      "hard_flags": [],
+      "precedents": {
+       "valid": [],
+       "expired": [],
+       "overridden": []
+      },
+      "rule_score": 40,
+      "rule_reasons": [
+       "first payment with counterparty EXT-SUP-0116",
+       "sends on \u00a32,100 of \u00a3427 received in the last 24h"
+      ],
+      "question": "Clear or escalate? Reply with {'decision': 'clear' or 'escalate', 'note': 'optional'}"
+     }
+    },
+    {
+     "t": 131.97,
+     "kind": "step",
+     "key": "verdict",
+     "state": "working",
+     "finding": null,
+     "tool": "record_decision"
+    }
+   ],
+   "record": {
+    "transaction_id": "TX-000076",
+    "risk_score": 25,
+    "model_confidence": 0.65,
+    "confidence": 0.65,
+    "confidence_checks": [],
+    "agent_decision": "clear",
+    "final_decision": "clear",
+    "decided_by": "human",
+    "reason": "TX-000076 is a \u00a32,100 stock-referenced payment to a first-time wholesale supplier; the only identified preceding credit is \u00a3426.84 (TX-000052), so the rule's claim that \u00a32,100 was forwarded from that credit is unsupported. Pattern and fund-flow reviews found no demonstrated pass-through, fan-in or confirmed ring, and KYC found no screening hits or applicable precedents; a supplier purchase is plausible but unverified.",
+    "pattern": "none",
+    "hard_flags": [],
+    "precedents_cited": [],
+    "precedents_relied_on": [],
+    "precedents_dropped": [],
+    "precedents_overridden": [],
+    "analyst_note": "Stock purchase from wholesale supplier, consistent with cash-business takings",
+    "rule_score": 40,
+    "rule_reasons": [
+     "first payment with counterparty EXT-SUP-0116",
+     "sends on \u00a32,100 of \u00a3427 received in the last 24h"
+    ],
+    "sar_id": null,
+    "trace_run_id": "810f9aa9-c68c-44af-bb85-c9d0a1a4156c",
+    "as_of": "2026-10-03T10:00"
+   },
+   "seconds": 133.8,
+   "sar": null,
+   "model_calls": 13,
+   "tokens": 26231,
+   "tool_calls": [
+    {
+     "name": "write_todos",
+     "subagent": null,
+     "id": "call_9ec3f61f22944229b7dc73f220c555d1"
+    },
+    {
+     "name": "get_transaction",
+     "subagent": null,
+     "id": "call_w4KRTB18dFbv4fRSkVG5HCzv"
+    },
+    {
+     "name": "task",
+     "subagent": "pattern-analyst",
+     "id": "call_tl0WACsyvBZRg4GUOP6g0rmk"
+    },
+    {
+     "name": "task",
+     "subagent": "kyc-precedent",
+     "id": "call_AbqaAMVnlwxawxwAcVbaa2mW"
+    },
+    {
+     "name": "task",
+     "subagent": "fund-flow",
+     "id": "call_8t4I703XF5aeQRSyTxjWQ0Rw"
+    },
+    {
+     "name": "record_decision",
+     "subagent": null,
+     "id": "call_uma1SJI7ACzVG1PEiratVfGB"
+    }
+   ],
+   "trace_run_id": "810f9aa9-c68c-44af-bb85-c9d0a1a4156c"
+  },
+  "TX-000077": {
+   "events": [
+    {
+     "t": 0.0,
+     "kind": "step",
+     "key": "supervisor",
+     "state": "working",
+     "finding": null,
+     "tool": null
+    },
+    {
+     "t": 5.87,
+     "kind": "step",
+     "key": "supervisor",
+     "state": null,
+     "finding": null,
+     "tool": "write_todos"
+    },
+    {
+     "t": 7.23,
+     "kind": "step",
+     "key": "supervisor",
+     "state": null,
+     "finding": null,
+     "tool": "get_transaction"
+    },
+    {
+     "t": 11.91,
+     "kind": "step",
+     "key": "supervisor",
+     "state": "done",
+     "finding": null,
+     "tool": "task \u2192 pattern-analyst"
+    },
+    {
+     "t": 11.91,
+     "kind": "step",
+     "key": "pattern-analyst",
+     "state": "working",
+     "finding": null,
+     "tool": null
+    },
+    {
+     "t": 11.91,
+     "kind": "step",
+     "key": "supervisor",
+     "state": "done",
+     "finding": null,
+     "tool": "task \u2192 fund-flow"
+    },
+    {
+     "t": 11.91,
+     "kind": "step",
+     "key": "fund-flow",
+     "state": "working",
+     "finding": null,
+     "tool": null
+    },
+    {
+     "t": 11.92,
+     "kind": "step",
+     "key": "supervisor",
+     "state": "done",
+     "finding": null,
+     "tool": "task \u2192 kyc-precedent"
+    },
+    {
+     "t": 11.92,
+     "kind": "step",
+     "key": "kyc-precedent",
+     "state": "working",
+     "finding": null,
+     "tool": null
+    },
+    {
+     "t": 13.2,
+     "kind": "step",
+     "key": "fund-flow",
+     "state": null,
+     "finding": null,
+     "tool": "get_transaction"
+    },
+    {
+     "t": 13.75,
+     "kind": "step",
+     "key": "kyc-precedent",
+     "state": null,
+     "finding": null,
+     "tool": "screen_customer"
+    },
+    {
+     "t": 13.75,
+     "kind": "step",
+     "key": "kyc-precedent",
+     "state": null,
+     "finding": null,
+     "tool": "get_customer_profile"
+    },
+    {
+     "t": 13.76,
+     "kind": "step",
+     "key": "kyc-precedent",
+     "state": null,
+     "finding": null,
+     "tool": "find_precedents"
+    },
+    {
+     "t": 14.12,
+     "kind": "step",
+     "key": "pattern-analyst",
+     "state": null,
+     "finding": null,
+     "tool": "get_transaction"
+    },
+    {
+     "t": 14.12,
+     "kind": "step",
+     "key": "pattern-analyst",
+     "state": null,
+     "finding": null,
+     "tool": "get_customer_profile"
+    },
+    {
+     "t": 14.13,
+     "kind": "step",
+     "key": "pattern-analyst",
+     "state": null,
+     "finding": null,
+     "tool": "get_recent_transactions"
+    },
+    {
+     "t": 14.52,
+     "kind": "step",
+     "key": "fund-flow",
+     "state": null,
+     "finding": null,
+     "tool": "trace_fund_flows"
+    },
+    {
+     "t": 15.95,
+     "kind": "step",
+     "key": "kyc-precedent",
+     "state": "done",
+     "finding": "KYC low \u00b7 0 valid precedent(s)",
+     "tool": null
+    },
+    {
+     "t": 16.44,
+     "kind": "step",
+     "key": "fund-flow",
+     "state": "done",
+     "finding": "No confirmed ring",
+     "tool": null
+    },
+    {
+     "t": 18.63,
+     "kind": "step",
+     "key": "pattern-analyst",
+     "state": "done",
+     "finding": "none \u00b7 risk 20 \u00b7 TX-000077: 4200.0 GBP outgoing faster_payment on 2026-10-03T10:00 to EXT-SUP-0119 (Wholesale supplier), reference Stock; no earlier supplier payment appears in the 30-day history, but",
+     "tool": null
+    },
+    {
+     "t": 22.43,
+     "kind": "step",
+     "key": "verdict",
+     "state": "working",
+     "finding": null,
+     "tool": "record_decision"
+    },
+    {
+     "t": 22.46,
+     "kind": "step",
+     "key": "verdict",
+     "state": "working",
+     "finding": "Waiting for the analyst",
+     "tool": null
+    },
+    {
+     "t": 22.46,
+     "kind": "interrupt",
+     "question": {
+      "transaction_id": "TX-000077",
+      "risk_score": 25,
+      "model_confidence": 0.64,
+      "confidence": 0.64,
+      "agent_decision": "clear",
+      "pattern": "none",
+      "reason": "TX-000077 is a \u00a34,200 stock-referenced payment to a first-time supplier, following only \u00a31,026.85 in recent takings (TX-000062); the source of the remaining funds and supplier purpose are unverified. The 30-day history shows no other suspicious transactions, fund-flow found no pass-through or confirmed ring, and screening found no hard flags; a business stock purchase is plausible.",
+      "why_review": [
+       "the agents' confidence (0.64) is below 0.7"
+      ],
+      "hard_flags": [],
+      "precedents": {
+       "valid": [],
+       "expired": [],
+       "overridden": []
+      },
+      "rule_score": 40,
+      "rule_reasons": [
+       "first payment with counterparty EXT-SUP-0119",
+       "sends on \u00a34,200 of \u00a31,027 received in the last 24h"
+      ],
+      "question": "Clear or escalate? Reply with {'decision': 'clear' or 'escalate', 'note': 'optional'}"
+     }
+    },
+    {
+     "t": 132.53,
+     "kind": "step",
+     "key": "verdict",
+     "state": "working",
+     "finding": null,
+     "tool": "record_decision"
+    }
+   ],
+   "record": {
+    "transaction_id": "TX-000077",
+    "risk_score": 25,
+    "model_confidence": 0.64,
+    "confidence": 0.64,
+    "confidence_checks": [],
+    "agent_decision": "clear",
+    "final_decision": "clear",
+    "decided_by": "human",
+    "reason": "TX-000077 is a \u00a34,200 stock-referenced payment to a first-time supplier, following only \u00a31,026.85 in recent takings (TX-000062); the source of the remaining funds and supplier purpose are unverified. The 30-day history shows no other suspicious transactions, fund-flow found no pass-through or confirmed ring, and screening found no hard flags; a business stock purchase is plausible.",
+    "pattern": "none",
+    "hard_flags": [],
+    "precedents_cited": [],
+    "precedents_relied_on": [],
+    "precedents_dropped": [],
+    "precedents_overridden": [],
+    "analyst_note": "Stock purchase from wholesale supplier, consistent with cash-business takings",
+    "rule_score": 40,
+    "rule_reasons": [
+     "first payment with counterparty EXT-SUP-0119",
+     "sends on \u00a34,200 of \u00a31,027 received in the last 24h"
+    ],
+    "sar_id": null,
+    "trace_run_id": "960260e1-4f41-4536-be5c-0b405cb1c079",
+    "as_of": "2026-10-03T10:00"
+   },
+   "seconds": 134.2,
+   "sar": null,
+   "model_calls": 12,
+   "tokens": 24356,
+   "tool_calls": [
+    {
+     "name": "write_todos",
+     "subagent": null,
+     "id": "call_59cda33a2eab4c2e9706986dcff2e6fa"
+    },
+    {
+     "name": "get_transaction",
+     "subagent": null,
+     "id": "call_XJCvrq5WO6GpyUZv7SGAhNPj"
+    },
+    {
+     "name": "task",
+     "subagent": "kyc-precedent",
+     "id": "call_OCHNqrEZqmHkM05ya85nIMh1"
+    },
+    {
+     "name": "task",
+     "subagent": "pattern-analyst",
+     "id": "call_ZwYATSQQM4h7g9lWE4F32r4s"
+    },
+    {
+     "name": "task",
+     "subagent": "fund-flow",
+     "id": "call_IDBfOMoI1FL7X7WhLJo4rVgo"
+    },
+    {
+     "name": "record_decision",
+     "subagent": null,
+     "id": "call_M5oIqn5wN4dsXiMh3hf7Vmyx"
+    }
+   ],
+   "trace_run_id": "960260e1-4f41-4536-be5c-0b405cb1c079"
+  },
+  "TX-000619": {
+   "events": [
+    {
+     "t": 0.0,
+     "kind": "step",
+     "key": "supervisor",
+     "state": "working",
+     "finding": null,
+     "tool": null
+    },
+    {
+     "t": 2.05,
+     "kind": "step",
+     "key": "supervisor",
+     "state": null,
+     "finding": null,
+     "tool": "write_todos"
+    },
+    {
+     "t": 3.69,
+     "kind": "step",
+     "key": "supervisor",
+     "state": null,
+     "finding": null,
+     "tool": "get_transaction"
+    },
+    {
+     "t": 7.96,
+     "kind": "step",
+     "key": "supervisor",
+     "state": "done",
+     "finding": null,
+     "tool": "task \u2192 fund-flow"
+    },
+    {
+     "t": 7.96,
+     "kind": "step",
+     "key": "fund-flow",
+     "state": "working",
+     "finding": null,
+     "tool": null
+    },
+    {
+     "t": 7.97,
+     "kind": "step",
+     "key": "supervisor",
+     "state": "done",
+     "finding": null,
+     "tool": "task \u2192 kyc-precedent"
+    },
+    {
+     "t": 7.97,
+     "kind": "step",
+     "key": "kyc-precedent",
+     "state": "working",
+     "finding": null,
+     "tool": null
+    },
+    {
+     "t": 9.24,
+     "kind": "step",
+     "key": "fund-flow",
+     "state": null,
+     "finding": null,
+     "tool": "get_transaction"
+    },
+    {
+     "t": 10.29,
+     "kind": "step",
+     "key": "kyc-precedent",
+     "state": null,
+     "finding": null,
+     "tool": "get_customer_profile"
+    },
+    {
+     "t": 10.51,
+     "kind": "step",
+     "key": "fund-flow",
+     "state": null,
+     "finding": null,
+     "tool": "trace_fund_flows"
+    },
+    {
+     "t": 11.51,
+     "kind": "step",
+     "key": "kyc-precedent",
+     "state": null,
+     "finding": null,
+     "tool": "screen_customer"
+    },
+    {
+     "t": 12.26,
+     "kind": "step",
+     "key": "fund-flow",
+     "state": "done",
+     "finding": "No confirmed ring",
+     "tool": null
+    },
+    {
+     "t": 13.59,
+     "kind": "step",
+     "key": "kyc-precedent",
+     "state": null,
+     "finding": null,
+     "tool": "find_precedents"
+    },
+    {
+     "t": 13.59,
+     "kind": "step",
+     "key": "kyc-precedent",
+     "state": null,
+     "finding": null,
+     "tool": "find_precedents"
+    },
+    {
+     "t": 16.43,
+     "kind": "step",
+     "key": "kyc-precedent",
+     "state": "done",
+     "finding": "KYC low \u00b7 1 valid precedent(s)",
+     "tool": null
+    },
+    {
+     "t": 19.46,
+     "kind": "step",
+     "key": "verdict",
+     "state": "working",
+     "finding": null,
+     "tool": "record_decision"
+    }
+   ],
+   "record": {
+    "transaction_id": "TX-000619",
+    "risk_score": 15,
+    "model_confidence": 0.87,
+    "confidence": 0.87,
+    "confidence_checks": [],
+    "agent_decision": "clear",
+    "final_decision": "clear",
+    "decided_by": "agent",
+    "reason": "TX-000619 is a \u00a32,100 stock-referenced payment to EXT-SUP-0116; the rule identifies only \u00a3496 received in the prior 24 hours, insufficient to substantiate forwarding the full \u00a32,100. Fund-flow found no pass-through or confirmed ring, KYC found no screening hits, and the valid same-counterparty precedent EXT-SUP-0116:none supports clearing this supplier payment.",
+    "pattern": "none",
+    "hard_flags": [],
+    "precedents_cited": [
+     "EXT-SUP-0116:none"
+    ],
+    "precedents_relied_on": [
+     "EXT-SUP-0116:none"
+    ],
+    "precedents_dropped": [],
+    "precedents_overridden": [],
+    "analyst_note": "",
+    "rule_score": 30,
+    "rule_reasons": [
+     "sends on \u00a32,100 of \u00a3496 received in the last 24h"
+    ],
+    "sar_id": null,
+    "trace_run_id": "c5c82157-9e55-4f72-9c4f-9f6ad10f8f87",
+    "as_of": "2026-11-03T10:00"
+   },
+   "seconds": 21.2,
+   "sar": null,
+   "model_calls": 12,
+   "tokens": 30944,
+   "tool_calls": [
+    {
+     "name": "write_todos",
+     "subagent": null,
+     "id": "call_hfhRhfFqtB8NVA3o1OxEOwW9"
+    },
+    {
+     "name": "get_transaction",
+     "subagent": null,
+     "id": "call_zyUpl9VNdevTVKtb1hQzZpvW"
+    },
+    {
+     "name": "task",
+     "subagent": "kyc-precedent",
+     "id": "call_oSLZ99G8WGhuHjHt7p84qR5j"
+    },
+    {
+     "name": "task",
+     "subagent": "fund-flow",
+     "id": "call_wgLyhgMgDxGEDeIvTyVA6bDS"
+    },
+    {
+     "name": "record_decision",
+     "subagent": null,
+     "id": "call_1KtpCUap7kAp72AHdT3Zn0FP"
+    }
+   ],
+   "trace_run_id": "c5c82157-9e55-4f72-9c4f-9f6ad10f8f87"
+  },
+  "TX-000123": {
+   "events": [
+    {
+     "t": 0.0,
+     "kind": "step",
+     "key": "supervisor",
+     "state": "working",
+     "finding": null,
+     "tool": null
+    },
+    {
+     "t": 1.99,
+     "kind": "step",
+     "key": "supervisor",
+     "state": null,
+     "finding": null,
+     "tool": "write_todos"
+    },
+    {
+     "t": 3.46,
+     "kind": "step",
+     "key": "supervisor",
+     "state": null,
+     "finding": null,
+     "tool": "get_transaction"
+    },
+    {
+     "t": 6.23,
+     "kind": "step",
+     "key": "supervisor",
+     "state": "done",
+     "finding": null,
+     "tool": "task \u2192 pattern-analyst"
+    },
+    {
+     "t": 6.23,
+     "kind": "step",
+     "key": "pattern-analyst",
+     "state": "working",
+     "finding": null,
+     "tool": null
+    },
+    {
+     "t": 6.23,
+     "kind": "step",
+     "key": "supervisor",
+     "state": "done",
+     "finding": null,
+     "tool": "task \u2192 kyc-precedent"
+    },
+    {
+     "t": 6.23,
+     "kind": "step",
+     "key": "kyc-precedent",
+     "state": "working",
+     "finding": null,
+     "tool": null
+    },
+    {
+     "t": 7.53,
+     "kind": "step",
+     "key": "kyc-precedent",
+     "state": null,
+     "finding": null,
+     "tool": "get_customer_profile"
+    },
+    {
+     "t": 7.71,
+     "kind": "step",
+     "key": "pattern-analyst",
+     "state": null,
+     "finding": null,
+     "tool": "get_transaction"
+    },
+    {
+     "t": 7.72,
+     "kind": "step",
+     "key": "pattern-analyst",
+     "state": null,
+     "finding": null,
+     "tool": "get_customer_profile"
+    },
+    {
+     "t": 7.72,
+     "kind": "step",
+     "key": "pattern-analyst",
+     "state": null,
+     "finding": null,
+     "tool": "get_recent_transactions"
+    },
+    {
+     "t": 8.74,
+     "kind": "step",
+     "key": "kyc-precedent",
+     "state": null,
+     "finding": null,
+     "tool": "screen_customer"
+    },
+    {
+     "t": 9.95,
+     "kind": "step",
+     "key": "kyc-precedent",
+     "state": null,
+     "finding": null,
+     "tool": "find_precedents"
+    },
+    {
+     "t": 12.19,
+     "kind": "step",
+     "key": "pattern-analyst",
+     "state": "done",
+     "finding": "none \u00b7 risk 15 \u00b7 TX-000123: 2026-10-06T06:00, incoming BACS GBP 3100.0 from EXT-SLC ('Student loan'), reference 'Maintenance loan'; approximately 3.4\u00d7 expected monthly credits of GBP 900, but consiste",
+     "tool": null
+    },
+    {
+     "t": 12.28,
+     "kind": "step",
+     "key": "kyc-precedent",
+     "state": "done",
+     "finding": "KYC low \u00b7 0 valid precedent(s)",
+     "tool": null
+    },
+    {
+     "t": 15.35,
+     "kind": "step",
+     "key": "verdict",
+     "state": "working",
+     "finding": null,
+     "tool": "record_decision"
+    },
+    {
+     "t": 15.38,
+     "kind": "step",
+     "key": "verdict",
+     "state": "working",
+     "finding": "Waiting for the analyst",
+     "tool": null
+    },
+    {
+     "t": 15.38,
+     "kind": "interrupt",
+     "question": {
+      "transaction_id": "TX-000123",
+      "risk_score": 25,
+      "model_confidence": 0.65,
+      "confidence": 0.65,
+      "agent_decision": "clear",
+      "pattern": "anomalous_credit",
+      "reason": "TX-000123 is a \u00a33,100 incoming BACS from EXT-SLC ('Student loan') labelled 'Maintenance loan'; although 3.4\u00d7 expected monthly credits and the first payment from this counterparty, its purpose is plausible for the customer's student occupation. The only other listed 30-day credit is TX-000042 (\u00a3400 rent from a flatmate), with no listed cash deposits or outgoing transfers; screening found no hard flags, but the loan's source and purpose were not independently verified.",
+      "why_review": [
+       "the agents' confidence (0.65) is below 0.7"
+      ],
+      "hard_flags": [],
+      "precedents": {
+       "valid": [],
+       "expired": [],
+       "overridden": []
+      },
+      "rule_score": 45,
+      "rule_reasons": [
+       "credit \u00a33,100 is 3.4\u00d7 expected monthly credits",
+       "first payment with counterparty EXT-SLC"
+      ],
+      "question": "Clear or escalate? Reply with {'decision': 'clear' or 'escalate', 'note': 'optional'}"
+     }
+    },
+    {
+     "t": 3358.53,
+     "kind": "step",
+     "key": "verdict",
+     "state": "working",
+     "finding": null,
+     "tool": "record_decision"
+    }
+   ],
+   "record": {
+    "transaction_id": "TX-000123",
+    "risk_score": 25,
+    "model_confidence": 0.65,
+    "confidence": 0.65,
+    "confidence_checks": [],
+    "agent_decision": "clear",
+    "final_decision": "clear",
+    "decided_by": "human",
+    "reason": "TX-000123 is a \u00a33,100 incoming BACS from EXT-SLC ('Student loan') labelled 'Maintenance loan'; although 3.4\u00d7 expected monthly credits and the first payment from this counterparty, its purpose is plausible for the customer's student occupation. The only other listed 30-day credit is TX-000042 (\u00a3400 rent from a flatmate), with no listed cash deposits or outgoing transfers; screening found no hard flags, but the loan's source and purpose were not independently verified.",
+    "pattern": "anomalous_credit",
+    "hard_flags": [],
+    "precedents_cited": [],
+    "precedents_relied_on": [],
+    "precedents_dropped": [],
+    "precedents_overridden": [],
+    "analyst_note": "Scripted analyst review: clear (from the synthetic benchmark label)",
+    "rule_score": 45,
+    "rule_reasons": [
+     "credit \u00a33,100 is 3.4\u00d7 expected monthly credits",
+     "first payment with counterparty EXT-SLC"
+    ],
+    "sar_id": null,
+    "trace_run_id": "d8bf189b-d759-4fc3-9c2a-7461784ceb42",
+    "as_of": "2026-10-06T06:00"
+   },
+   "seconds": 3360.5,
+   "sar": null,
+   "model_calls": 11,
+   "tokens": 22725,
+   "tool_calls": [
+    {
+     "name": "write_todos",
+     "subagent": null,
+     "id": "call_79f326793d0c40c98ee0af67f8744604"
+    },
+    {
+     "name": "get_transaction",
+     "subagent": null,
+     "id": "call_ko2SGA27Y2wbgjmRMBiO97k2"
+    },
+    {
+     "name": "task",
+     "subagent": "pattern-analyst",
+     "id": "call_WEBdJ7V7RLw6mMY7sxQrpvuW"
+    },
+    {
+     "name": "task",
+     "subagent": "kyc-precedent",
+     "id": "call_yz5hrbG4fe3nIzatprSOh0RW"
+    },
+    {
+     "name": "record_decision",
+     "subagent": null,
+     "id": "call_EYjqUqLXX5xyAG6eysvdW18D"
+    }
+   ],
+   "trace_run_id": "d8bf189b-d759-4fc3-9c2a-7461784ceb42"
+  },
+  "TX-000078": {
+   "events": [
+    {
+     "t": 0.0,
+     "kind": "step",
+     "key": "supervisor",
+     "state": "working",
+     "finding": null,
+     "tool": null
+    },
+    {
+     "t": 2.14,
+     "kind": "step",
+     "key": "supervisor",
+     "state": null,
+     "finding": null,
+     "tool": "write_todos"
+    },
+    {
+     "t": 3.56,
+     "kind": "step",
+     "key": "supervisor",
+     "state": null,
+     "finding": null,
+     "tool": "get_transaction"
+    },
+    {
+     "t": 8.23,
+     "kind": "step",
+     "key": "supervisor",
+     "state": "done",
+     "finding": null,
+     "tool": "task \u2192 kyc-precedent"
+    },
+    {
+     "t": 8.23,
+     "kind": "step",
+     "key": "kyc-precedent",
+     "state": "working",
+     "finding": null,
+     "tool": null
+    },
+    {
+     "t": 8.23,
+     "kind": "step",
+     "key": "supervisor",
+     "state": "done",
+     "finding": null,
+     "tool": "task \u2192 pattern-analyst"
+    },
+    {
+     "t": 8.23,
+     "kind": "step",
+     "key": "pattern-analyst",
+     "state": "working",
+     "finding": null,
+     "tool": null
+    },
+    {
+     "t": 8.24,
+     "kind": "step",
+     "key": "supervisor",
+     "state": "done",
+     "finding": null,
+     "tool": "task \u2192 fund-flow"
+    },
+    {
+     "t": 8.24,
+     "kind": "step",
+     "key": "fund-flow",
+     "state": "working",
+     "finding": null,
+     "tool": null
+    },
+    {
+     "t": 9.66,
+     "kind": "step",
+     "key": "fund-flow",
+     "state": null,
+     "finding": null,
+     "tool": "get_transaction"
+    },
+    {
+     "t": 9.72,
+     "kind": "step",
+     "key": "kyc-precedent",
+     "state": null,
+     "finding": null,
+     "tool": "get_customer_profile"
+    },
+    {
+     "t": 9.88,
+     "kind": "step",
+     "key": "pattern-analyst",
+     "state": null,
+     "finding": null,
+     "tool": "get_transaction"
+    },
+    {
+     "t": 9.89,
+     "kind": "step",
+     "key": "pattern-analyst",
+     "state": null,
+     "finding": null,
+     "tool": "get_recent_transactions"
+    },
+    {
+     "t": 9.89,
+     "kind": "step",
+     "key": "pattern-analyst",
+     "state": null,
+     "finding": null,
+     "tool": "get_customer_profile"
+    },
+    {
+     "t": 11.02,
+     "kind": "step",
+     "key": "fund-flow",
+     "state": null,
+     "finding": null,
+     "tool": "trace_fund_flows"
+    },
+    {
+     "t": 11.05,
+     "kind": "step",
+     "key": "kyc-precedent",
+     "state": null,
+     "finding": null,
+     "tool": "screen_customer"
+    },
+    {
+     "t": 12.4,
+     "kind": "step",
+     "key": "kyc-precedent",
+     "state": null,
+     "finding": null,
+     "tool": "find_precedents"
+    },
+    {
+     "t": 14.24,
+     "kind": "step",
+     "key": "kyc-precedent",
+     "state": "done",
+     "finding": "KYC low \u00b7 0 valid precedent(s)",
+     "tool": null
+    },
+    {
+     "t": 14.96,
+     "kind": "step",
+     "key": "fund-flow",
+     "state": "done",
+     "finding": "No confirmed ring",
+     "tool": null
+    },
+    {
+     "t": 15.19,
+     "kind": "step",
+     "key": "pattern-analyst",
+     "state": "done",
+     "finding": "none \u00b7 risk 20 \u00b7 TX-000066: \u00a3540.56 cash deposit on 2026-10-02 16:55, reference 'Takings'; this is consistent with a barber expecting \u00a34,000 monthly cash, though the source is unverified.",
+     "tool": null
+    },
+    {
+     "t": 18.99,
+     "kind": "step",
+     "key": "verdict",
+     "state": "working",
+     "finding": null,
+     "tool": "record_decision"
+    },
+    {
+     "t": 19.03,
+     "kind": "step",
+     "key": "verdict",
+     "state": "working",
+     "finding": "Waiting for the analyst",
+     "tool": null
+    },
+    {
+     "t": 19.03,
+     "kind": "interrupt",
+     "question": {
+      "transaction_id": "TX-000078",
+      "risk_score": 24,
+      "model_confidence": 0.67,
+      "confidence": 0.67,
+      "agent_decision": "clear",
+      "pattern": "none",
+      "reason": "TX-000078 is a \u00a31,400 stock-referenced payment to a first-time wholesale supplier, 17 hours after TX-000066, a \u00a3540.56 cash deposit marked 'Takings'; the deposit alone cannot fund the payment. A stock purchase is plausible for the customer's barber business, and the specialists found no corroborating pass-through network, confirmed ring, screening hit, or applicable precedent; the supplier purpose remains unverified.",
+      "why_review": [
+       "the agents' confidence (0.67) is below 0.7"
+      ],
+      "hard_flags": [],
+      "precedents": {
+       "valid": [],
+       "expired": [],
+       "overridden": []
+      },
+      "rule_score": 40,
+      "rule_reasons": [
+       "first payment with counterparty EXT-SUP-0129",
+       "sends on \u00a31,400 of \u00a3541 received in the last 24h"
+      ],
+      "question": "Clear or escalate? Reply with {'decision': 'clear' or 'escalate', 'note': 'optional'}"
+     }
+    },
+    {
+     "t": 3360.44,
+     "kind": "step",
+     "key": "verdict",
+     "state": "working",
+     "finding": null,
+     "tool": "record_decision"
+    }
+   ],
+   "record": {
+    "transaction_id": "TX-000078",
+    "risk_score": 24,
+    "model_confidence": 0.67,
+    "confidence": 0.67,
+    "confidence_checks": [],
+    "agent_decision": "clear",
+    "final_decision": "clear",
+    "decided_by": "human",
+    "reason": "TX-000078 is a \u00a31,400 stock-referenced payment to a first-time wholesale supplier, 17 hours after TX-000066, a \u00a3540.56 cash deposit marked 'Takings'; the deposit alone cannot fund the payment. A stock purchase is plausible for the customer's barber business, and the specialists found no corroborating pass-through network, confirmed ring, screening hit, or applicable precedent; the supplier purpose remains unverified.",
+    "pattern": "none",
+    "hard_flags": [],
+    "precedents_cited": [],
+    "precedents_relied_on": [],
+    "precedents_dropped": [],
+    "precedents_overridden": [],
+    "analyst_note": "Scripted analyst review: clear (from the synthetic benchmark label)",
+    "rule_score": 40,
+    "rule_reasons": [
+     "first payment with counterparty EXT-SUP-0129",
+     "sends on \u00a31,400 of \u00a3541 received in the last 24h"
+    ],
+    "sar_id": null,
+    "trace_run_id": "85cd165d-5ed7-485f-a8bb-011046be6626",
+    "as_of": "2026-10-03T10:00"
+   },
+   "seconds": 3362.5,
+   "sar": null,
+   "model_calls": 14,
+   "tokens": 26116,
+   "tool_calls": [
+    {
+     "name": "write_todos",
+     "subagent": null,
+     "id": "call_2ea09bdd1a264fc18734321d2e368742"
+    },
+    {
+     "name": "get_transaction",
+     "subagent": null,
+     "id": "call_tNDiv0fMcVW7grg9KGDwUW9p"
+    },
+    {
+     "name": "task",
+     "subagent": "pattern-analyst",
+     "id": "call_SpFujWO4K4ldP5WVjN3fc76v"
+    },
+    {
+     "name": "task",
+     "subagent": "kyc-precedent",
+     "id": "call_RlI9i7MNV5y5cgAGOT4LOncR"
+    },
+    {
+     "name": "task",
+     "subagent": "fund-flow",
+     "id": "call_zKp3C7kw2ghBO95dKABquPWG"
+    },
+    {
+     "name": "record_decision",
+     "subagent": null,
+     "id": "call_qV3Hyibe4D1lRFdxw4DsERaf"
+    }
+   ],
+   "trace_run_id": "85cd165d-5ed7-485f-a8bb-011046be6626"
+  },
+  "TX-000616": {
+   "events": [
+    {
+     "t": 0.0,
+     "kind": "step",
+     "key": "supervisor",
+     "state": "working",
+     "finding": null,
+     "tool": null
+    },
+    {
+     "t": 2.39,
+     "kind": "step",
+     "key": "supervisor",
+     "state": null,
+     "finding": null,
+     "tool": "write_todos"
+    },
+    {
+     "t": 3.9,
+     "kind": "step",
+     "key": "supervisor",
+     "state": null,
+     "finding": null,
+     "tool": "get_transaction"
+    },
+    {
+     "t": 7.86,
+     "kind": "step",
+     "key": "supervisor",
+     "state": "done",
+     "finding": null,
+     "tool": "task \u2192 kyc-precedent"
+    },
+    {
+     "t": 7.86,
+     "kind": "step",
+     "key": "kyc-precedent",
+     "state": "working",
+     "finding": null,
+     "tool": null
+    },
+    {
+     "t": 7.86,
+     "kind": "step",
+     "key": "supervisor",
+     "state": "done",
+     "finding": null,
+     "tool": "task \u2192 fund-flow"
+    },
+    {
+     "t": 7.86,
+     "kind": "step",
+     "key": "fund-flow",
+     "state": "working",
+     "finding": null,
+     "tool": null
+    },
+    {
+     "t": 7.87,
+     "kind": "step",
+     "key": "supervisor",
+     "state": "done",
+     "finding": null,
+     "tool": "task \u2192 pattern-analyst"
+    },
+    {
+     "t": 7.87,
+     "kind": "step",
+     "key": "pattern-analyst",
+     "state": "working",
+     "finding": null,
+     "tool": null
+    },
+    {
+     "t": 9.18,
+     "kind": "step",
+     "key": "fund-flow",
+     "state": null,
+     "finding": null,
+     "tool": "get_transaction"
+    },
+    {
+     "t": 9.66,
+     "kind": "step",
+     "key": "pattern-analyst",
+     "state": null,
+     "finding": null,
+     "tool": "get_transaction"
+    },
+    {
+     "t": 9.67,
+     "kind": "step",
+     "key": "pattern-analyst",
+     "state": null,
+     "finding": null,
+     "tool": "get_customer_profile"
+    },
+    {
+     "t": 9.68,
+     "kind": "step",
+     "key": "pattern-analyst",
+     "state": null,
+     "finding": null,
+     "tool": "get_recent_transactions"
+    },
+    {
+     "t": 9.85,
+     "kind": "step",
+     "key": "kyc-precedent",
+     "state": null,
+     "finding": null,
+     "tool": "get_customer_profile"
+    },
+    {
+     "t": 10.43,
+     "kind": "step",
+     "key": "fund-flow",
+     "state": null,
+     "finding": null,
+     "tool": "trace_fund_flows"
+    },
+    {
+     "t": 11.32,
+     "kind": "step",
+     "key": "kyc-precedent",
+     "state": null,
+     "finding": null,
+     "tool": "screen_customer"
+    },
+    {
+     "t": 11.33,
+     "kind": "step",
+     "key": "kyc-precedent",
+     "state": null,
+     "finding": null,
+     "tool": "find_precedents"
+    },
+    {
+     "t": 12.58,
+     "kind": "step",
+     "key": "fund-flow",
+     "state": "done",
+     "finding": "No confirmed ring",
+     "tool": null
+    },
+    {
+     "t": 13.06,
+     "kind": "step",
+     "key": "kyc-precedent",
+     "state": null,
+     "finding": null,
+     "tool": "find_precedents"
+    },
+    {
+     "t": 15.24,
+     "kind": "step",
+     "key": "kyc-precedent",
+     "state": "done",
+     "finding": "KYC low \u00b7 0 valid precedent(s) \u00b7 1 expired/out of scope",
+     "tool": null
+    },
+    {
+     "t": 18.91,
+     "kind": "step",
+     "key": "pattern-analyst",
+     "state": "done",
+     "finding": "none \u00b7 risk 14 \u00b7 TX-000611: 2026-11-03T09:25, \u00a3823.19 cash deposit at Manchester Market St, reference 'Takings'; TX-000616: 2026-11-03T10:00, \u00a32100.0 outbound faster payment to EXT-SUP-0105 Wholesale ",
+     "tool": null
+    },
+    {
+     "t": 22.19,
+     "kind": "step",
+     "key": "verdict",
+     "state": "working",
+     "finding": null,
+     "tool": "record_decision"
+    },
+    {
+     "t": 22.22,
+     "kind": "step",
+     "key": "verdict",
+     "state": "working",
+     "finding": "Waiting for the analyst",
+     "tool": null
+    },
+    {
+     "t": 22.22,
+     "kind": "interrupt",
+     "question": {
+      "transaction_id": "TX-000616",
+      "risk_score": 15,
+      "model_confidence": 0.65,
+      "confidence": 0.65,
+      "agent_decision": "clear",
+      "pattern": "none",
+      "reason": "TX-000616 paid \u00a32,100 to supplier EXT-SUP-0105 for 'Stock' 35 minutes after TX-000611 deposited \u00a3823.19 in 'Takings'; it repeats the \u00a32,100 supplier payment TX-000073, and the deposit alone cannot establish the payment's funding. The cash takings and stock payments fit the customer's caf\u00e9 activity, with no confirmed ring, collector or screening hit; supporting invoices and balance information are unavailable, and precedent EXT-SUP-0105:none is expired and not relied upon.",
+      "why_review": [
+       "the agents' confidence (0.65) is below 0.7"
+      ],
+      "hard_flags": [],
+      "precedents": {
+       "valid": [
+        "EXT-SUP-0105:none"
+       ],
+       "expired": [],
+       "overridden": []
+      },
+      "rule_score": 30,
+      "rule_reasons": [
+       "sends on \u00a32,100 of \u00a3823 received in the last 24h"
+      ],
+      "question": "Clear or escalate? Reply with {'decision': 'clear' or 'escalate', 'note': 'optional'}"
+     }
+    },
+    {
+     "t": 3359.78,
+     "kind": "step",
+     "key": "verdict",
+     "state": "working",
+     "finding": null,
+     "tool": "record_decision"
+    }
+   ],
+   "record": {
+    "transaction_id": "TX-000616",
+    "risk_score": 15,
+    "model_confidence": 0.65,
+    "confidence": 0.65,
+    "confidence_checks": [],
+    "agent_decision": "clear",
+    "final_decision": "clear",
+    "decided_by": "human",
+    "reason": "TX-000616 paid \u00a32,100 to supplier EXT-SUP-0105 for 'Stock' 35 minutes after TX-000611 deposited \u00a3823.19 in 'Takings'; it repeats the \u00a32,100 supplier payment TX-000073, and the deposit alone cannot establish the payment's funding. The cash takings and stock payments fit the customer's caf\u00e9 activity, with no confirmed ring, collector or screening hit; supporting invoices and balance information are unavailable, and precedent EXT-SUP-0105:none is expired and not relied upon.",
+    "pattern": "none",
+    "hard_flags": [],
+    "precedents_cited": [],
+    "precedents_relied_on": [
+     "EXT-SUP-0105:none"
+    ],
+    "precedents_dropped": [],
+    "precedents_overridden": [],
+    "analyst_note": "Scripted analyst review: clear (from the synthetic benchmark label)",
+    "rule_score": 30,
+    "rule_reasons": [
+     "sends on \u00a32,100 of \u00a3823 received in the last 24h"
+    ],
+    "sar_id": null,
+    "trace_run_id": "36c1479f-9b74-411d-a73b-3d783d5ed866",
+    "as_of": "2026-11-03T10:00"
+   },
+   "seconds": 3362.0,
+   "sar": null,
+   "model_calls": 14,
+   "tokens": 36870,
+   "tool_calls": [
+    {
+     "name": "write_todos",
+     "subagent": null,
+     "id": "call_CkN4YucsiOrpZpNWLuUJ5pbJ"
+    },
+    {
+     "name": "get_transaction",
+     "subagent": null,
+     "id": "call_uaXAwQfhxuKtF6EXu2QrGGvq"
+    },
+    {
+     "name": "task",
+     "subagent": "kyc-precedent",
+     "id": "call_RjgHYj0BiwrcenqhS8Xb7zXM"
+    },
+    {
+     "name": "task",
+     "subagent": "pattern-analyst",
+     "id": "call_1mN2OaD0HOo0gOA3wfbfbknq"
+    },
+    {
+     "name": "task",
+     "subagent": "fund-flow",
+     "id": "call_yEWOKuYJ9fJLEUbJGWiS7dyh"
+    },
+    {
+     "name": "record_decision",
+     "subagent": null,
+     "id": "call_3JLCW4h0XN00JlCoaMzhD9JJ"
+    }
+   ],
+   "trace_run_id": "36c1479f-9b74-411d-a73b-3d783d5ed866"
+  },
+  "TX-000124": {
+   "events": [
+    {
+     "t": 0.0,
+     "kind": "step",
+     "key": "supervisor",
+     "state": "working",
+     "finding": null,
+     "tool": null
+    },
+    {
+     "t": 1.89,
+     "kind": "step",
+     "key": "supervisor",
+     "state": null,
+     "finding": null,
+     "tool": "write_todos"
+    },
+    {
+     "t": 3.51,
+     "kind": "step",
+     "key": "supervisor",
+     "state": null,
+     "finding": null,
+     "tool": "get_transaction"
+    },
+    {
+     "t": 7.12,
+     "kind": "step",
+     "key": "supervisor",
+     "state": "done",
+     "finding": null,
+     "tool": "task \u2192 pattern-analyst"
+    },
+    {
+     "t": 7.12,
+     "kind": "step",
+     "key": "pattern-analyst",
+     "state": "working",
+     "finding": null,
+     "tool": null
+    },
+    {
+     "t": 7.13,
+     "kind": "step",
+     "key": "supervisor",
+     "state": "done",
+     "finding": null,
+     "tool": "task \u2192 kyc-precedent"
+    },
+    {
+     "t": 7.13,
+     "kind": "step",
+     "key": "kyc-precedent",
+     "state": "working",
+     "finding": null,
+     "tool": null
+    },
+    {
+     "t": 8.7,
+     "kind": "step",
+     "key": "kyc-precedent",
+     "state": null,
+     "finding": null,
+     "tool": "find_precedents"
+    },
+    {
+     "t": 8.7,
+     "kind": "step",
+     "key": "kyc-precedent",
+     "state": null,
+     "finding": null,
+     "tool": "screen_customer"
+    },
+    {
+     "t": 8.71,
+     "kind": "step",
+     "key": "kyc-precedent",
+     "state": null,
+     "finding": null,
+     "tool": "get_customer_profile"
+    },
+    {
+     "t": 9.13,
+     "kind": "step",
+     "key": "pattern-analyst",
+     "state": null,
+     "finding": null,
+     "tool": "get_transaction"
+    },
+    {
+     "t": 9.15,
+     "kind": "step",
+     "key": "pattern-analyst",
+     "state": null,
+     "finding": null,
+     "tool": "get_customer_profile"
+    },
+    {
+     "t": 9.15,
+     "kind": "step",
+     "key": "pattern-analyst",
+     "state": null,
+     "finding": null,
+     "tool": "get_recent_transactions"
+    },
+    {
+     "t": 10.23,
+     "kind": "step",
+     "key": "kyc-precedent",
+     "state": "done",
+     "finding": "KYC low \u00b7 0 valid precedent(s)",
+     "tool": null
+    },
+    {
+     "t": 13.57,
+     "kind": "step",
+     "key": "pattern-analyst",
+     "state": "done",
+     "finding": "anomalous credit \u00b7 risk 20 \u00b7 TX-000124: incoming BACS 3100.0 GBP from EXT-SLC (Student loan), reference 'Maintenance loan'; this is about 3.4 times expected monthly credits of 900 GBP.",
+     "tool": null
+    },
+    {
+     "t": 16.48,
+     "kind": "step",
+     "key": "verdict",
+     "state": "working",
+     "finding": null,
+     "tool": "record_decision"
+    },
+    {
+     "t": 16.5,
+     "kind": "step",
+     "key": "verdict",
+     "state": "working",
+     "finding": "Waiting for the analyst",
+     "tool": null
+    },
+    {
+     "t": 16.5,
+     "kind": "interrupt",
+     "question": {
+      "transaction_id": "TX-000124",
+      "risk_score": 20,
+      "model_confidence": 0.65,
+      "confidence": 0.65,
+      "agent_decision": "clear",
+      "pattern": "anomalous_credit",
+      "reason": "TX-000124 is a \u00a33,100 incoming BACS from EXT-SLC (Student loan), referenced 'Maintenance loan', 3.4\u00d7 the \u00a3900 expected monthly credits; the customer is a student, making this a plausible legitimate payment although its source is unverified. The 30-day history contains no other transactions suggesting structuring or round-tripping, and KYC reports no screening hits or hard flags.",
+      "why_review": [
+       "the agents' confidence (0.65) is below 0.7"
+      ],
+      "hard_flags": [],
+      "precedents": {
+       "valid": [],
+       "expired": [],
+       "overridden": []
+      },
+      "rule_score": 45,
+      "rule_reasons": [
+       "credit \u00a33,100 is 3.4\u00d7 expected monthly credits",
+       "first payment with counterparty EXT-SLC"
+      ],
+      "question": "Clear or escalate? Reply with {'decision': 'clear' or 'escalate', 'note': 'optional'}"
+     }
+    },
+    {
+     "t": 3334.31,
+     "kind": "step",
+     "key": "verdict",
+     "state": "working",
+     "finding": null,
+     "tool": "record_decision"
+    },
+    {
+     "t": 3336.35,
+     "kind": "step",
+     "key": "supervisor",
+     "state": null,
+     "finding": null,
+     "tool": "get_customer_profile"
+    },
+    {
+     "t": 3340.99,
+     "kind": "step",
+     "key": "supervisor",
+     "state": "done",
+     "finding": null,
+     "tool": "task \u2192 sar-writer"
+    },
+    {
+     "t": 3340.99,
+     "kind": "step",
+     "key": "sar-writer",
+     "state": "working",
+     "finding": null,
+     "tool": null
+    },
+    {
+     "t": 3346.67,
+     "kind": "step",
+     "key": "sar-writer",
+     "state": "done",
+     "finding": "SAR draft written for Chloe Evans (CUS-0041)",
+     "tool": null
+    }
+   ],
+   "record": {
+    "transaction_id": "TX-000124",
+    "risk_score": 20,
+    "model_confidence": 0.65,
+    "confidence": 0.65,
+    "confidence_checks": [],
+    "agent_decision": "clear",
+    "final_decision": "escalate",
+    "decided_by": "human",
+    "reason": "TX-000124 is a \u00a33,100 incoming BACS from EXT-SLC (Student loan), referenced 'Maintenance loan', 3.4\u00d7 the \u00a3900 expected monthly credits; the customer is a student, making this a plausible legitimate payment although its source is unverified. The 30-day history contains no other transactions suggesting structuring or round-tripping, and KYC reports no screening hits or hard flags.",
+    "pattern": "anomalous_credit",
+    "hard_flags": [],
+    "precedents_cited": [],
+    "precedents_relied_on": [],
+    "precedents_dropped": [],
+    "precedents_overridden": [],
+    "analyst_note": "this seems like a Mule network",
+    "rule_score": 45,
+    "rule_reasons": [
+     "credit \u00a33,100 is 3.4\u00d7 expected monthly credits",
+     "first payment with counterparty EXT-SLC"
+    ],
+    "sar_id": "SAR-TX-000124",
+    "trace_run_id": "96d4cb75-4547-4670-bdcf-1db17cc7122c",
+    "as_of": "2026-10-06T06:00"
+   },
+   "seconds": 3348.6,
+   "sar": {
+    "subject": "Chloe Evans (CUS-0041)",
+    "pattern": "anomalous_credit",
+    "timeline": [
+     "2026-10-06 06:00 \u2014 TX-000124: Incoming GB online BACS credit of \u00a33,100 to ACC-0041 from EXT-SLC, name Student loan, reference 'Maintenance loan'."
+    ],
+    "evidence": [
+     "TX-000124: Chloe Evans (CUS-0041) is a GB student with low KYC risk, PEP false, no screening hits or hard flags; ACC-0041 opened 2024-09-01, with expected monthly credits of \u00a3900 and cash of \u00a30.",
+     "TX-000124: The \u00a33,100 incoming credit was the first payment from EXT-SLC and was 3.4\u00d7 expected monthly credits; the recorded name was Student loan and reference was 'Maintenance loan'.",
+     "TX-000124: Pattern-analyst classification was anomalous_credit, confidence 0.65 and risk score 20; this was the only transaction in the 30-day history, with no cash deposits, outgoing payments, structuring or round-trip.",
+     "TX-000124: Student status makes a maintenance loan plausible, but the source has not been independently verified.",
+     "TX-000124: Initial triage submitted 'clear' with risk 20, confidence 0.65 and anomalous_credit, citing no precedents; record_decision returned 'escalate (decided by human)'."
+    ],
+    "narrative": "TX-000124 is an anomalous credit because the first payment from this counterparty was 3.4\u00d7 the customer's expected monthly credits. A maintenance loan is plausible given the customer's student status, but the source has not been independently verified, and the 30-day history contains no other transactions indicating further suspicious activity. Initial triage submitted a clear decision, while the recorded outcome was escalation decided by a human; the escalation should not be mistaken for a finding that the source was verified or that additional activity occurred. The analyst should check the source and purpose of TX-000124 and review the basis for the human escalation before determining next steps.",
+    "precedents_cited_or_overridden": [
+     "TX-000124: No applicable or expired precedents; initial triage cited none, and none were overridden."
+    ],
+    "disclaimer": "Draft for analyst review, not legal, compliance or regulatory advice. Synthetic data only."
+   },
+   "model_calls": 12,
+   "tokens": 30616,
+   "tool_calls": [
+    {
+     "name": "write_todos",
+     "subagent": null,
+     "id": "call_1f9cd6772b7f46ba928985856e490c18"
+    },
+    {
+     "name": "get_transaction",
+     "subagent": null,
+     "id": "call_m0FHOhJPDtHupxk0AOZKxxlB"
+    },
+    {
+     "name": "task",
+     "subagent": "kyc-precedent",
+     "id": "call_oYbjaeTwseKXAEHNxbP82I97"
+    },
+    {
+     "name": "task",
+     "subagent": "pattern-analyst",
+     "id": "call_EZvBRNvc2EmrLbsJ2KLmFWia"
+    },
+    {
+     "name": "record_decision",
+     "subagent": null,
+     "id": "call_38Enslp0LcfsS6Mq8VKtnVjt"
+    },
+    {
+     "name": "get_customer_profile",
+     "subagent": null,
+     "id": "call_OsJyygzLnURRWSPdWUR02Qkj"
+    },
+    {
+     "name": "task",
+     "subagent": "sar-writer",
+     "id": "call_9hEHtjSWKLKggLZkSSZGIUTb"
+    }
+   ],
+   "trace_run_id": "96d4cb75-4547-4670-bdcf-1db17cc7122c"
+  },
+  "TX-000125": {
+   "events": [
+    {
+     "t": 0.0,
+     "kind": "step",
+     "key": "supervisor",
+     "state": "working",
+     "finding": null,
+     "tool": null
+    },
+    {
+     "t": 1.61,
+     "kind": "step",
+     "key": "supervisor",
+     "state": null,
+     "finding": null,
+     "tool": "write_todos"
+    },
+    {
+     "t": 3.03,
+     "kind": "step",
+     "key": "supervisor",
+     "state": null,
+     "finding": null,
+     "tool": "get_transaction"
+    },
+    {
+     "t": 6.01,
+     "kind": "step",
+     "key": "supervisor",
+     "state": "done",
+     "finding": null,
+     "tool": "task \u2192 kyc-precedent"
+    },
+    {
+     "t": 6.01,
+     "kind": "step",
+     "key": "kyc-precedent",
+     "state": "working",
+     "finding": null,
+     "tool": null
+    },
+    {
+     "t": 6.02,
+     "kind": "step",
+     "key": "supervisor",
+     "state": "done",
+     "finding": null,
+     "tool": "task \u2192 pattern-analyst"
+    },
+    {
+     "t": 6.02,
+     "kind": "step",
+     "key": "pattern-analyst",
+     "state": "working",
+     "finding": null,
+     "tool": null
+    },
+    {
+     "t": 7.61,
+     "kind": "step",
+     "key": "kyc-precedent",
+     "state": null,
+     "finding": null,
+     "tool": "screen_customer"
+    },
+    {
+     "t": 7.62,
+     "kind": "step",
+     "key": "kyc-precedent",
+     "state": null,
+     "finding": null,
+     "tool": "get_customer_profile"
+    },
+    {
+     "t": 7.63,
+     "kind": "step",
+     "key": "kyc-precedent",
+     "state": null,
+     "finding": null,
+     "tool": "find_precedents"
+    },
+    {
+     "t": 7.97,
+     "kind": "step",
+     "key": "pattern-analyst",
+     "state": null,
+     "finding": null,
+     "tool": "get_customer_profile"
+    },
+    {
+     "t": 7.97,
+     "kind": "step",
+     "key": "pattern-analyst",
+     "state": null,
+     "finding": null,
+     "tool": "get_transaction"
+    },
+    {
+     "t": 7.97,
+     "kind": "step",
+     "key": "pattern-analyst",
+     "state": null,
+     "finding": null,
+     "tool": "get_recent_transactions"
+    },
+    {
+     "t": 9.82,
+     "kind": "step",
+     "key": "kyc-precedent",
+     "state": "done",
+     "finding": "KYC low \u00b7 0 valid precedent(s)",
+     "tool": null
+    },
+    {
+     "t": 11.76,
+     "kind": "step",
+     "key": "pattern-analyst",
+     "state": "done",
+     "finding": "none \u00b7 risk 15 \u00b7 TX-000125: 2026-10-06T06:00, \u00a33,100.0 inbound BACS from EXT-SLC (Student loan), reference \u201cMaintenance loan\u201d; first payment from this counterparty, approximately 3.4\u00d7 expected monthly",
+     "tool": null
+    },
+    {
+     "t": 15.18,
+     "kind": "step",
+     "key": "verdict",
+     "state": "working",
+     "finding": null,
+     "tool": "record_decision"
+    },
+    {
+     "t": 15.21,
+     "kind": "step",
+     "key": "verdict",
+     "state": "working",
+     "finding": "Waiting for the analyst",
+     "tool": null
+    },
+    {
+     "t": 15.21,
+     "kind": "interrupt",
+     "question": {
+      "transaction_id": "TX-000125",
+      "risk_score": 18,
+      "model_confidence": 0.65,
+      "confidence": 0.65,
+      "agent_decision": "clear",
+      "pattern": "anomalous_credit",
+      "reason": "TX-000125 is a \u00a33,100 inbound BACS on 2026-10-06 from EXT-SLC (Student loan), referenced 'Maintenance loan'; although 3.4\u00d7 expected monthly credits and the first payment from this counterparty, it is consistent with the customer's student occupation. The 30-day review found no cash deposits or listed outgoing payment suggesting structuring or round-tripping, and KYC found no screening hits or applicable precedents; the source is not independently verified.",
+      "why_review": [
+       "the agents' confidence (0.65) is below 0.7"
+      ],
+      "hard_flags": [],
+      "precedents": {
+       "valid": [],
+       "expired": [],
+       "overridden": []
+      },
+      "rule_score": 45,
+      "rule_reasons": [
+       "credit \u00a33,100 is 3.4\u00d7 expected monthly credits",
+       "first payment with counterparty EXT-SLC"
+      ],
+      "question": "Clear or escalate? Reply with {'decision': 'clear' or 'escalate', 'note': 'optional'}"
+     }
+    },
+    {
+     "t": 16.08,
+     "kind": "step",
+     "key": "verdict",
+     "state": "working",
+     "finding": null,
+     "tool": "record_decision"
+    }
+   ],
+   "record": {
+    "transaction_id": "TX-000125",
+    "risk_score": 18,
+    "model_confidence": 0.65,
+    "confidence": 0.65,
+    "confidence_checks": [],
+    "agent_decision": "clear",
+    "final_decision": "clear",
+    "decided_by": "human",
+    "reason": "TX-000125 is a \u00a33,100 inbound BACS on 2026-10-06 from EXT-SLC (Student loan), referenced 'Maintenance loan'; although 3.4\u00d7 expected monthly credits and the first payment from this counterparty, it is consistent with the customer's student occupation. The 30-day review found no cash deposits or listed outgoing payment suggesting structuring or round-tripping, and KYC found no screening hits or applicable precedents; the source is not independently verified.",
+    "pattern": "anomalous_credit",
+    "hard_flags": [],
+    "precedents_cited": [],
+    "precedents_relied_on": [],
+    "precedents_dropped": [],
+    "precedents_overridden": [],
+    "analyst_note": "Scripted analyst review: clear (from the synthetic benchmark label)",
+    "rule_score": 45,
+    "rule_reasons": [
+     "credit \u00a33,100 is 3.4\u00d7 expected monthly credits",
+     "first payment with counterparty EXT-SLC"
+    ],
+    "sar_id": null,
+    "trace_run_id": "b213ee68-461a-47c9-918f-76b7b25749a4",
+    "as_of": "2026-10-06T06:00"
+   },
+   "seconds": 18.0,
+   "sar": null,
+   "model_calls": 9,
+   "tokens": 20640,
+   "tool_calls": [
+    {
+     "name": "write_todos",
+     "subagent": null,
+     "id": "call_099ac0f682ec471ba6294ac4889586fd"
+    },
+    {
+     "name": "get_transaction",
+     "subagent": null,
+     "id": "call_i9sIlPuzV93aEtj2L7WxiUBZ"
+    },
+    {
+     "name": "task",
+     "subagent": "kyc-precedent",
+     "id": "call_NpPzwv5ukuGo8P56n6TmWuoM"
+    },
+    {
+     "name": "task",
+     "subagent": "pattern-analyst",
+     "id": "call_8IpyqDoM24A8Hs0V9oOZmTvL"
+    },
+    {
+     "name": "record_decision",
+     "subagent": null,
+     "id": "call_F1nlKizE9jEPoj32VIj3Vt0g"
+    }
+   ],
+   "trace_run_id": "b213ee68-461a-47c9-918f-76b7b25749a4"
+  },
+  "TX-000126": {
+   "events": [
+    {
+     "t": 0.0,
+     "kind": "step",
+     "key": "supervisor",
+     "state": "working",
+     "finding": null,
+     "tool": null
+    },
+    {
+     "t": 1.92,
+     "kind": "step",
+     "key": "supervisor",
+     "state": null,
+     "finding": null,
+     "tool": "write_todos"
+    },
+    {
+     "t": 3.34,
+     "kind": "step",
+     "key": "supervisor",
+     "state": null,
+     "finding": null,
+     "tool": "get_transaction"
+    },
+    {
+     "t": 6.52,
+     "kind": "step",
+     "key": "supervisor",
+     "state": "done",
+     "finding": null,
+     "tool": "task \u2192 pattern-analyst"
+    },
+    {
+     "t": 6.52,
+     "kind": "step",
+     "key": "pattern-analyst",
+     "state": "working",
+     "finding": null,
+     "tool": null
+    },
+    {
+     "t": 6.52,
+     "kind": "step",
+     "key": "supervisor",
+     "state": "done",
+     "finding": null,
+     "tool": "task \u2192 kyc-precedent"
+    },
+    {
+     "t": 6.52,
+     "kind": "step",
+     "key": "kyc-precedent",
+     "state": "working",
+     "finding": null,
+     "tool": null
+    },
+    {
+     "t": 7.9,
+     "kind": "step",
+     "key": "kyc-precedent",
+     "state": null,
+     "finding": null,
+     "tool": "get_customer_profile"
+    },
+    {
+     "t": 7.91,
+     "kind": "step",
+     "key": "kyc-precedent",
+     "state": null,
+     "finding": null,
+     "tool": "screen_customer"
+    },
+    {
+     "t": 7.91,
+     "kind": "step",
+     "key": "kyc-precedent",
+     "state": null,
+     "finding": null,
+     "tool": "find_precedents"
+    },
+    {
+     "t": 8.15,
+     "kind": "step",
+     "key": "pattern-analyst",
+     "state": null,
+     "finding": null,
+     "tool": "get_transaction"
+    },
+    {
+     "t": 8.17,
+     "kind": "step",
+     "key": "pattern-analyst",
+     "state": null,
+     "finding": null,
+     "tool": "get_recent_transactions"
+    },
+    {
+     "t": 8.19,
+     "kind": "step",
+     "key": "pattern-analyst",
+     "state": null,
+     "finding": null,
+     "tool": "get_customer_profile"
+    },
+    {
+     "t": 9.57,
+     "kind": "step",
+     "key": "kyc-precedent",
+     "state": "done",
+     "finding": "KYC low \u00b7 0 valid precedent(s)",
+     "tool": null
+    },
+    {
+     "t": 12.9,
+     "kind": "step",
+     "key": "pattern-analyst",
+     "state": "done",
+     "finding": "none \u00b7 risk 18 \u00b7 TX-000126: GBP 3100.0 incoming BACS on 2026-10-06T06:00 from EXT-SLC (Student loan), reference 'Maintenance loan'; approximately 3.4\u00d7 the student's expected monthly credits of GBP 900",
+     "tool": null
+    },
+    {
+     "t": 16.09,
+     "kind": "step",
+     "key": "verdict",
+     "state": "working",
+     "finding": null,
+     "tool": "record_decision"
+    },
+    {
+     "t": 16.12,
+     "kind": "step",
+     "key": "verdict",
+     "state": "working",
+     "finding": "Waiting for the analyst",
+     "tool": null
+    },
+    {
+     "t": 16.12,
+     "kind": "interrupt",
+     "question": {
+      "transaction_id": "TX-000126",
+      "risk_score": 18,
+      "model_confidence": 0.64,
+      "confidence": 0.64,
+      "agent_decision": "clear",
+      "pattern": "anomalous_credit",
+      "reason": "TX-000126 is a \u00a33,100 incoming BACS credit, 3.4\u00d7 expected monthly credits, from EXT-SLC ('Student loan') with reference 'Maintenance loan'; its early-October timing offers a plausible term-start explanation. The 30-day review found no other itemized suspicious activity, KYC screening found no hard flags or applicable precedents, but the payer and stated purpose have not been independently verified.",
+      "why_review": [
+       "the agents' confidence (0.64) is below 0.7"
+      ],
+      "hard_flags": [],
+      "precedents": {
+       "valid": [],
+       "expired": [],
+       "overridden": []
+      },
+      "rule_score": 45,
+      "rule_reasons": [
+       "credit \u00a33,100 is 3.4\u00d7 expected monthly credits",
+       "first payment with counterparty EXT-SLC"
+      ],
+      "question": "Clear or escalate? Reply with {'decision': 'clear' or 'escalate', 'note': 'optional'}"
+     }
+    },
+    {
+     "t": 19.0,
+     "kind": "step",
+     "key": "verdict",
+     "state": "working",
+     "finding": null,
+     "tool": "record_decision"
+    }
+   ],
+   "record": {
+    "transaction_id": "TX-000126",
+    "risk_score": 18,
+    "model_confidence": 0.64,
+    "confidence": 0.64,
+    "confidence_checks": [],
+    "agent_decision": "clear",
+    "final_decision": "clear",
+    "decided_by": "human",
+    "reason": "TX-000126 is a \u00a33,100 incoming BACS credit, 3.4\u00d7 expected monthly credits, from EXT-SLC ('Student loan') with reference 'Maintenance loan'; its early-October timing offers a plausible term-start explanation. The 30-day review found no other itemized suspicious activity, KYC screening found no hard flags or applicable precedents, but the payer and stated purpose have not been independently verified.",
+    "pattern": "anomalous_credit",
+    "hard_flags": [],
+    "precedents_cited": [],
+    "precedents_relied_on": [],
+    "precedents_dropped": [],
+    "precedents_overridden": [],
+    "analyst_note": "Scripted analyst review: clear (from the synthetic benchmark label)",
+    "rule_score": 45,
+    "rule_reasons": [
+     "credit \u00a33,100 is 3.4\u00d7 expected monthly credits",
+     "first payment with counterparty EXT-SLC"
+    ],
+    "sar_id": null,
+    "trace_run_id": "94e6522d-fd0c-47a0-aedd-22e50c4dc83f",
+    "as_of": "2026-10-06T06:00"
+   },
+   "seconds": 21.3,
+   "sar": null,
+   "model_calls": 9,
+   "tokens": 20689,
+   "tool_calls": [
+    {
+     "name": "write_todos",
+     "subagent": null,
+     "id": "call_54a95613dae94cedb9341556d62751ce"
+    },
+    {
+     "name": "get_transaction",
+     "subagent": null,
+     "id": "call_uLpn5ikWRwzsbU6T6w7shVIH"
+    },
+    {
+     "name": "task",
+     "subagent": "kyc-precedent",
+     "id": "call_Bvbriblhlvia58g2Z3dM8jvS"
+    },
+    {
+     "name": "task",
+     "subagent": "pattern-analyst",
+     "id": "call_7D15zxDzqwP2yG0nAunzZd47"
+    },
+    {
+     "name": "record_decision",
+     "subagent": null,
+     "id": "call_LxHuXZ8GMa7z3Rq0KbCUvmY6"
+    }
+   ],
+   "trace_run_id": "94e6522d-fd0c-47a0-aedd-22e50c4dc83f"
+  },
+  "TX-000717": {
+   "events": [
+    {
+     "t": 0.0,
+     "kind": "step",
+     "key": "supervisor",
+     "state": "working",
+     "finding": null,
+     "tool": null
+    },
+    {
+     "t": 1.7,
+     "kind": "step",
+     "key": "supervisor",
+     "state": null,
+     "finding": null,
+     "tool": "write_todos"
+    },
+    {
+     "t": 3.33,
+     "kind": "step",
+     "key": "supervisor",
+     "state": null,
+     "finding": null,
+     "tool": "get_transaction"
+    },
+    {
+     "t": 7.21,
+     "kind": "step",
+     "key": "supervisor",
+     "state": "done",
+     "finding": null,
+     "tool": "task \u2192 pattern-analyst"
+    },
+    {
+     "t": 7.21,
+     "kind": "step",
+     "key": "pattern-analyst",
+     "state": "working",
+     "finding": null,
+     "tool": null
+    },
+    {
+     "t": 7.22,
+     "kind": "step",
+     "key": "supervisor",
+     "state": "done",
+     "finding": null,
+     "tool": "task \u2192 kyc-precedent"
+    },
+    {
+     "t": 7.22,
+     "kind": "step",
+     "key": "kyc-precedent",
+     "state": "working",
+     "finding": null,
+     "tool": null
+    },
+    {
+     "t": 7.22,
+     "kind": "step",
+     "key": "supervisor",
+     "state": "done",
+     "finding": null,
+     "tool": "task \u2192 fund-flow"
+    },
+    {
+     "t": 7.22,
+     "kind": "step",
+     "key": "fund-flow",
+     "state": "working",
+     "finding": null,
+     "tool": null
+    },
+    {
+     "t": 8.58,
+     "kind": "step",
+     "key": "fund-flow",
+     "state": null,
+     "finding": null,
+     "tool": "get_transaction"
+    },
+    {
+     "t": 8.88,
+     "kind": "step",
+     "key": "pattern-analyst",
+     "state": null,
+     "finding": null,
+     "tool": "get_transaction"
+    },
+    {
+     "t": 8.88,
+     "kind": "step",
+     "key": "pattern-analyst",
+     "state": null,
+     "finding": null,
+     "tool": "get_customer_profile"
+    },
+    {
+     "t": 8.9,
+     "kind": "step",
+     "key": "pattern-analyst",
+     "state": null,
+     "finding": null,
+     "tool": "get_recent_transactions"
+    },
+    {
+     "t": 9.38,
+     "kind": "step",
+     "key": "kyc-precedent",
+     "state": null,
+     "finding": null,
+     "tool": "get_customer_profile"
+    },
+    {
+     "t": 9.39,
+     "kind": "step",
+     "key": "kyc-precedent",
+     "state": null,
+     "finding": null,
+     "tool": "find_precedents"
+    },
+    {
+     "t": 9.39,
+     "kind": "step",
+     "key": "kyc-precedent",
+     "state": null,
+     "finding": null,
+     "tool": "screen_customer"
+    },
+    {
+     "t": 10.38,
+     "kind": "step",
+     "key": "fund-flow",
+     "state": null,
+     "finding": null,
+     "tool": "trace_fund_flows"
+    },
+    {
+     "t": 11.94,
+     "kind": "step",
+     "key": "kyc-precedent",
+     "state": "done",
+     "finding": "KYC low \u00b7 0 valid precedent(s) \u00b7 1 expired/out of scope",
+     "tool": null
+    },
+    {
+     "t": 12.39,
+     "kind": "step",
+     "key": "fund-flow",
+     "state": "done",
+     "finding": "No confirmed ring",
+     "tool": null
+    },
+    {
+     "t": 14.68,
+     "kind": "step",
+     "key": "pattern-analyst",
+     "state": "done",
+     "finding": "mule fan in \u00b7 risk 81 \u00b7 TX-000714: \u00a3326.64 received from Flatmate on 2026-11-09 09:20, reference 'Money owed'; a plausible personal reimbursement, unverified.",
+     "tool": null
+    },
+    {
+     "t": 17.83,
+     "kind": "step",
+     "key": "supervisor",
+     "state": null,
+     "finding": null,
+     "tool": "get_customer_profile"
+    },
+    {
+     "t": 21.02,
+     "kind": "step",
+     "key": "verdict",
+     "state": "working",
+     "finding": null,
+     "tool": "record_decision"
+    },
+    {
+     "t": 21.04,
+     "kind": "step",
+     "key": "verdict",
+     "state": "working",
+     "finding": "Waiting for the analyst",
+     "tool": null
+    },
+    {
+     "t": 21.04,
+     "kind": "interrupt",
+     "question": {
+      "transaction_id": "TX-000717",
+      "risk_score": 80,
+      "model_confidence": 0.68,
+      "confidence": 0.5,
+      "agent_decision": "escalate",
+      "pattern": "mule_fan_in",
+      "reason": "TX-000717 sent \u00a31,248.21 to new payee ACC-0050 on 2026-11-09, about 95% of the \u00a31,313.91 received that morning via TX-000714 (\u00a3326.64), TX-000715 (\u00a3729.04) and TX-000716 (\u00a3258.23) from three individuals. Fund-flow found pass-through to ACC-0050 but did not confirm a ring; the 'Invoice' explanation is unverified, and KYC screening found no hard flags or applicable precedent.",
+      "why_review": [
+       "mule network suspected but not confirmed by the graph check; it involves other customers, so a human decides (DEC-015)"
+      ],
+      "hard_flags": [],
+      "precedents": {
+       "valid": [],
+       "expired": [],
+       "overridden": []
+      },
+      "rule_score": 40,
+      "rule_reasons": [
+       "first payment with counterparty ACC-0050",
+       "sends on \u00a31,248 of \u00a31,314 received in the last 24h"
+      ],
+      "question": "Clear or escalate? Reply with {'decision': 'clear' or 'escalate', 'note': 'optional'}"
+     }
+    },
+    {
+     "t": 22.29,
+     "kind": "step",
+     "key": "verdict",
+     "state": "working",
+     "finding": null,
+     "tool": "record_decision"
+    },
+    {
+     "t": 26.33,
+     "kind": "step",
+     "key": "supervisor",
+     "state": "done",
+     "finding": null,
+     "tool": "task \u2192 sar-writer"
+    },
+    {
+     "t": 26.33,
+     "kind": "step",
+     "key": "sar-writer",
+     "state": "working",
+     "finding": null,
+     "tool": null
+    },
+    {
+     "t": 32.95,
+     "kind": "step",
+     "key": "sar-writer",
+     "state": "done",
+     "finding": "SAR draft written for Liam Walsh, CUS-0040",
+     "tool": null
+    }
+   ],
+   "record": {
+    "transaction_id": "TX-000717",
+    "risk_score": 80,
+    "model_confidence": 0.68,
+    "confidence": 0.5,
+    "confidence_checks": [
+     "mule network suspected but not confirmed by the graph check; it involves other customers, so a human decides (DEC-015)"
+    ],
+    "agent_decision": "escalate",
+    "final_decision": "escalate",
+    "decided_by": "human",
+    "reason": "TX-000717 sent \u00a31,248.21 to new payee ACC-0050 on 2026-11-09, about 95% of the \u00a31,313.91 received that morning via TX-000714 (\u00a3326.64), TX-000715 (\u00a3729.04) and TX-000716 (\u00a3258.23) from three individuals. Fund-flow found pass-through to ACC-0050 but did not confirm a ring; the 'Invoice' explanation is unverified, and KYC screening found no hard flags or applicable precedent.",
+    "pattern": "mule_fan_in",
+    "hard_flags": [],
+    "precedents_cited": [],
+    "precedents_relied_on": [],
+    "precedents_dropped": [],
+    "precedents_overridden": [],
+    "analyst_note": "Rapid pass-through to a new business account; possible mule activity.",
+    "rule_score": 40,
+    "rule_reasons": [
+     "first payment with counterparty ACC-0050",
+     "sends on \u00a31,248 of \u00a31,314 received in the last 24h"
+    ],
+    "sar_id": "SAR-TX-000717",
+    "trace_run_id": "5fecf4d9-3e2c-4b8c-8213-b2e488406a9f",
+    "as_of": "2026-11-09T14:00"
+   },
+   "seconds": 34.7,
+   "sar": {
+    "subject": "Liam Walsh, CUS-0040",
+    "pattern": "mule_fan_in",
+    "timeline": [
+     "2026-10-28 07:00 \u2014 TX-000479: \u00a3619.54 incoming wages, described as normal part-time-student activity.",
+     "2026-11-09 09:20 \u2014 TX-000714: \u00a3326.64 incoming from Flatmate, reference 'Money owed'; possible, unverified reimbursement.",
+     "2026-11-09 10:10 \u2014 TX-000715: \u00a3729.04 incoming from another private individual, reference 'Thanks'.",
+     "2026-11-09 11:00 \u2014 TX-000716: \u00a3258.23 incoming from a third individual, reference 'Money owed'.",
+     "2026-11-09 14:00 \u2014 TX-000717: \u00a31,248.21 outgoing online internal transfer to first-time payee ACC-0050, Northgate Trading Ltd, reference 'Invoice'; escalation recorded with decision escalate, pattern mule_fan_in, risk 80 and confidence 0.68."
+    ],
+    "evidence": [
+     "TX-000714, TX-000715 and TX-000716: three incoming payments from separate individuals totalled \u00a31,313.91 on 2026-11-09.",
+     "TX-000717: \u00a31,248.21 was forwarded the same day, approximately 95% of those inflows, from ACC-0040 to ACC-0050.",
+     "TX-000717: fund-flow identified ACC-0040 to ACC-0050 as pass-through and ACC-0050 as a collector account; ring_confirmed is false.",
+     "TX-000717: the 'Invoice' purpose is plausible but unverified.",
+     "TX-000479: \u00a3619.54 incoming wages on 2026-10-28 were normal part-time-student activity.",
+     "TX-000479 and TX-000714 through TX-000716: reported 30-day credits were \u00a31,933.45; no cash deposits were reported.",
+     "TX-000717: no sanctions/PEP screening hits or other hard flags were reported for this escalation."
+    ],
+    "narrative": "Three incoming payments from different individuals were followed within hours by a transfer of approximately 95% of their total to a first-time payee. This same-day pass-through and the identified collector account prompted the recorded mule_fan_in escalation, but the invoice purpose is plausible and unverified, and no ring is confirmed. The Flatmate payment may be a reimbursement, while the earlier wages were described as normal student activity. An analyst should check the sources and purposes of the incoming payments, the invoice and relationship with the payee, and whether the transfer reflects legitimate activity before reaching a conclusion.",
+    "precedents_cited_or_overridden": [
+     "Expired precedent EXT-FLAT-0040:mule_fan_in: not applicable; neither relied on nor overridden.",
+     "No applicable same-counterparty/pattern precedent; no precedents overridden."
+    ],
+    "disclaimer": "Draft for analyst review, not legal, compliance or regulatory advice. Synthetic data only."
+   },
+   "model_calls": 15,
+   "tokens": 44617,
+   "tool_calls": [
+    {
+     "name": "write_todos",
+     "subagent": null,
+     "id": "call_I0aI6OwmS15QRuZbBqkylYQu"
+    },
+    {
+     "name": "get_transaction",
+     "subagent": null,
+     "id": "call_FU8QBjMnkibSWHhEBZm0iLBb"
+    },
+    {
+     "name": "task",
+     "subagent": "pattern-analyst",
+     "id": "call_0FIU0Hh94knXdkzInSvm1cGZ"
+    },
+    {
+     "name": "task",
+     "subagent": "kyc-precedent",
+     "id": "call_3RhbcXijg4BB9LlGTT4RaJ01"
+    },
+    {
+     "name": "task",
+     "subagent": "fund-flow",
+     "id": "call_ijQYkPmcDSSTDgziNDTjNx3U"
+    },
+    {
+     "name": "get_customer_profile",
+     "subagent": null,
+     "id": "call_MhfsKEt7v2i41mDGJBnmRM3f"
+    },
+    {
+     "name": "record_decision",
+     "subagent": null,
+     "id": "call_mvAeEaKw8b8cjNukgad5LohK"
+    },
+    {
+     "name": "task",
+     "subagent": "sar-writer",
+     "id": "call_t3AjGFlF3zs1dHfNzVJCCjOg"
+    }
+   ],
+   "trace_run_id": "5fecf4d9-3e2c-4b8c-8213-b2e488406a9f"
+  },
+  "TX-000732": {
+   "events": [
+    {
+     "t": 0.0,
+     "kind": "step",
+     "key": "supervisor",
+     "state": "working",
+     "finding": null,
+     "tool": null
+    },
+    {
+     "t": 1.78,
+     "kind": "step",
+     "key": "supervisor",
+     "state": null,
+     "finding": null,
+     "tool": "write_todos"
+    },
+    {
+     "t": 3.31,
+     "kind": "step",
+     "key": "supervisor",
+     "state": null,
+     "finding": null,
+     "tool": "get_transaction"
+    },
+    {
+     "t": 7.94,
+     "kind": "step",
+     "key": "supervisor",
+     "state": "done",
+     "finding": null,
+     "tool": "task \u2192 fund-flow"
+    },
+    {
+     "t": 7.94,
+     "kind": "step",
+     "key": "fund-flow",
+     "state": "working",
+     "finding": null,
+     "tool": null
+    },
+    {
+     "t": 7.95,
+     "kind": "step",
+     "key": "supervisor",
+     "state": "done",
+     "finding": null,
+     "tool": "task \u2192 kyc-precedent"
+    },
+    {
+     "t": 7.95,
+     "kind": "step",
+     "key": "kyc-precedent",
+     "state": "working",
+     "finding": null,
+     "tool": null
+    },
+    {
+     "t": 7.95,
+     "kind": "step",
+     "key": "supervisor",
+     "state": "done",
+     "finding": null,
+     "tool": "task \u2192 pattern-analyst"
+    },
+    {
+     "t": 7.95,
+     "kind": "step",
+     "key": "pattern-analyst",
+     "state": "working",
+     "finding": null,
+     "tool": null
+    },
+    {
+     "t": 9.41,
+     "kind": "step",
+     "key": "fund-flow",
+     "state": null,
+     "finding": null,
+     "tool": "get_transaction"
+    },
+    {
+     "t": 9.55,
+     "kind": "step",
+     "key": "pattern-analyst",
+     "state": null,
+     "finding": null,
+     "tool": "get_transaction"
+    },
+    {
+     "t": 9.55,
+     "kind": "step",
+     "key": "pattern-analyst",
+     "state": null,
+     "finding": null,
+     "tool": "get_recent_transactions"
+    },
+    {
+     "t": 9.56,
+     "kind": "step",
+     "key": "pattern-analyst",
+     "state": null,
+     "finding": null,
+     "tool": "get_customer_profile"
+    },
+    {
+     "t": 9.62,
+     "kind": "step",
+     "key": "kyc-precedent",
+     "state": null,
+     "finding": null,
+     "tool": "find_precedents"
+    },
+    {
+     "t": 9.62,
+     "kind": "step",
+     "key": "kyc-precedent",
+     "state": null,
+     "finding": null,
+     "tool": "get_customer_profile"
+    },
+    {
+     "t": 9.62,
+     "kind": "step",
+     "key": "kyc-precedent",
+     "state": null,
+     "finding": null,
+     "tool": "screen_customer"
+    },
+    {
+     "t": 10.83,
+     "kind": "step",
+     "key": "fund-flow",
+     "state": null,
+     "finding": null,
+     "tool": "trace_fund_flows"
+    },
+    {
+     "t": 11.74,
+     "kind": "step",
+     "key": "kyc-precedent",
+     "state": "done",
+     "finding": "KYC low \u00b7 0 valid precedent(s) \u00b7 1 expired/out of scope",
+     "tool": null
+    },
+    {
+     "t": 12.96,
+     "kind": "step",
+     "key": "fund-flow",
+     "state": "done",
+     "finding": "No confirmed ring",
+     "tool": null
+    },
+    {
+     "t": 14.89,
+     "kind": "step",
+     "key": "pattern-analyst",
+     "state": "done",
+     "finding": "mule fan in \u00b7 risk 78 \u00b7 TX-000729: 694.71 GBP in at 2026-11-09T21:20 from a private individual, reference 'Thanks'; TX-000730: 347.83 GBP in at 2026-11-09T22:10 from a different private individual, re",
+     "tool": null
+    },
+    {
+     "t": 18.0,
+     "kind": "step",
+     "key": "verdict",
+     "state": "working",
+     "finding": null,
+     "tool": "record_decision"
+    },
+    {
+     "t": 18.04,
+     "kind": "step",
+     "key": "verdict",
+     "state": "working",
+     "finding": "Waiting for the analyst",
+     "tool": null
+    },
+    {
+     "t": 18.04,
+     "kind": "interrupt",
+     "question": {
+      "transaction_id": "TX-000732",
+      "risk_score": 78,
+      "model_confidence": 0.66,
+      "confidence": 0.5,
+      "agent_decision": "escalate",
+      "pattern": "mule_fan_in",
+      "reason": "TX-000729 (\u00a3694.71), TX-000730 (\u00a3347.83) and TX-000731 (\u00a3412.18) came from three different individuals, totalling \u00a31,454.72; within three hours of the last credit, TX-000732 sent \u00a31,381.99 (95%) to first-time recipient ACC-0050, a pass-through consistent with mule fan-in. Fund-flow identified ACC-0050 as collector but did not confirm a ring; 'Rent'/'Invoice' may reflect shared expenses, yet the purpose is unverified and no applicable precedent or hard flag was found.",
+      "why_review": [
+       "mule network suspected but not confirmed by the graph check; it involves other customers, so a human decides (DEC-015)"
+      ],
+      "hard_flags": [],
+      "precedents": {
+       "valid": [],
+       "expired": [],
+       "overridden": []
+      },
+      "rule_score": 40,
+      "rule_reasons": [
+       "first payment with counterparty ACC-0050",
+       "sends on \u00a31,382 of \u00a31,455 received in the last 24h"
+      ],
+      "question": "Clear or escalate? Reply with {'decision': 'clear' or 'escalate', 'note': 'optional'}"
+     }
+    },
+    {
+     "t": 19.62,
+     "kind": "step",
+     "key": "verdict",
+     "state": "working",
+     "finding": null,
+     "tool": "record_decision"
+    },
+    {
+     "t": 21.42,
+     "kind": "step",
+     "key": "supervisor",
+     "state": null,
+     "finding": null,
+     "tool": "get_customer_profile"
+    },
+    {
+     "t": 25.32,
+     "kind": "step",
+     "key": "supervisor",
+     "state": "done",
+     "finding": null,
+     "tool": "task \u2192 sar-writer"
+    },
+    {
+     "t": 25.32,
+     "kind": "step",
+     "key": "sar-writer",
+     "state": "working",
+     "finding": null,
+     "tool": null
+    },
+    {
+     "t": 31.1,
+     "kind": "step",
+     "key": "sar-writer",
+     "state": "done",
+     "finding": "SAR draft written for Chloe Evans CUS-0041",
+     "tool": null
+    }
+   ],
+   "record": {
+    "transaction_id": "TX-000732",
+    "risk_score": 78,
+    "model_confidence": 0.66,
+    "confidence": 0.5,
+    "confidence_checks": [
+     "mule network suspected but not confirmed by the graph check; it involves other customers, so a human decides (DEC-015)"
+    ],
+    "agent_decision": "escalate",
+    "final_decision": "escalate",
+    "decided_by": "human",
+    "reason": "TX-000729 (\u00a3694.71), TX-000730 (\u00a3347.83) and TX-000731 (\u00a3412.18) came from three different individuals, totalling \u00a31,454.72; within three hours of the last credit, TX-000732 sent \u00a31,381.99 (95%) to first-time recipient ACC-0050, a pass-through consistent with mule fan-in. Fund-flow identified ACC-0050 as collector but did not confirm a ring; 'Rent'/'Invoice' may reflect shared expenses, yet the purpose is unverified and no applicable precedent or hard flag was found.",
+    "pattern": "mule_fan_in",
+    "hard_flags": [],
+    "precedents_cited": [],
+    "precedents_relied_on": [],
+    "precedents_dropped": [],
+    "precedents_overridden": [],
+    "analyst_note": "Rapid pass-through to a new business account; possible mule activity.",
+    "rule_score": 40,
+    "rule_reasons": [
+     "first payment with counterparty ACC-0050",
+     "sends on \u00a31,382 of \u00a31,455 received in the last 24h"
+    ],
+    "sar_id": "SAR-TX-000732",
+    "trace_run_id": "528268de-a7d2-4ecd-a1e9-a1f88a6068d4",
+    "as_of": "2026-11-10T02:00"
+   },
+   "seconds": 33.1,
+   "sar": {
+    "subject": "Chloe Evans CUS-0041",
+    "pattern": "mule_fan_in",
+    "timeline": [
+     "2026-11-09 21:20 \u2014 TX-000729: \u00a3694.71 inbound from a private individual, reference 'Thanks'.",
+     "2026-11-09 22:10 \u2014 TX-000730: \u00a3347.83 inbound from a different private individual, reference 'Rent'.",
+     "2026-11-09 23:00 \u2014 TX-000731: \u00a3412.18 inbound from a third private individual, reference 'Rent'.",
+     "2026-11-10 02:00 \u2014 TX-000732: \u00a31,381.99 outbound online internal transfer to new recipient ACC-0050, Northgate Trading Ltd, GB, reference 'Invoice'; escalation recorded after this transaction."
+    ],
+    "evidence": [
+     "TX-000729, TX-000730 and TX-000731: three distinct private-individual senders credited ACC-0041 a total of \u00a31,454.72, against expected monthly credits of \u00a3900.",
+     "TX-000732: \u00a31,381.99, approximately 95% of those credits, was forwarded three hours after the last credit to new recipient ACC-0050; fund-flow report lists ACC-0041 and ACC-0050, collector ACC-0050, ratio 0.95, and ring_confirmed false.",
+     "TX-000729, TX-000730, TX-000731 and TX-000732: references 'Thanks', 'Rent', 'Rent' and 'Invoice' do not establish the purpose of the transfers; shared expenses remain possible.",
+     "TX-000480: \u00a3469.27 wages from a part-time employer were consistent with the customer's student profile.",
+     "TX-000732: human-decided escalation recorded risk 78, confidence 0.66 and pattern mule_fan_in, with no hard flags; KYC has no screening hits and no cash deposits were reported."
+    ],
+    "narrative": "Three distinct private individuals credited Chloe Evans's account \u00a31,454.72, above expected monthly credits of \u00a3900, and \u00a31,381.99 was transferred to a new recipient three hours after the last credit. This rapid forwarding supports a suspected mule_fan_in pattern, but the fund-flow report does not confirm a ring and there are no hard flags. The 'Rent' and 'Invoice' references could reflect shared expenses, but their purpose is unverified; the separate wages credit is consistent with the customer's student profile. The analyst should check the purpose of the inbound payments, the relationship to the senders and new recipient, and supporting evidence for the referenced rent and invoice before reaching a conclusion.",
+    "precedents_cited_or_overridden": [
+     "Applicable precedents: none; the escalation cited no precedents.",
+     "Expired unrelated EXT-SLC:anomalous_credit: not relied on or overridden."
+    ],
+    "disclaimer": "Draft for analyst review, not legal, compliance or regulatory advice. Synthetic data only."
+   },
+   "model_calls": 15,
+   "tokens": 50736,
+   "tool_calls": [
+    {
+     "name": "write_todos",
+     "subagent": null,
+     "id": "call_3zRbpns9ADNsfgf9pm7wfBkT"
+    },
+    {
+     "name": "get_transaction",
+     "subagent": null,
+     "id": "call_xMGKloUXm4tdPbTbWBEJG7xp"
+    },
+    {
+     "name": "task",
+     "subagent": "kyc-precedent",
+     "id": "call_IxTadVFPu9DknFXwwMGlJyqK"
+    },
+    {
+     "name": "task",
+     "subagent": "pattern-analyst",
+     "id": "call_4Dw5oYhccvDU49kcC4TW3JRF"
+    },
+    {
+     "name": "task",
+     "subagent": "fund-flow",
+     "id": "call_PezwLAcHdabjniAZgjHieitH"
+    },
+    {
+     "name": "record_decision",
+     "subagent": null,
+     "id": "call_sd02qithgbAOwCDuqMr2j6Jz"
+    },
+    {
+     "name": "get_customer_profile",
+     "subagent": null,
+     "id": "call_sgItbc8QWyUo9ZLjZrJL4i8z"
+    },
+    {
+     "name": "task",
+     "subagent": "sar-writer",
+     "id": "call_BtXs9BRGg8NswzmP0DrVJ1lC"
+    }
+   ],
+   "trace_run_id": "528268de-a7d2-4ecd-a1e9-a1f88a6068d4"
+  },
+  "TX-000748": {
+   "events": [
+    {
+     "t": 0.0,
+     "kind": "step",
+     "key": "supervisor",
+     "state": "working",
+     "finding": null,
+     "tool": null
+    },
+    {
+     "t": 1.88,
+     "kind": "step",
+     "key": "supervisor",
+     "state": null,
+     "finding": null,
+     "tool": "write_todos"
+    },
+    {
+     "t": 3.32,
+     "kind": "step",
+     "key": "supervisor",
+     "state": null,
+     "finding": null,
+     "tool": "get_transaction"
+    },
+    {
+     "t": 7.28,
+     "kind": "step",
+     "key": "supervisor",
+     "state": "done",
+     "finding": null,
+     "tool": "task \u2192 fund-flow"
+    },
+    {
+     "t": 7.28,
+     "kind": "step",
+     "key": "fund-flow",
+     "state": "working",
+     "finding": null,
+     "tool": null
+    },
+    {
+     "t": 7.28,
+     "kind": "step",
+     "key": "supervisor",
+     "state": "done",
+     "finding": null,
+     "tool": "task \u2192 kyc-precedent"
+    },
+    {
+     "t": 7.28,
+     "kind": "step",
+     "key": "kyc-precedent",
+     "state": "working",
+     "finding": null,
+     "tool": null
+    },
+    {
+     "t": 7.29,
+     "kind": "step",
+     "key": "supervisor",
+     "state": "done",
+     "finding": null,
+     "tool": "task \u2192 pattern-analyst"
+    },
+    {
+     "t": 7.29,
+     "kind": "step",
+     "key": "pattern-analyst",
+     "state": "working",
+     "finding": null,
+     "tool": null
+    },
+    {
+     "t": 8.52,
+     "kind": "step",
+     "key": "fund-flow",
+     "state": null,
+     "finding": null,
+     "tool": "get_transaction"
+    },
+    {
+     "t": 8.89,
+     "kind": "step",
+     "key": "pattern-analyst",
+     "state": null,
+     "finding": null,
+     "tool": "get_recent_transactions"
+    },
+    {
+     "t": 8.9,
+     "kind": "step",
+     "key": "pattern-analyst",
+     "state": null,
+     "finding": null,
+     "tool": "get_customer_profile"
+    },
+    {
+     "t": 8.92,
+     "kind": "step",
+     "key": "pattern-analyst",
+     "state": null,
+     "finding": null,
+     "tool": "get_transaction"
+    },
+    {
+     "t": 8.99,
+     "kind": "step",
+     "key": "kyc-precedent",
+     "state": null,
+     "finding": null,
+     "tool": "get_customer_profile"
+    },
+    {
+     "t": 9.74,
+     "kind": "step",
+     "key": "fund-flow",
+     "state": null,
+     "finding": null,
+     "tool": "trace_fund_flows"
+    },
+    {
+     "t": 10.15,
+     "kind": "step",
+     "key": "kyc-precedent",
+     "state": null,
+     "finding": null,
+     "tool": "screen_customer"
+    },
+    {
+     "t": 11.57,
+     "kind": "step",
+     "key": "kyc-precedent",
+     "state": null,
+     "finding": null,
+     "tool": "find_precedents"
+    },
+    {
+     "t": 11.74,
+     "kind": "step",
+     "key": "fund-flow",
+     "state": "done",
+     "finding": "No confirmed ring",
+     "tool": null
+    },
+    {
+     "t": 14.18,
+     "kind": "step",
+     "key": "pattern-analyst",
+     "state": "done",
+     "finding": "mule fan in \u00b7 risk 80 \u00b7 TX-000734: \u00a3847.73 in at 2026-11-10T09:20 from a private individual ('Money owed'); TX-000739: \u00a3400.75 in at 2026-11-10T10:10 from another private individual ('Rent'); TX-00074",
+     "tool": null
+    },
+    {
+     "t": 15.06,
+     "kind": "step",
+     "key": "kyc-precedent",
+     "state": "done",
+     "finding": "KYC low \u00b7 0 valid precedent(s) \u00b7 1 expired/out of scope",
+     "tool": null
+    },
+    {
+     "t": 17.61,
+     "kind": "step",
+     "key": "supervisor",
+     "state": null,
+     "finding": null,
+     "tool": "get_customer_profile"
+    },
+    {
+     "t": 20.8,
+     "kind": "step",
+     "key": "verdict",
+     "state": "working",
+     "finding": null,
+     "tool": "record_decision"
+    },
+    {
+     "t": 20.84,
+     "kind": "step",
+     "key": "verdict",
+     "state": "working",
+     "finding": "Waiting for the analyst",
+     "tool": null
+    },
+    {
+     "t": 20.84,
+     "kind": "interrupt",
+     "question": {
+      "transaction_id": "TX-000748",
+      "risk_score": 82,
+      "model_confidence": 0.83,
+      "confidence": 0.5,
+      "agent_decision": "escalate",
+      "pattern": "mule_fan_in",
+      "reason": "TX-000734 (\u00a3847.73), TX-000739 (\u00a3400.75), and TX-000744 (\u00a3580.98) brought \u00a31,829.46 from three private individuals on 2026-11-10; TX-000748 forwarded \u00a31,737.98 (95%) to first-time internal recipient ACC-0050 within five hours. Fund-flow identified ACC-0050 as the collector (ring_confirmed: false); the rapid fan-in/pass-through is inconsistent with the student's \u00a3900 expected monthly credits, and the payment references do not substantiate a legitimate purpose; no valid same-pattern precedent or screening hard flag was found.",
+      "why_review": [
+       "mule network suspected but not confirmed by the graph check; it involves other customers, so a human decides (DEC-015)"
+      ],
+      "hard_flags": [],
+      "precedents": {
+       "valid": [],
+       "expired": [],
+       "overridden": []
+      },
+      "rule_score": 40,
+      "rule_reasons": [
+       "first payment with counterparty ACC-0050",
+       "sends on \u00a31,738 of \u00a31,829 received in the last 24h"
+      ],
+      "question": "Clear or escalate? Reply with {'decision': 'clear' or 'escalate', 'note': 'optional'}"
+     }
+    },
+    {
+     "t": 22.4,
+     "kind": "step",
+     "key": "verdict",
+     "state": "working",
+     "finding": null,
+     "tool": "record_decision"
+    },
+    {
+     "t": 26.43,
+     "kind": "step",
+     "key": "supervisor",
+     "state": "done",
+     "finding": null,
+     "tool": "task \u2192 sar-writer"
+    },
+    {
+     "t": 26.43,
+     "kind": "step",
+     "key": "sar-writer",
+     "state": "working",
+     "finding": null,
+     "tool": null
+    },
+    {
+     "t": 31.84,
+     "kind": "step",
+     "key": "sar-writer",
+     "state": "done",
+     "finding": "SAR draft written for Ben Taylor (CUS-0042)",
+     "tool": null
+    }
+   ],
+   "record": {
+    "transaction_id": "TX-000748",
+    "risk_score": 82,
+    "model_confidence": 0.83,
+    "confidence": 0.5,
+    "confidence_checks": [
+     "mule network suspected but not confirmed by the graph check; it involves other customers, so a human decides (DEC-015)"
+    ],
+    "agent_decision": "escalate",
+    "final_decision": "escalate",
+    "decided_by": "human",
+    "reason": "TX-000734 (\u00a3847.73), TX-000739 (\u00a3400.75), and TX-000744 (\u00a3580.98) brought \u00a31,829.46 from three private individuals on 2026-11-10; TX-000748 forwarded \u00a31,737.98 (95%) to first-time internal recipient ACC-0050 within five hours. Fund-flow identified ACC-0050 as the collector (ring_confirmed: false); the rapid fan-in/pass-through is inconsistent with the student's \u00a3900 expected monthly credits, and the payment references do not substantiate a legitimate purpose; no valid same-pattern precedent or screening hard flag was found.",
+    "pattern": "mule_fan_in",
+    "hard_flags": [],
+    "precedents_cited": [],
+    "precedents_relied_on": [],
+    "precedents_dropped": [],
+    "precedents_overridden": [],
+    "analyst_note": "Rapid pass-through to a new business account; possible mule activity.",
+    "rule_score": 40,
+    "rule_reasons": [
+     "first payment with counterparty ACC-0050",
+     "sends on \u00a31,738 of \u00a31,829 received in the last 24h"
+    ],
+    "sar_id": "SAR-TX-000748",
+    "trace_run_id": "967453dc-3f6a-41bc-a92f-fbb7c016312e",
+    "as_of": "2026-11-10T14:00"
+   },
+   "seconds": 33.4,
+   "sar": {
+    "subject": "Ben Taylor (CUS-0042)",
+    "pattern": "mule_fan_in",
+    "timeline": [
+     "2026-10-28 07:00 \u2014 TX-000481: \u00a3533.46 wages credit, potentially ordinary.",
+     "2026-11-10 09:20 \u2014 TX-000734: \u00a3847.73 inbound from a private individual, reference 'Money owed'.",
+     "2026-11-10 10:10 \u2014 TX-000739: \u00a3400.75 inbound from a different private individual, reference 'Rent'.",
+     "2026-11-10 11:00 \u2014 TX-000744: \u00a3580.98 inbound from a third private individual, reference 'Thanks'.",
+     "2026-11-10 14:00 \u2014 TX-000748: \u00a31,737.98 internal transfer to first-time counterparty ACC-0050, Northgate Trading Ltd, reference 'Invoice'."
+    ],
+    "evidence": [
+     "TX-000734, TX-000739 and TX-000744: three private-individual credits totaling \u00a31,829.46 on 2026-11-10; expected monthly credits \u00a3900.",
+     "TX-000748: outgoing transfer represented 95% of same-day credits within 3\u20134h40m; collector_account ACC-0050 and pass_through_ratio 0.95.",
+     "TX-000748: ring_confirmed false; no confirmed ring hard flag and no sanctions/PEP hits.",
+     "TX-000481: \u00a3533.46 wages credit on 2026-10-28 appears potentially ordinary; reported 30-day credits \u00a32,362.92.",
+     "TX-000748: recorded decision escalated mule_fan_in, risk_score 82, confidence 0.83."
+    ],
+    "narrative": "Three credits from different private individuals were followed within hours by a transfer of 95% of those funds to a first-time counterparty, consistent with the recorded mule_fan_in escalation. The credits exceed the customer's expected monthly credits, but the 'Money owed', 'Rent' and 'Invoice' explanations remain unverified. No ring is confirmed, and the earlier wages credit appears potentially ordinary. The analyst should check the purpose and supporting records for the incoming credits and invoice transfer before drawing a conclusion.",
+    "precedents_cited_or_overridden": [
+     "KYC: no applicable precedents.",
+     "Expired EXT-SLC:anomalous_credit: unrelated; not relied on or overridden."
+    ],
+    "disclaimer": "Draft for analyst review, not legal, compliance or regulatory advice. Synthetic data only."
+   },
+   "model_calls": 17,
+   "tokens": 46184,
+   "tool_calls": [
+    {
+     "name": "write_todos",
+     "subagent": null,
+     "id": "call_4hje9Nl8SPXc0KgoSusHpxia"
+    },
+    {
+     "name": "get_transaction",
+     "subagent": null,
+     "id": "call_Az6y0oP3K9jHGK07Rs0CYzW0"
+    },
+    {
+     "name": "task",
+     "subagent": "kyc-precedent",
+     "id": "call_migajph8El0y7mRdA07lUrZc"
+    },
+    {
+     "name": "task",
+     "subagent": "pattern-analyst",
+     "id": "call_ZtzwKBHMfgKggVVLYJG7mWrD"
+    },
+    {
+     "name": "task",
+     "subagent": "fund-flow",
+     "id": "call_rjGKTSWb9KzmvQij7CY9xztZ"
+    },
+    {
+     "name": "get_customer_profile",
+     "subagent": null,
+     "id": "call_sHV2K98d22foAwknkTxcLQgo"
+    },
+    {
+     "name": "record_decision",
+     "subagent": null,
+     "id": "call_UP3KirxWoE312lx6y50rLbpP"
+    },
+    {
+     "name": "task",
+     "subagent": "sar-writer",
+     "id": "call_KgdMYxBRzdrRjTnUuFeAXs94"
+    }
+   ],
+   "trace_run_id": "967453dc-3f6a-41bc-a92f-fbb7c016312e"
+  },
+  "TX-000762": {
+   "events": [
+    {
+     "t": 0.0,
+     "kind": "step",
+     "key": "supervisor",
+     "state": "working",
+     "finding": null,
+     "tool": null
+    },
+    {
+     "t": 1.81,
+     "kind": "step",
+     "key": "supervisor",
+     "state": null,
+     "finding": null,
+     "tool": "write_todos"
+    },
+    {
+     "t": 3.41,
+     "kind": "step",
+     "key": "supervisor",
+     "state": null,
+     "finding": null,
+     "tool": "get_transaction"
+    },
+    {
+     "t": 7.57,
+     "kind": "step",
+     "key": "supervisor",
+     "state": "done",
+     "finding": null,
+     "tool": "task \u2192 fund-flow"
+    },
+    {
+     "t": 7.57,
+     "kind": "step",
+     "key": "fund-flow",
+     "state": "working",
+     "finding": null,
+     "tool": null
+    },
+    {
+     "t": 7.58,
+     "kind": "step",
+     "key": "supervisor",
+     "state": "done",
+     "finding": null,
+     "tool": "task \u2192 kyc-precedent"
+    },
+    {
+     "t": 7.58,
+     "kind": "step",
+     "key": "kyc-precedent",
+     "state": "working",
+     "finding": null,
+     "tool": null
+    },
+    {
+     "t": 7.59,
+     "kind": "step",
+     "key": "supervisor",
+     "state": "done",
+     "finding": null,
+     "tool": "task \u2192 pattern-analyst"
+    },
+    {
+     "t": 7.59,
+     "kind": "step",
+     "key": "pattern-analyst",
+     "state": "working",
+     "finding": null,
+     "tool": null
+    },
+    {
+     "t": 8.65,
+     "kind": "step",
+     "key": "fund-flow",
+     "state": null,
+     "finding": null,
+     "tool": "get_transaction"
+    },
+    {
+     "t": 9.43,
+     "kind": "step",
+     "key": "pattern-analyst",
+     "state": null,
+     "finding": null,
+     "tool": "get_transaction"
+    },
+    {
+     "t": 9.44,
+     "kind": "step",
+     "key": "pattern-analyst",
+     "state": null,
+     "finding": null,
+     "tool": "get_customer_profile"
+    },
+    {
+     "t": 9.45,
+     "kind": "step",
+     "key": "pattern-analyst",
+     "state": null,
+     "finding": null,
+     "tool": "get_recent_transactions"
+    },
+    {
+     "t": 9.47,
+     "kind": "step",
+     "key": "kyc-precedent",
+     "state": null,
+     "finding": null,
+     "tool": "get_customer_profile"
+    },
+    {
+     "t": 9.5,
+     "kind": "step",
+     "key": "kyc-precedent",
+     "state": null,
+     "finding": null,
+     "tool": "find_precedents"
+    },
+    {
+     "t": 9.5,
+     "kind": "step",
+     "key": "kyc-precedent",
+     "state": null,
+     "finding": null,
+     "tool": "find_precedents"
+    },
+    {
+     "t": 9.51,
+     "kind": "step",
+     "key": "kyc-precedent",
+     "state": null,
+     "finding": null,
+     "tool": "screen_customer"
+    },
+    {
+     "t": 10.47,
+     "kind": "step",
+     "key": "fund-flow",
+     "state": null,
+     "finding": null,
+     "tool": "trace_fund_flows"
+    },
+    {
+     "t": 11.78,
+     "kind": "step",
+     "key": "kyc-precedent",
+     "state": "done",
+     "finding": "KYC low \u00b7 0 valid precedent(s) \u00b7 1 expired/out of scope",
+     "tool": null
+    },
+    {
+     "t": 13.01,
+     "kind": "step",
+     "key": "fund-flow",
+     "state": "done",
+     "finding": "No confirmed ring",
+     "tool": null
+    },
+    {
+     "t": 14.1,
+     "kind": "step",
+     "key": "pattern-analyst",
+     "state": "done",
+     "finding": "mule fan in \u00b7 risk 83 \u00b7 TX-000759: \u00a3529.95 in at 2026-11-10T21:20 from EXT-VIC-01011; TX-000760: \u00a3452.9 in at 2026-11-10T22:10 from EXT-VIC-01012; TX-000761: \u00a3584.72 in at 2026-11-10T23:00 from EXT-VI",
+     "tool": null
+    },
+    {
+     "t": 19.27,
+     "kind": "step",
+     "key": "verdict",
+     "state": "working",
+     "finding": null,
+     "tool": "record_decision"
+    },
+    {
+     "t": 19.3,
+     "kind": "step",
+     "key": "verdict",
+     "state": "working",
+     "finding": "Waiting for the analyst",
+     "tool": null
+    },
+    {
+     "t": 19.3,
+     "kind": "interrupt",
+     "question": {
+      "transaction_id": "TX-000762",
+      "risk_score": 82,
+      "model_confidence": 0.76,
+      "confidence": 0.5,
+      "agent_decision": "escalate",
+      "pattern": "mule_fan_in",
+      "reason": "TX-000759 (\u00a3529.95), TX-000760 (\u00a3452.90) and TX-000761 (\u00a3584.72) brought \u00a31,567.57 from three distinct individuals within 1 hour 40 minutes; TX-000762 forwarded \u00a31,489.19 (95%) to new beneficiary ACC-0050 within 4 hours 40 minutes of the first credit. This rapid pass-through fits mule-style activity despite unverified 'Invoice' and personal-payment references; fund-flow did not confirm a ring, screening found no hard flags, and there is no applicable precedent.",
+      "why_review": [
+       "mule network suspected but not confirmed by the graph check; it involves other customers, so a human decides (DEC-015)"
+      ],
+      "hard_flags": [],
+      "precedents": {
+       "valid": [],
+       "expired": [],
+       "overridden": []
+      },
+      "rule_score": 40,
+      "rule_reasons": [
+       "first payment with counterparty ACC-0050",
+       "sends on \u00a31,489 of \u00a31,568 received in the last 24h"
+      ],
+      "question": "Clear or escalate? Reply with {'decision': 'clear' or 'escalate', 'note': 'optional'}"
+     }
+    },
+    {
+     "t": 22.01,
+     "kind": "step",
+     "key": "verdict",
+     "state": "working",
+     "finding": null,
+     "tool": "record_decision"
+    },
+    {
+     "t": 26.5,
+     "kind": "step",
+     "key": "supervisor",
+     "state": "done",
+     "finding": null,
+     "tool": "task \u2192 sar-writer"
+    },
+    {
+     "t": 26.5,
+     "kind": "step",
+     "key": "sar-writer",
+     "state": "working",
+     "finding": null,
+     "tool": null
+    },
+    {
+     "t": 31.98,
+     "kind": "step",
+     "key": "sar-writer",
+     "state": "done",
+     "finding": "SAR draft written for Customer name: unavailable; customer ID: unavailable",
+     "tool": null
+    }
+   ],
+   "record": {
+    "transaction_id": "TX-000762",
+    "risk_score": 82,
+    "model_confidence": 0.76,
+    "confidence": 0.5,
+    "confidence_checks": [
+     "mule network suspected but not confirmed by the graph check; it involves other customers, so a human decides (DEC-015)"
+    ],
+    "agent_decision": "escalate",
+    "final_decision": "escalate",
+    "decided_by": "human",
+    "reason": "TX-000759 (\u00a3529.95), TX-000760 (\u00a3452.90) and TX-000761 (\u00a3584.72) brought \u00a31,567.57 from three distinct individuals within 1 hour 40 minutes; TX-000762 forwarded \u00a31,489.19 (95%) to new beneficiary ACC-0050 within 4 hours 40 minutes of the first credit. This rapid pass-through fits mule-style activity despite unverified 'Invoice' and personal-payment references; fund-flow did not confirm a ring, screening found no hard flags, and there is no applicable precedent.",
+    "pattern": "mule_fan_in",
+    "hard_flags": [],
+    "precedents_cited": [],
+    "precedents_relied_on": [],
+    "precedents_dropped": [],
+    "precedents_overridden": [],
+    "analyst_note": "Rapid pass-through to a new business account; possible mule activity.",
+    "rule_score": 40,
+    "rule_reasons": [
+     "first payment with counterparty ACC-0050",
+     "sends on \u00a31,489 of \u00a31,568 received in the last 24h"
+    ],
+    "sar_id": "SAR-TX-000762",
+    "trace_run_id": "edd6d339-eeef-4b2f-92dd-b2828c1bdbd1",
+    "as_of": "2026-11-11T02:00"
+   },
+   "seconds": 33.8,
+   "sar": {
+    "subject": "Customer name: unavailable; customer ID: unavailable",
+    "pattern": "mule_fan_in",
+    "timeline": [
+     "2026-10-28 07:00 \u2014 TX-000482: \u00a3534.44 incoming part-time employer wages.",
+     "2026-11-10 21:20 \u2014 TX-000759: \u00a3529.95 incoming from EXT-VIC-01011, reference \u201cMoney owed\u201d.",
+     "2026-11-10 22:10 \u2014 TX-000760: \u00a3452.90 incoming from EXT-VIC-01012, reference \u201cThanks\u201d.",
+     "2026-11-10 23:00 \u2014 TX-000761: \u00a3584.72 incoming from EXT-VIC-01013, reference \u201cRent\u201d.",
+     "2026-11-11 02:00 \u2014 TX-000762: \u00a31,489.19 outgoing internal transfer from ACC-0043 to ACC-0050, Northgate Trading Ltd, reference \u201cInvoice\u201d; first observed payment to this counterparty."
+    ],
+    "evidence": [
+     "TX-000759, TX-000760 and TX-000761: \u00a31,567.57 total received from three distinct private individuals in 1h40.",
+     "TX-000762: About 95% of the incoming funds was forwarded within 4h40 of the first credit; fund-flow identified ACC-0043 as source, ACC-0050 as destination and collector, pass_through_ratio .95, and ring_confirmed false.",
+     "TX-000482: \u00a3534.44 incoming part-time employer wages contrasts with the three private-individual credits in TX-000759, TX-000760 and TX-000761.",
+     "TX-000759, TX-000760, TX-000761 and TX-000762: Customer is a low-risk student with expected monthly credits of \u00a3900 and monthly cash of \u00a30; 30-day credits were \u00a32,102.01 and cash was \u00a30; no screening hits or sanctions/PEP hard flags were reported.",
+     "TX-000762: Recorded escalation decision was escalate, pattern mule_fan_in, risk score 82, confidence .76."
+    ],
+    "narrative": "Three credits from distinct private individuals arrived in 1h40, followed by a transfer of about 95% of those funds to a first-observed counterparty within 4h40 of the first credit. This rapid fan-in and forwarding contrasts with the customer's expected monthly credits and observed part-time wages. The payment references could reflect legitimate obligations but remain unverified; the fund-flow does not confirm a ring. An analyst should check the purpose and supporting records for the credits and transfer, including the relationship with Northgate Trading Ltd.",
+    "precedents_cited_or_overridden": [
+     "No applicable precedents.",
+     "Expired EXT-SLC:anomalous_credit was unrelated and not overridden."
+    ],
+    "disclaimer": "Draft for analyst review, not legal, compliance or regulatory advice. Synthetic data only."
+   },
+   "model_calls": 14,
+   "tokens": 39641,
+   "tool_calls": [
+    {
+     "name": "write_todos",
+     "subagent": null,
+     "id": "call_cZi6zNi7mxTAm4ngEveRpWn7"
+    },
+    {
+     "name": "get_transaction",
+     "subagent": null,
+     "id": "call_gyjBJqEjbXpNJ86fHxNM1njY"
+    },
+    {
+     "name": "task",
+     "subagent": "kyc-precedent",
+     "id": "call_pzPdsz2QvgJe0zF6qoRvCoze"
+    },
+    {
+     "name": "task",
+     "subagent": "pattern-analyst",
+     "id": "call_M8QkcBuRKi8T905H0jJA6EDT"
+    },
+    {
+     "name": "task",
+     "subagent": "fund-flow",
+     "id": "call_pzErEo7Op4aEV9rIGSL8UJfG"
+    },
+    {
+     "name": "record_decision",
+     "subagent": null,
+     "id": "call_OeVtv0IEWAZzpOHF6ZaAxHEY"
+    },
+    {
+     "name": "task",
+     "subagent": "sar-writer",
+     "id": "call_xy026GmZ5ATniivmXIQvFKDY"
+    }
+   ],
+   "trace_run_id": "edd6d339-eeef-4b2f-92dd-b2828c1bdbd1"
+  }
+ }
+}
