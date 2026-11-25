@@ -103,9 +103,9 @@
 | Correct precedent overrides | n/a | [K / K] |
 | % tx reaching LLM · cost / 1k tx | 0% · £0 | [Z%] · [£C] |
 
-**Driver:** Flash the LangSmith experiment comparison (3–5 seconds).
+**Driver:** Flash the LangSmith experiment comparison (3–5 seconds), then the monitoring cell: the online evaluator's score on Daniel's SAR and the annotation queue's agreement rate (about 10 seconds).
 **Say:**
-> "On a held-out labelled set, Sentinel cut false positives by [X]% while catching [as many / more] planted cases. The starter's own evaluators improved too. Analyst reviews dropped from month one to month two as precedents built up, and only [Z]% of transactions ever reached an LLM. An LLM-as-judge also scores every SAR draft."
+> "On a held-out labelled set, Sentinel cut false positives by [X]% while catching [as many / more] planted cases. The starter's own evaluators improved too. Analyst reviews dropped from month one to month two as precedents built up, and only [Z]% of transactions ever reached an LLM. After go-live, an online evaluator in LangSmith judges every SAR as it's written, and weak ones, plus a sample of the agent's own decisions, land in the analyst's review queue. Their corrections become new test cases."
 
 ### SAR draft + close (4:30–5:00)
 **Output:** SAR draft for Daniel (subject, pattern, timeline, evidence, narrative, cited precedents/overrides), stamped *"Draft for analyst review, not regulatory advice."*

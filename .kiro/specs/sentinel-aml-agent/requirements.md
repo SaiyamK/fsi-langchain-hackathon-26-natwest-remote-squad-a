@@ -105,3 +105,15 @@ All requirements use EARS phrasing. "Sentinel" means the code in `sentinel_aml_a
 
 1. Every agent run SHALL be traced to LangSmith project `fsi-hackathon-<ATTENDEE_NAME>`.
 2. THE model SHALL come from `MODEL_NAME` in `.env` (`openai:gpt-6-sol`), never hardcoded.
+
+## R12. Monitoring and analyst review in LangSmith
+
+**User story:** As the MLRO, I want Sentinel's output watched and corrected after go-live, so that quality problems
+are caught by the system and fixed by analysts.
+
+1. THE tracing project SHALL have an LLM-as-judge online evaluator that writes `sar_complete` feedback on every `sar-writer` run.
+2. THE online evaluator and the offline SAR judge SHALL use the same rubric, `evals/sar_rubric.md`, and the evaluator's settings SHALL be recorded in `evals/online_evaluators.md`.
+3. THE system SHALL add the trace of every human-decided case, and a sample of agent-decided cases, to the annotation queue `sentinel-analyst-review-<ATTENDEE>` with rubric items `correct_decision` and `evidence_sufficient`.
+4. THE system SHALL record each investigation's LangSmith root run ID as `trace_run_id` in its decision record.
+5. `annotation_queue.py --collect` SHALL write `results/annotation_summary.json` with the reviewed count, the agent-analyst agreement rate, the disagreements, and whether reviews were simulated.
+6. WHEN reviews were simulated, THE notebook SHALL say "simulated" next to every number that uses them.

@@ -161,6 +161,7 @@ The supervisor calls only the specialists the rule reasons call for, in the same
 | SAR draft quality (LLM-as-judge) | New | Complete, evidence-cited, no invented facts | Pass on all escalations |
 
 - **Tooling:** extend the starter's `scripts/run_experiments.py`. The starter already compares experiments (baseline vs threshold 0.8); we run `rules-only` vs `sentinel` the same way, on dataset `<LANGSMITH_PROJECT>-sentinel`. LLM calls and tokens are counted with `get_usage_metadata_callback()`.
+- **Monitor and govern after go-live (LangSmith):** an **online evaluator** judges every SAR draft as it's written (`sar_complete`, same rubric as the offline judge), and an **annotation queue** puts every human-decided case, a sample of agent-only decisions and weak SARs in front of an analyst. Their corrections give an agent-analyst agreement rate and become new test cases. Details in [PLAN.md](PLAN.md) section 7.1.
 - **Rule:** we show only numbers from a real eval run. Run it beforehand, save it to `results/eval_summary.json`, and load that file in the notebook; never run it live.
 
 ## Starter: reused vs new

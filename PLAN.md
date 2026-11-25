@@ -83,10 +83,13 @@ sentinel_aml_agent/
 │   └── pep_list.jsonl             copied from 01, plus Marcus Reid's PEP link
 ├── evals/
 │   ├── scoring_evals.py           02's 3 evaluators + new metrics
-│   └── sar_judge.py               LLM-as-judge for SAR drafts
+│   ├── sar_judge.py               LLM-as-judge for SAR drafts (offline)
+│   ├── sar_rubric.md              the one SAR rubric, shared by the offline judge and the online evaluator
+│   └── online_evaluators.md       exact settings of the LangSmith online evaluator (UI setup, so it's repeatable)
 ├── scripts/
 │   ├── run_experiments.py         rules-only vs sentinel (extends 02)
-│   └── check_scenarios.py         asserts each scripted demo transaction lands in the expected tier/verdict
+│   ├── check_scenarios.py         asserts each scripted demo transaction lands in the expected tier/verdict
+│   └── annotation_queue.py        creates the analyst review queue, adds runs, collects feedback (extends 02 Module 3)
 ├── results/                       saved eval summary (JSON) the notebook loads; no secrets
 └── modules/
     └── 01_sentinel_demo.ipynb     SUBMISSION FILE. The demo notebook; imports from agents.py
@@ -142,7 +145,11 @@ Decision record, a superset of 02's so its evaluators keep working:
 {"transaction_id", "risk_score", "model_confidence", "confidence", "confidence_checks",
  "agent_decision", "final_decision", "decided_by",            # decided_by: "rules" | "agent" | "human"
  "reason", "pattern", "hard_flags", "precedents_cited", "precedents_overridden",
- "rule_score", "rule_reasons", "sar_id"}
+ "rule_score", "rule_reasons", "sar_id", "trace_run_id"}  # trace_run_id: LangSmith root run, for the annotation queue
+```
+The stream runner sets `trace_run_id` by passing its own `run_id=uuid4()` in the invoke config, and the tags
+`sentinel`, `decided_by:<rules|agent|human>` and `pattern:<pattern>` so LangSmith filters and rules can target runs.
+```python
 ```
 
 ### 4.3 Function signatures
@@ -262,6 +269,30 @@ Experiments (`scripts/run_experiments.py`): `rules-only` (the baseline mode of t
 Dataset name: `f"{LANGSMITH_PROJECT}-sentinel"`. Keep 02's `_get_agent_tag` prerequisite: trace the agent once before creating the dataset.
 Write the averaged results to `results/eval_summary.json`. The notebook only **loads** this file and never runs evals live.
 
+### 7.1 Monitor and govern in LangSmith: online evaluator and annotation queue
+Offline experiments prove Sentinel on a benchmark. These two features show how it would be **watched and corrected
+after go-live**, covering the "monitor, govern, improve" part of the hackathon lifecycle.
+
+**Online evaluator: every SAR draft is judged as it's written.**
+- An LLM-as-judge online evaluator on the tracing project `fsi-hackathon-<ATTENDEE_NAME>`, filtered to `sar-writer` runs (by run name, or tag `subagent:sar-writer`), sampling 100%.
+- Feedback key `sar_complete` (0-1), with a short comment. The prompt is `evals/sar_rubric.md`, the same rubric the offline `sar_judge.py` uses, so online and offline scores mean the same thing.
+- Set up in the LangSmith UI (Tracing → project → Online Evaluators → + Evaluator → LLM-as-a-Judge), because the docs describe online evaluators as a UI feature. `evals/online_evaluators.md` records every setting (name, filter, sampling, model, prompt, feedback key) so anyone can recreate it. Use **Apply to past runs** when creating it, so existing SARs are scored too.
+- Groundedness stays a **code** check (`sar_grounded`, offline), because an online judge can't see our database.
+
+**Annotation queue: the analyst's review desk in LangSmith.**
+- `scripts/annotation_queue.py`, following 02 Module 3's pattern (`create_feedback_config`, `create_annotation_queue` with rubric items, `add_runs_to_annotation_queue`).
+- Queue `sentinel-analyst-review-<ATTENDEE>` with rubric items:
+  - `correct_decision` (categorical: `clear` / `escalate`): what the analyst would decide;
+  - `evidence_sufficient` (yes/no): did the investigation gather enough to decide?
+- **What goes in:**
+  - every case decided by a human (`decided_by == "human"`), using `trace_run_id`, so interrupt decisions also get a reviewable trace;
+  - a sample of agent-only decisions (default 10%), as a spot check of the cases no human saw;
+  - SAR drafts scoring below 0.7 on the online evaluator, via a LangSmith **automation rule** (filter: feedback `sar_complete` < 0.7 → action: add to annotation queue), set up in the UI and recorded in `evals/online_evaluators.md`.
+- **What comes out:** `annotation_queue.py --collect` reads the feedback and writes `results/annotation_summary.json`: the number reviewed, the **agent-analyst agreement rate**, and the disagreements. Disagreements are added to the scenario dataset as new labelled examples (02's "growing datasets" pattern), so the next experiment tests them.
+- **Honesty (DEC-003):** reviews are done by a person in the LangSmith UI. If time forces simulated reviews (02's `SIMULATE_ANNOTATIONS`), the summary and the notebook say "simulated" next to every number that uses them.
+
+**In the demo** (inside the existing 3:45-4:30 eval slot, about 10 seconds): "After go-live, every SAR is judged automatically as it's written; weak ones, and a sample of the agent's own decisions, land in the analyst's review queue, and their corrections become new test cases." Show the online evaluator scores on the project, then the queue.
+
 ## 8. Demo notebook (`modules/01_sentinel_demo.ipynb`)
 The cells follow the DEMO_SCRIPT run of show:
 1. Header disclaimer, setup (`sys.path` to the folder root, as in 02), `REPLAY` toggle, load seed precedents.
@@ -271,6 +302,7 @@ The cells follow the DEMO_SCRIPT run of show:
 5. **Fast-forward 10 months**: Sophie's second credit auto-clears and cites the precedent.
 6. **Mule ring**: a NetworkX and matplotlib graph with Northgate highlighted, then Liam's precedent override line.
 7. **Eval results** from `results/eval_summary.json`, plus a link to the LangSmith experiment comparison.
+7b. **Monitoring** (section 7.1): the online evaluator's `sar_complete` scores and the annotation queue counts and agreement rate from `results/annotation_summary.json`, with links to both in LangSmith.
 8. **SAR draft** for Daniel, with the stamp.
 
 ## 9. Schedule (build blocks today)
@@ -284,18 +316,20 @@ Each checkpoint ends with a working, committed state. Cut from the bottom of sec
 | **11:30-12:30** | Background noise + worlds 1 to 6 | `stream.py` global runner + LLM counter; `check_scenarios.py` | Supervisor + `pattern-analyst` + `kyc-precedent` | `ipywidgets` analyst panel wired to `Command(resume=...)` |
 | **12:30-13:00** | **Checkpoint A (MVP):** Daniel escalates, Sophie pauses then her second credit auto-clears from the precedent, ≥ 90% cleared by rules. Commit. | | | |
 | **14:00-15:00** | Eval dataset + new evaluators; first `rules-only` run | Tune rule weights on dev | `utils/graph.py` + `fund-flow` agent + `network_audit`; Liam override | Network graph cell, trace summary cells |
-| **15:00-15:30** | `sentinel` experiment on test, write `eval_summary.json` | Replay cache: fill and verify on a cold kernel | `sar-writer` + `sar_judge.py` | Eval results cell + SAR cell |
+| **15:00-15:30** | `sentinel` experiment on test, write `eval_summary.json`; online evaluator + automation rule (UI), `annotation_queue.py` (section 7.1) | Replay cache: fill and verify on a cold kernel | `sar-writer` + `sar_judge.py` + `sar_rubric.md` | Eval results cell + SAR cell + monitoring cell |
 | **15:30-15:45** | **Checkpoint B (feature freeze):** remove the `01_`-`03_` starters and their workspace entries, run `uv sync --all-packages`, then the full notebook top to bottom with `REPLAY=1`. Commit. | | | |
 | **15:45-16:00** | Final README (names the two submission files at the top), check `agents.py` docstring, `git status` check for secrets, push | | | Rehearse to 4:45; record a backup video if there's time |
 
 ## 10. Cut list (drop from the bottom first)
 1. Marcus Reid round-trip (mention it in Q&A only)
-2. `sar_quality` LLM-as-judge (keep the SAR draft, drop the judge)
-3. `cost_per_1k` (keep `llm_share`)
-4. Month 1 → month 2 review metric
-5. Live `ipywidgets` panel (fall back to a scripted `Command(resume=...)` cell)
-6. Fund-flow as a sub-agent (fall back to a deterministic network check inside `record_decision`, still drawn in the notebook)
-7. Deep Agents supervisor (fall back to 02's `create_agent` with the specialists as plain tools; listed in USE_CASE.md)
+2. Annotation queue extras: the automation rule from low SAR scores, the 10% agent spot-check sample, and growing the dataset from disagreements (keep the queue with human-reviewed cases)
+3. `sar_quality` offline LLM-as-judge (keep the online evaluator, which uses the same rubric)
+4. `cost_per_1k` (keep `llm_share`)
+5. Month 1 → month 2 review metric
+6. Annotation queue entirely, then the online evaluator (both are about 10 seconds of the demo; the offline eval stays)
+7. Live `ipywidgets` panel (fall back to a scripted `Command(resume=...)` cell)
+8. Fund-flow as a sub-agent (fall back to a deterministic network check inside `record_decision`, still drawn in the notebook)
+9. Deep Agents supervisor (fall back to 02's `create_agent` with the specialists as plain tools; listed in USE_CASE.md)
 
 Never cut: rules tier, human-in-the-loop with a precedent, the hard-flag override, the rules-only vs Sentinel eval, and the disclaimer.
 
@@ -303,7 +337,7 @@ Never cut: rules tier, human-in-the-loop with a precedent, the hard-flag overrid
 
 | Risk | Check | Fallback |
 |---|---|---|
-| Sub-agent tools may not see `runtime.context` / `runtime.store` | 10:00 spike: a sub-agent tool that prints `runtime.context.user_id` | Build sub-agent tools as closures over a per-run context, or move their lookups into the supervisor's tools. Never let the model pass `user_id` |
+| Sub-agent tools may not see `runtime.context` / `runtime.store` | **Spike passed (task 0.3, deepagents 0.7.28, `gpt-6-sol`):** a sub-agent tool read `runtime.context.user_id` from the parent's `context=`, and wrote to `runtime.store`; the parent saw the write. Matches the docs (Deep Agents → Subagents → Context management) | Not needed. (Was: closures over a per-run context, or move lookups to the supervisor. Never let the model pass `user_id`) |
 | Live latency: about 4 investigations, each a supervisor plus 2 to 3 sub-agents | At Checkpoint A, measure how many seconds Daniel's structuring case takes from rule flag to verdict. Above ~30s, it won't fit live | `REPLAY=1` by default on stage; parallel sub-agent calls; the supervisor calls only the specialists it needs |
 | Mule ring confirmed on the wrong transaction | `check_scenarios.py` asserts the 5th forward triggers `ring_confirmed` | Pre-compute `fan_in_summary` per account and `as_of` |
 | Eval cost and runtime | Count LLM calls on one dev world | Fewer background customers per world; `max_concurrency=2` as in 02 |
@@ -315,6 +349,8 @@ Never cut: rules tier, human-in-the-loop with a precedent, the hard-flag overrid
 - [ ] `uv run langgraph dev` in `sentinel_aml_agent/` loads graph `sentinel`. Context `{"user_id": "CUS-0001"}` plus `New transaction: TX-…` runs end to end
 - [ ] `uv run python scripts/check_scenarios.py` passes: every scripted demo transaction lands in the expected tier and verdict
 - [ ] `uv run python scripts/run_experiments.py` creates both experiments in LangSmith and writes `results/eval_summary.json`
+- [ ] The online evaluator scores new `sar-writer` runs with `sar_complete` in the tracing project, and its settings are in `evals/online_evaluators.md`
+- [ ] The annotation queue `sentinel-analyst-review-<ATTENDEE>` holds the human-decided cases, and `annotation_queue.py --collect` writes `results/annotation_summary.json` (marked "simulated" if reviews were simulated)
 - [ ] The notebook runs top to bottom on a fresh kernel, live and with `REPLAY=1`
 - [ ] Traces visible in project `fsi-hackathon-<ATTENDEE_NAME>`
 - [ ] Submission files present in `sentinel_aml_agent/`: `agents.py` (the real supervisor code, no `agent.py`) and `modules/01_sentinel_demo.ipynb` (imports from `agents`)

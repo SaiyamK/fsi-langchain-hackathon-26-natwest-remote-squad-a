@@ -47,5 +47,5 @@ World 0's stream is October-November 2026 plus a short August 2027 slice for Fas
 
 - Work on `main`. Keep it runnable after every task.
 - Commit after each task with a Conventional Commit message that names the task, for example `feat(rules): add rule scorer and baseline (task 2.1)`.
-- Before every commit: `git status`, `git diff --staged`, and `git grep -n "lsv2_" -- .` must return nothing.
+- Before every commit: `git status`, `git diff --staged`, and `git grep -nE "lsv2_[a-z]{2}_[0-9a-f]{16}" -- .` must return nothing.
 - Push at each checkpoint (A and B) and at submission. Tag the submitted commit `submission`.

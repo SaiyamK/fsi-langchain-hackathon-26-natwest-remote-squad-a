@@ -11,7 +11,7 @@ Paths are relative to `sentinel_aml_agent/` unless they start with `/`.
 1. **Read before writing.** Re-read the PLAN.md section the task cites. Don't invent schemas or signatures; use PLAN.md section 4.
 2. **Done means verified.** Run the task's "Done when" command and read the output before ticking the box. A command exiting with no error isn't enough.
 3. **One task, one commit.** Use a Conventional Commit message naming the task, for example `feat(rules): add rule scorer and baseline (task 2.1)`.
-4. **Secret check before every commit:** `git status`, `git diff --staged`, and `git grep -n "lsv2_" -- .` must show no `.env` and no keys.
+4. **Secret check before every commit:** `git status`, `git diff --staged`, and `git grep -nE "lsv2_[a-z]{2}_[0-9a-f]{16}" -- .` must show no `.env` and no keys. (The pattern matches real key shapes only, so it doesn't flag these instructions.)
 5. **Keep `main` runnable.** Never commit a broken import. If a task overruns its timebox, commit what works behind a flag and move on.
 6. **Commands:** run Python from `sentinel_aml_agent/` with `uv run`. Only ever run `uv sync --all-packages` from the repo root.
 7. **Checkpoints are hard gates.** Don't start the next phase until the checkpoint's checks pass. If time runs short, drop optional tasks (`*`) in the order of PLAN.md section 10.
@@ -32,7 +32,7 @@ start times; if work starts before 10:00, pull everything forward. The two check
 
 ## Phase 0: Scaffold (finish by 10:30)
 
-- [ ] 0.1 Create `sentinel_aml_agent/` from the 02 starter
+- [x] 0.1 Create `sentinel_aml_agent/` from the 02 starter
   - Copy `02_transaction_monitoring_agent/` to `/sentinel_aml_agent/`, excluding `.langgraph_api/`, `__pycache__/`, `images/` and `modules/`.
   - Rename `agent.py` to `agents.py`. Set `langgraph.json` graph `sentinel` to `./agents.py:agent`.
   - `pyproject.toml`: name `sentinel-aml-agent`; add `deepagents>=0.7,<1`, `networkx`, `matplotlib`, `ipywidgets`, `pydantic>=2,<3`.
@@ -42,25 +42,25 @@ start times; if work starts before 10:00, pull everything forward. The two check
   - **Done when:** `uv run python -c "import agents, networkx, matplotlib, ipywidgets, deepagents; from utils.models import model; print(model)"` prints `openai:gpt-6-sol`, and `git grep -n "from agent import\|import agent$" sentinel_aml_agent` returns nothing.
   - _Requirements: R1.1, R1.3, R11.2_
 
-- [ ] 0.2 Copy screening from the KYC starter
+- [x] 0.2 Copy screening from the KYC starter
   - Copy `01_kyc_agent/tools/screening.py` to `tools/screening.py` with a header comment naming its source.
   - Copy `01_kyc_agent/data/sanctions_list.jsonl` and `pep_list.jsonl` to `data/`.
   - **Done when:** `uv run python -c "from tools.screening import check_pep; print(check_pep('Viktor Harlan'))"` returns one hit.
   - _Requirements: R1.5_
 
-- [ ] 0.3 Spike: do sub-agent tools see the run context and store? (timebox 20 min)
+- [x] 0.3 Spike: do sub-agent tools see the run context and store? (timebox 20 min) — passed
   - Build a throwaway `create_deep_agent` with one sub-agent whose tool returns `runtime.context.user_id` and `runtime.store is not None`. Invoke with a context and an `InMemoryStore`.
   - Record the result in PLAN.md section 11 (risk row 1). If either is missing, pick the fallback there before phase 3.
   - Delete the spike file.
   - **Done when:** PLAN.md records "spike passed" or the chosen fallback.
   - _Requirements: R4.6_
 
-- [ ] 0.4 Trace once in LangSmith
+- [x] 0.4 Trace once in LangSmith
   - Run the copied agent once so the project's "Agent" tag exists (02's `_get_agent_tag` needs it before dataset creation).
   - **Done when:** a trace appears in project `fsi-hackathon-<ATTENDEE_NAME>`.
   - _Requirements: R11.1_
 
-- [ ] 0.5 Commit `chore(scaffold): sentinel_aml_agent from starter (tasks 0.1-0.4)`.
+- [x] 0.5 Commit `chore(scaffold): sentinel_aml_agent from starter (tasks 0.1-0.4)`.
 
 ## Phase 1: Contracts and data (finish by 11:15)
 
@@ -123,6 +123,7 @@ start times; if work starts before 10:00, pull everything forward. The two check
 - [ ] 2.6 Global stream runner
   - `utils/stream.py`: `global_stream`, `load_seed_precedents(store)`, and `process_stream(agent, ctx, transactions, reviewer_answers=None, on_interrupt=None)`.
   - The rules tier runs first and writes `decided_by="rules"` records. Interrupts are answered by `on_interrupt` or `reviewer_answers`. LLM calls and tokens are counted with `get_usage_metadata_callback()`.
+  - Each supervisor invoke passes `run_id=uuid4()` (saved as `trace_run_id` in the decision record) and tags `sentinel`, `decided_by:<…>`, `pattern:<…>` (PLAN.md 4.2), so the annotation queue and online evaluator can find runs.
   - **Done when:** running world 0 with a stub agent records a decision for every transaction, and `llm_share` matches the share of rule scores ≥ 30.
   - _Requirements: R3.2, R6.1, R6.7, R8.1-R8.3_
 
@@ -160,6 +161,7 @@ start times; if work starts before 10:00, pull everything forward. The two check
 
 - [ ] 4.2 SAR writer sub-agent
   - `sub_agents/sar_writer.py` + `.md`: no tools, `SarDraft` output with the fixed disclaimer. The supervisor calls it after an `escalate`.
+  - Write `evals/sar_rubric.md` now (completeness criteria for a SAR draft), because 5.2 and 5.6 both use it.
   - **Done when:** Daniel's escalation produces a `SarDraft` whose evidence items all appear in the tool results, and whose `disclaimer` matches R10.4.
   - _Requirements: R4.5, R10.4_
 
@@ -176,7 +178,7 @@ start times; if work starts before 10:00, pull everything forward. The two check
   - **Done when:** on hand-made outputs and labels, each evaluator returns the value worked out by hand.
   - _Requirements: R9.1, R9.2_
 
-- [ ]* 5.2 SAR LLM-as-judge (cut list item 2)
+- [ ]* 5.2 SAR LLM-as-judge, offline (cut list item 3; uses `evals/sar_rubric.md`)
   - `evals/sar_judge.py`: pass or fail per escalation for completeness, citing evidence, and no facts absent from the evidence.
   - _Requirements: R9.2_
 
@@ -192,6 +194,22 @@ start times; if work starts before 10:00, pull everything forward. The two check
   - _Requirements: R9.5_
 
 - [ ] 5.5 Commit `feat(evals): rules-only vs sentinel experiments (tasks 5.1-5.4)`.
+
+- [ ] 5.6 Online evaluator for SAR drafts (PLAN.md 7.1; timebox 15 min)
+  - In the LangSmith UI: Tracing → `fsi-hackathon-<ATTENDEE_NAME>` → Online Evaluators → + Evaluator → LLM-as-a-Judge. Filter to `sar-writer` runs, sampling 100%, feedback key `sar_complete` (0-1), prompt from `evals/sar_rubric.md`. Turn on **Apply to past runs** with today's date.
+  - Record every setting in `evals/online_evaluators.md`. Check the field names against the docs MCP (`docs-langchain`), page "Set up LLM-as-a-judge online evaluators", before writing them down.
+  - **Done when:** after one new escalation (Daniel), the `sar-writer` run in LangSmith carries `sar_complete` feedback from the evaluator.
+  - _Requirements: R12.1, R12.2_
+
+- [ ] 5.7 Annotation queue for analyst review (PLAN.md 7.1; timebox 30 min)
+  - `scripts/annotation_queue.py`, extending 02 Module 3's code: `create_feedback_config` for `correct_decision` (categorical `clear`/`escalate`) and `evidence_sufficient` (yes/no); `create_annotation_queue("sentinel-analyst-review-<ATTENDEE>", rubric_items=...)`; `add_runs_to_annotation_queue` for every `decided_by == "human"` decision's `trace_run_id`, plus a seeded 10% sample of agent decisions. Call `wait_for_all_tracers()` first, as 02 does.
+  - `--collect` reads the queue's feedback with `list_feedback` and writes `results/annotation_summary.json`: reviewed count, agent-analyst agreement rate, disagreements, and `"simulated": true|false`.
+  - A person reviews at least the human-decided cases in the LangSmith UI. Only if there's no time, `--simulate` writes feedback from `reviewer_answers.jsonl`, and the summary says `simulated: true` (DEC-003).
+  - Optional (cut list item 2): the automation rule (feedback `sar_complete` < 0.7 → add to queue), set in the UI and recorded in `evals/online_evaluators.md`; and adding disagreements to the scenario dataset with `create_examples`.
+  - **Done when:** the queue in LangSmith shows the human-decided runs, and `--collect` writes a summary whose reviewed count matches the feedback in LangSmith.
+  - _Requirements: R12.3-R12.5_
+
+- [ ] 5.8 Commit `feat(monitoring): online SAR evaluator and analyst annotation queue (tasks 5.6-5.7)`.
 
 ## Phase 6: Demo notebook (finish by 15:45, Checkpoint B)
 
@@ -210,7 +228,8 @@ start times; if work starts before 10:00, pull everything forward. The two check
 
 - [ ] 6.4 Results cells
   - The eval table loaded from `results/eval_summary.json`, a link to the LangSmith comparison, and Daniel's SAR draft with the stamp.
-  - _Requirements: R9.4, R10.1, R10.4_
+  - A monitoring cell: Daniel's SAR `sar_complete` score from the online evaluator (read with `list_feedback`), and the queue's reviewed count and agreement rate from `results/annotation_summary.json`, with "simulated" shown if it applies. Links to the online evaluator and the queue.
+  - _Requirements: R9.4, R10.1, R10.4, R12.6_
 
 - [ ] 6.5 **Checkpoint B / feature freeze (by 15:45)**
   - Remove `01_`-`03_` (and `00_dcode_setup`) and their entries in `/pyproject.toml`. Run `uv sync --all-packages` from the root.
@@ -226,7 +245,7 @@ start times; if work starts before 10:00, pull everything forward. The two check
 
 - [ ] 7.2 Final checks
   - Run every item in PLAN.md section 12 (definition of done) and tick it.
-  - `git grep -n "lsv2_" $(git rev-list --all)` returns nothing; `.env` isn't tracked.
+  - `git grep -nE "lsv2_[a-z]{2}_[0-9a-f]{16}" $(git rev-list --all)` returns nothing; `.env` isn't tracked.
   - _Requirements: R1.6_
 
 - [ ] 7.3 Commit, push and tag
@@ -252,4 +271,5 @@ start times; if work starts before 10:00, pull everything forward. The two check
 | R8 Stream | 2.6, 6.3 |
 | R9 Evals | 5.1-5.4, 6.4 |
 | R10 Notebook | 4.2, 6.1-6.5 |
-| R11 Observability | 0.4, 3.2 |
+| R11 Observability | 0.1, 0.4, 3.2 |
+| R12 Monitoring and analyst review | 2.6, 4.2, 5.6-5.8, 6.4 |

@@ -1,0 +1,8 @@
+{
+  "dependencies": ["."],
+  "graphs": {
+    "sentinel": "./agents.py:agent"
+  },
+  "env": "../.env",
+  "python_version": "3.13"
+}

@@ -31,6 +31,8 @@ dropped, leave it as `Backlog`; it's part of the "next steps" story.
 5. LangChain engineers on the day.
 6. The coding agent's own memory, last. Deep Agents changes quickly.
 
+**Found while building (task 0.4):** in `langsmith 0.14.11`, `Client.list_runs()` warns it's deprecated (removed after 31 Jan 2027) in favour of `client.runs.query()`. It still works today; prefer `client.runs.query()` in new code (annotation queue, notebook monitoring cell).
+
 **Why.** The docs track the latest release, and in places they're already ahead of our pinned versions. For example, they use `gpt-6.1-sol`, while we verified `gpt-6-sol` through the gateway.
 
 ---
