@@ -25,3 +25,8 @@ class MyAgentContext:
 
     # Memory (PLAN.md 5.4)
     precedent_ttl_days: int = 365           # an analyst's precedent expires after this many days
+
+    # Set by the stream runner for each investigation, so the decision record can carry them
+    rule_score: int = 0
+    rule_reasons: tuple[str, ...] = ()
+    trace_run_id: str = ""                  # the LangSmith root run of this investigation (annotation queue, R12.4)

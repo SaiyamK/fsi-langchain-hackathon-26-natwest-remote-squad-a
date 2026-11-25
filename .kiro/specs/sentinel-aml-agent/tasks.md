@@ -101,7 +101,7 @@ start times; if work starts before 10:00, pull everything forward. The two check
   - **Done when:** in world 0, `ring_confirmed` is false at the 4th mule forward and true at the 5th.
   - _Requirements: R7.4, R7.5_
 
-- [ ] 2.3 Customer-scoped tools
+- [x] 2.3 Customer-scoped tools
   - `tools/transactions.py`: `get_transaction`, `get_recent_transactions(days=30)` (up to `as_of`).
   - `tools/customers.py`: `get_customer_profile` (KYC profile only).
   - `tools/screening.py`: `screen_customer` tool wrapper on the profile name.
@@ -110,24 +110,24 @@ start times; if work starts before 10:00, pull everything forward. The two check
   - **Done when:** each tool returns the expected result for a world 0 customer when called with a test `ToolRuntime` context, and `grep -n "user_id:" tools/*.py` shows no tool parameter named `user_id`.
   - _Requirements: R4.6, R6.3_
 
-- [ ] 2.4 Privileged network tool
+- [x] 2.4 Privileged network tool
   - `tools/network.py`: `trace_fund_flows()`, starting from `runtime.context.user_id`'s account. It returns graph summaries only and writes each call to `("network_audit",)`.
   - **Done when:** called for Liam at the 5th forward, it returns all 5 feeders and Northgate with no profile fields, and one audit record exists.
   - _Requirements: R7.1-R7.3_
 
-- [ ] 2.5 `record_decision` with safeguards
+- [x] 2.5 `record_decision` with safeguards
   - Extend 02's tool as specified in PLAN.md 5.4, steps 1-6: `clear|escalate`, hard flags, precedent scope and expiry, override logging, the precedent-aware grey-zone check, forced review for hard flag + `clear`, precedent save on resume.
   - **Done when:** direct calls cover four cases: (a) grey zone with no precedent → interrupt; (b) grey zone with a valid precedent → no interrupt; (c) Liam with his precedent and a confirmed ring → precedent overridden, and a `clear` verdict interrupts; (d) a resume with a note saves a precedent with the right `expires_at`.
   - _Requirements: R5.1-R5.4, R6.4-R6.6_
 
-- [ ] 2.6 Global stream runner
+- [x] 2.6 Global stream runner
   - `utils/stream.py`: `global_stream`, `load_seed_precedents(store)`, and `process_stream(agent, ctx, transactions, reviewer_answers=None, on_interrupt=None)`.
   - The rules tier runs first and writes `decided_by="rules"` records. Interrupts are answered by `on_interrupt` or `reviewer_answers`. LLM calls and tokens are counted with `get_usage_metadata_callback()`.
-  - Each supervisor invoke passes `run_id=uuid4()` (saved as `trace_run_id` in the decision record) and tags `sentinel`, `decided_by:<…>`, `pattern:<…>` (PLAN.md 4.2), so the annotation queue and online evaluator can find runs.
+  - Each supervisor invoke passes `run_id=uuid4()` (saved as `trace_run_id` in the decision record) and tags `sentinel`, `investigation`, with metadata `transaction_id`, `user_id`, `rule_score`. (Built: `decided_by` and `pattern` can't be tags, because tags are set before the run starts; the annotation queue selects runs by `trace_run_id` from the decision records instead.)
   - **Done when:** running world 0 with a stub agent records a decision for every transaction, and `llm_share` matches the share of rule scores ≥ 30.
   - _Requirements: R3.2, R6.1, R6.7, R8.1-R8.3_
 
-- [ ] 2.7 Commit `feat(core): rules tier, tools, safeguards and stream runner (tasks 2.1-2.6)`.
+- [x] 2.7 Commit `feat(core): rules tier, tools, safeguards and stream runner (tasks 2.1-2.6)`.
 
 ## Phase 3: Agents (finish by 13:00, Checkpoint A)
 

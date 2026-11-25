@@ -49,3 +49,28 @@ def check_pep(name: str) -> list[dict]:
                 }
             )
     return hits
+
+
+#
+# Tool wrapper for the KYC & precedent agent (Sentinel addition)
+#
+from langchain.tools import ToolRuntime, tool  # noqa: E402
+
+from utils.state import MyAgentContext  # noqa: E402
+
+
+def screen_profile(profile: dict) -> list[dict]:
+    """Sanctions and PEP hits for a customer profile, including the profile's own PEP flag."""
+    hits = check_sanctions(profile["name"], profile.get("date_of_birth")) + check_pep(profile["name"])
+    if profile.get("pep") and not any(h["list"] == "pep" for h in hits):
+        hits.append({"list": "pep", "matched_name": profile["name"], "score": 1.0, "details": "PEP flag on KYC profile"})
+    return hits
+
+
+@tool(parse_docstring=True)
+def screen_customer(runtime: ToolRuntime[MyAgentContext]) -> dict:
+    """Screen the customer this run is about against the sanctions and PEP lists. No arguments needed."""
+    profile = db.get("customer_profiles", user_id=runtime.context.user_id)
+    if profile is None:
+        return {"hits": [], "note": "No profile found for this customer."}
+    return {"screened_name": profile["name"], "hits": screen_profile(profile)}
