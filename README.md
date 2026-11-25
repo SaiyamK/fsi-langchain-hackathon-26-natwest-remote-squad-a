@@ -2,7 +2,7 @@
 
 | | |
 |---|---|
-| **Team** | Remote Squad A \| NatWest |
+| **Team** | Chain & Grab |
 | **Company** | NatWest |
 | **Event** | LangChain FSI Hackathon, London, 25 November 2026 |
 | **Use case** | Anti-money-laundering (AML) transaction monitoring for AML analysts |

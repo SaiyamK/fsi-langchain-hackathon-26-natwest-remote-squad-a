@@ -426,8 +426,9 @@ HACKATHON.md now follows it, at the user's request.
   team chose to keep `agents.py`. The README and HACKATHON.md point to it. If the organisers insist on `agent.py`,
   rename it and update `langgraph.json` and the 5 imports in `scripts/` and `utils/demo.py`.
 - **README format.** The root README now has the team name, company, use case and run instructions, plus where the
-  notebook, the agent, the evaluations and the datasets are. Team name used: **Remote Squad A | NatWest** (to
-  confirm). Slides: `HACK_NATWEST_REMOTESQUADA` (to confirm).
+  notebook, the agent, the evaluations and the datasets are. Team name: **Chain & Grab** (chosen by the team; a
+  pun on LangChain, LangGraph, chain of custody and smash-and-grab). Submission name per the flight deck:
+  `Chain & Grab | NatWest`. Slides: `HACK_NATWEST_CHAINANDGRAB`.
 - **ROI is now judged.** The README gives an illustrative estimate per million transactions, with stated
   assumptions: 30 minutes per alert, 10 minutes per review question, £45 per hour. Analyst time falls by **37%**,
   not 93%, because Sentinel replaces some alerts with quick review questions. We show the honest figure.

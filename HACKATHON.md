@@ -10,8 +10,8 @@ deck says nothing new.
 ## Event
 
 - **Event:** LangChain FSI Hackathon, London. GridIron, 8th floor. Wednesday 25 November 2026.
-- **Team:** NatWest Remote Squad A (LangSmith workspace "NatWest - Remote A"). Submission name format:
-  **`Team name | NatWest`**, so **`Remote Squad A | NatWest`** unless LangChain says otherwise.
+- **Team:** **Chain & Grab** (LangSmith workspace "NatWest - Remote A"). The flight deck's submission name format
+  is `Team name | NatWest`, which gives `Chain & Grab | NatWest` unless LangChain says otherwise.
 - **Goal:** build the smallest complete solution that solves one clear FSI problem, works end to end, has a control
   or human decision, produces a LangSmith trace, has measurable evaluation evidence, and can be explained in 5 minutes.
 - **Fork/remote:** `origin` is `https://github.com/SaiyamK/fsi-langchain-hackathon-26-natwest-remote-squad-a.git`.
@@ -61,7 +61,7 @@ evaluation scores · how the solution was built · the repository link.
 2. Fork one repository per team.
 3. Commit the notebook and the agent file.
 4. Complete the 5-minute presentation template ("FSI Hackathon — Submission Template.pptx").
-5. Name the slides **`HACK_NATWEST_TEAMNAME`** (ours: `HACK_NATWEST_REMOTESQUADA`, to confirm).
+5. Name the slides **`HACK_NATWEST_TEAMNAME`** (ours: `HACK_NATWEST_CHAINANDGRAB`).
 6. Submit the fork link and slides through the official route, https://langch.in/hack-sub, **before 15:45**.
 
 ### Where our deliverables are
