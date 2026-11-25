@@ -6,6 +6,9 @@ design: [design.md](../.kiro/specs/sentinel-aml-agent-ui/design.md) · tasks: [t
 
 > Draft for analyst review, not legal, compliance or regulatory advice. Synthetic data only.
 
+**New here? Read [HOW_IT_WORKS.md](HOW_IT_WORKS.md)**: what Start does, the modes, and where every number on screen
+comes from.
+
 ```
 sentinel_ui/
 ├── api/   FastAPI service. Imports sentinel_aml_agent (never edits it): rules tier, agents, human review, cases, SSE
