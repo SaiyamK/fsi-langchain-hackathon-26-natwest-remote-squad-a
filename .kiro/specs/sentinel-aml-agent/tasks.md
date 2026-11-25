@@ -213,20 +213,20 @@ start times; if work starts before 10:00, pull everything forward. The two check
 
 ## Phase 6: Demo notebook (finish by 15:45, Checkpoint B)
 
-- [ ] 6.1 Replay mode
+- [x] 6.1 Replay mode
   - `utils/replay.py`: when `REPLAY=1`, set a SQLite LLM cache at `results/llm_cache.db`. Add `sentinel_aml_agent/results/llm_cache.db` to `/.gitignore` if it's large.
   - **Done when:** a second run of Daniel's case with `REPLAY=1` makes no network LLM calls (check the usage counter or LangSmith).
   - _Requirements: R10.3_
 
-- [ ] 6.2 Notebook shell
+- [x] 6.2 Notebook shell
   - `modules/01_sentinel_demo.ipynb`: the R10.4 header disclaimer, `sys.path` setup (as in 02), the `REPLAY` toggle, `from agents import build_agent`, and seed precedent loading.
   - _Requirements: R1.2, R10.4_
 
-- [ ] 6.3 Stream and scenario cells
+- [x] 6.3 Stream and scenario cells
   - Cells in DEMO_SCRIPT order: day-1 stream with a live counter; Daniel with a compact trace summary; Sophie with the `ipywidgets` analyst panel (design.md D3 for other interrupts); Fast-forward 10 months; mule ring with the NetworkX + matplotlib graph and Liam's override line.
   - _Requirements: R10.1, R8.2_
 
-- [ ] 6.4 Results cells
+- [x] 6.4 Results cells
   - The eval table loaded from `results/eval_summary.json`, a link to the LangSmith comparison, and Daniel's SAR draft with the stamp.
   - A monitoring cell: Daniel's SAR `sar_complete` score from the online evaluator (read with `list_feedback`), and the queue's reviewed count and agreement rate from `results/annotation_summary.json`, with "simulated" shown if it applies. Links to the online evaluator and the queue.
   - _Requirements: R9.4, R10.1, R10.4, R12.6_

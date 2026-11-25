@@ -91,6 +91,83 @@ def _sar_from(messages: list, start: int) -> dict | None:
     return None
 
 
+def rule_score_for(tx: dict, ctx: MyAgentContext | None = None) -> tuple[int, list[str]]:
+    """Tier 1 score for one transaction, from the customer's history up to it (active world)."""
+    profile = db.get("customer_profiles", user_id=tx["user_id"])
+    history = [h for h in db.query("transactions", user_id=tx["user_id"])
+               if (h["timestamp"], h["transaction_id"]) < (tx["timestamp"], tx["transaction_id"])]
+    return score_with_network(tx, history, profile, ctx)
+
+
+class Investigation:
+    """One supervisor investigation that can pause for a human and be resumed later (the notebook's analyst panel).
+
+    `start()` and `resume(answer)` return the pending question, or None when finished; then `finish()` returns
+    (decision record, investigation summary).
+    """
+
+    def __init__(self, agent, ctx: MyAgentContext, tx: dict, rule_score: int, reasons: list[str],
+                 counter: "UsageCounter | None" = None, extra_tags: list[str] | None = None,
+                 msg_index: dict | None = None):
+        self.agent, self.tx, self.rule_score, self.reasons = agent, tx, rule_score, reasons
+        self.msg_index = msg_index if msg_index is not None else {}
+        self.run_id = str(uuid.uuid4())
+        self.ctx = replace(ctx, user_id=tx["user_id"], as_of=tx["timestamp"], rule_score=rule_score,
+                           rule_reasons=tuple(reasons), trace_run_id=self.run_id)
+        self.own = UsageCounter()  # this investigation only
+        self.config = {"configurable": {"thread_id": tx["user_id"]}, "run_id": self.run_id, "recursion_limit": 80,
+                       "callbacks": [c for c in (counter, self.own) if c], "run_name": "sentinel-investigation",
+                       "tags": ["sentinel", "investigation", *(extra_tags or [])],
+                       "metadata": {"transaction_id": tx["transaction_id"], "user_id": tx["user_id"],
+                                    "rule_score": rule_score}}
+        self.human = None
+        self.question = None
+        self.result = None
+        self.seconds = 0.0
+        self.start_index = self.msg_index.get(tx["user_id"], 0)
+
+    def _run(self, payload, config) -> dict | None:
+        started = time.perf_counter()
+        self.result = self.agent.invoke(payload, config, context=self.ctx)
+        self.seconds += time.perf_counter() - started
+        self.question = self.result["__interrupt__"][0].value if "__interrupt__" in self.result else None
+        return self.question
+
+    def start(self) -> dict | None:
+        return self._run(investigation_message(self.tx, self.rule_score, self.reasons), self.config)
+
+    def resume(self, answer: dict) -> dict | None:
+        self.human = {"question": self.question, "answer": answer}
+        return self._run(Command(resume=answer), self.config | {"run_id": str(uuid.uuid4())})
+
+    def finish(self) -> tuple[dict, dict]:
+        tx, store = self.tx, self.agent.store
+        messages = self.result["messages"]
+        self.msg_index[tx["user_id"]] = len(messages)
+        item = store.get(("decisions", tx["user_id"]), tx["transaction_id"])
+        record = dict(item.value) if item else {
+            "transaction_id": tx["transaction_id"], "final_decision": "escalate", "decided_by": "agent",
+            "agent_decision": None, "risk_score": self.rule_score, "rule_score": self.rule_score,
+            "rule_reasons": self.reasons, "reason": "record_decision was not called; escalated by default",
+            "pattern": "none", "confidence_checks": ["record_decision missing"], "hard_flags": [],
+            "precedents_overridden": []}
+        sar = _sar_from(messages, self.start_index)
+        if sar is not None:
+            sar_id = f"SAR-{tx['transaction_id']}"
+            store.put(("sars", tx["user_id"]), sar_id, sar | {"transaction_id": tx["transaction_id"]})
+            record["sar_id"] = sar_id
+        record["trace_run_id"] = self.run_id
+        store.put(("decisions", tx["user_id"]), tx["transaction_id"], record)
+        investigation = {"transaction_id": tx["transaction_id"], "user_id": tx["user_id"],
+                         "seconds": round(self.seconds, 1), "model_calls": self.own.calls,
+                         "tokens": self.own.input_tokens + self.own.output_tokens,
+                         "tool_calls": _new_tool_calls(messages, self.start_index), "human": self.human,
+                         "reply": messages[-1].text if messages else "", "trace_run_id": self.run_id, "sar": sar,
+                         "rule_reasons": self.reasons, "as_of": tx["timestamp"],
+                         "final_decision": record["final_decision"], "decided_by": record["decided_by"]}
+        return record, investigation
+
+
 def process_stream(agent, ctx: MyAgentContext, transactions: list[dict], reviewer_answers: dict | None = None,
                    on_interrupt=None, on_event=None, parallel_customers: bool = False, max_workers: int = 4,
                    extra_tags: list[str] | None = None) -> dict:
@@ -106,10 +183,7 @@ def process_stream(agent, ctx: MyAgentContext, transactions: list[dict], reviewe
     msg_index: dict[str, int] = {}
 
     def run_one(tx: dict):
-        profile = db.get("customer_profiles", user_id=tx["user_id"])
-        history = [h for h in db.query("transactions", user_id=tx["user_id"])
-                   if (h["timestamp"], h["transaction_id"]) < (tx["timestamp"], tx["transaction_id"])]
-        rule_score, reasons = score_with_network(tx, history, profile, ctx)
+        rule_score, reasons = rule_score_for(tx, ctx)
 
         if not goes_to_agents(rule_score, ctx):
             record = {"transaction_id": tx["transaction_id"], "risk_score": rule_score, "final_decision": "clear",
@@ -126,21 +200,9 @@ def process_stream(agent, ctx: MyAgentContext, transactions: list[dict], reviewe
                 on_event({"tx": tx, "record": record, "tier": "rules"})
             return
 
-        run_id = str(uuid.uuid4())
-        run_ctx = replace(ctx, user_id=tx["user_id"], as_of=tx["timestamp"], rule_score=rule_score,
-                          rule_reasons=tuple(reasons), trace_run_id=run_id)
-        own = UsageCounter()  # this investigation only (the shared counter is updated by several threads)
-        config = {"configurable": {"thread_id": tx["user_id"]}, "run_id": run_id, "recursion_limit": 80,
-                  "callbacks": [counter, own], "run_name": "sentinel-investigation",
-                  "tags": ["sentinel", "investigation", *(extra_tags or [])],
-                  "metadata": {"transaction_id": tx["transaction_id"], "user_id": tx["user_id"],
-                               "rule_score": rule_score}}
-        started = time.perf_counter()
-        start_index = msg_index.get(tx["user_id"], 0)
-        result = agent.invoke(investigation_message(tx, rule_score, reasons), config, context=run_ctx)
-        human = None
-        while "__interrupt__" in result:
-            question = result["__interrupt__"][0].value
+        inv_obj = Investigation(agent, ctx, tx, rule_score, reasons, counter, extra_tags, msg_index)
+        question = inv_obj.start()
+        while question is not None:
             if on_interrupt:
                 answer = on_interrupt(question)
             elif reviewer_answers and question["transaction_id"] in reviewer_answers:
@@ -148,33 +210,8 @@ def process_stream(agent, ctx: MyAgentContext, transactions: list[dict], reviewe
                 answer = {"decision": row["decision"], "note": row.get("note", ""), "analyst": "scripted"}
             else:
                 answer = {"decision": question["agent_decision"], "note": ""}
-            human = {"question": question, "answer": answer}
-            resume_config = config | {"run_id": str(uuid.uuid4())}
-            result = agent.invoke(Command(resume=answer), resume_config, context=run_ctx)
-        seconds = time.perf_counter() - started
-        messages = result["messages"]
-        msg_index[tx["user_id"]] = len(messages)
-
-        item = store.get(("decisions", tx["user_id"]), tx["transaction_id"])
-        record = dict(item.value) if item else {
-            "transaction_id": tx["transaction_id"], "final_decision": "escalate", "decided_by": "agent",
-            "agent_decision": None, "risk_score": rule_score, "rule_score": rule_score, "rule_reasons": reasons,
-            "reason": "record_decision was not called; escalated by default", "pattern": "none",
-            "confidence_checks": ["record_decision missing"], "hard_flags": [], "precedents_overridden": []}
-        sar = _sar_from(messages, start_index)
-        if sar is not None:
-            sar_id = f"SAR-{tx['transaction_id']}"
-            store.put(("sars", tx["user_id"]), sar_id, sar | {"transaction_id": tx["transaction_id"]})
-            record["sar_id"] = sar_id
-        record["trace_run_id"] = run_id
-        store.put(("decisions", tx["user_id"]), tx["transaction_id"], record)
-
-        investigation = {"transaction_id": tx["transaction_id"], "user_id": tx["user_id"], "seconds": round(seconds, 1),
-                         "model_calls": own.calls, "tokens": own.input_tokens + own.output_tokens,
-                         "tool_calls": _new_tool_calls(messages, start_index),
-                         "human": human, "reply": messages[-1].text if messages else "", "trace_run_id": run_id,
-                         "sar": sar, "rule_reasons": reasons, "as_of": tx["timestamp"],
-                         "final_decision": record["final_decision"], "decided_by": record["decided_by"]}
+            question = inv_obj.resume(answer)
+        record, investigation = inv_obj.finish()
         with lock:
             out["transactions"] += 1
             out["decisions"].append(record)
