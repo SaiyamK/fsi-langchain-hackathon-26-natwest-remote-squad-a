@@ -24,6 +24,7 @@ from langgraph.checkpoint.memory import InMemorySaver  # noqa: E402
 from langgraph.store.memory import InMemoryStore  # noqa: E402
 
 from agents import build_agent  # noqa: E402
+from evals.sar_checks import sar_grounded  # noqa: E402
 from rules.scorer import goes_to_agents, score_all  # noqa: E402
 from tools.precedents import load_seed_precedents  # noqa: E402
 from utils import PROJECT_ROOT, db  # noqa: E402
@@ -86,11 +87,18 @@ def main():
                 checks["precedent overridden"] = bool(d.get("precedents_overridden"))
             if d["final_decision"] == "escalate" and d["decided_by"] != "rules":
                 checks["SAR draft saved"] = bool(d.get("sar_id"))
+                sar = (inv.get(tid) or {}).get("sar") or {}
+                grounded, problems = sar_grounded(sar, t["timestamp"])
+                checks[f"SAR grounded ({grounded}{': ' + '; '.join(problems) if problems else ''})"] = grounded == 1.0
             ok = all(checks.values())
             results.append({"scenario": name, "transaction_id": tid, "ok": ok, "checks": checks,
                             "seconds": inv.get(tid, {}).get("seconds"), "model_calls": inv.get(tid, {}).get("model_calls"),
                             "trace_run_id": d.get("trace_run_id"), "decided_by": d["decided_by"],
-                            "final_decision": d["final_decision"], "reason": d.get("reason")})
+                            "final_decision": d["final_decision"], "reason": d.get("reason"),
+                            "precedents_relied_on": d.get("precedents_relied_on"),
+                            "precedents_overridden": d.get("precedents_overridden"),
+                            "tool_calls": [c["subagent"] or c["name"] for c in inv.get(tid, {}).get("tool_calls", [])],
+                            "sar": (inv.get(tid) or {}).get("sar")})
 
     # Rules-tier share on all of world 0 (no LLM)
     all_txs = db.table("transactions")

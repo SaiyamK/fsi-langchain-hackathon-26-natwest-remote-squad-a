@@ -315,3 +315,29 @@ main one. It shows separately what the graph check adds (recall) and what the ag
 - **Planning.** The supervisor called `write_todos` five times in one run, so the prompt now says to call it once.
 - **Per-investigation counters.** Model-call counts were mixed up across parallel customers; each investigation
   now has its own counter.
+
+---
+
+## DEC-015 · Two safeguard fixes found by the live mule-ring run
+**Status:** Required (safeguards are enforced in code, R6.6) · 2026-11-25
+
+The first live run with the mule ring passed 6/9 scenario transactions. All three failures were real gaps, not
+test problems. Both fixes are in `tools/decisions.py` and covered by new no-LLM checks in `check_core.py` (30/30).
+
+1. **Sophie's repeat credit was cleared correctly, but "precedent relied on" wasn't recorded.** The agent cleared it
+   with `pattern="none"`, so the scope match (customer + counterparty + pattern) found nothing.
+   **Fix:** if the pattern is `none` and the agent cites a precedent for this exact counterparty, scope it by that
+   precedent's pattern. Counterparty and expiry are still checked in code; a citation for another counterparty is
+   still dropped. The prompt also asks for the resembling pattern even when clearing.
+2. **The 4th mule forward was escalated without a human,** although the ring wasn't confirmable yet (label:
+   ambiguous, ask a human). **Fix:** a `mule_fan_in` verdict without a ring confirmed by the graph check always
+   goes to a human, because it implicates other customers on unconfirmed evidence. This adds oversight; it never
+   removes it.
+3. **Liam's case escalated, but via a human.** The old precedent pulled the agent's risk score into the grey zone.
+   The precedent was overridden in code either way. **Fix (prompt only):** hard flags are named explicitly (sanctions
+   or PEP hit, `ring_confirmed: true`), and with a hard flag plus suspicious activity the supervisor escalates with
+   high confidence instead of letting an old precedent pull the score down.
+
+**After the fixes:** 9/9 on two consecutive live runs, and every SAR draft is grounded (`evals/sar_checks.py`: every
+cited transaction exists and was visible at the time, and the disclaimer is exact). Investigations take 16-52s;
+the mule cases are the slowest (28-52s).

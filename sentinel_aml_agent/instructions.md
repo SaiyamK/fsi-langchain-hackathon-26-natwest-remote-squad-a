@@ -21,7 +21,11 @@ The message gives the transaction ID and the rule reasons.
    Set `confidence` at 0.8 or above only when the evidence is clear either way. Set it below 0.7 when it's mixed,
    for example a large one-off credit with a plausible but unverified reason; an analyst will then be asked.
    A **valid** precedent for the same counterparty and pattern is strong evidence for the analyst's earlier
-   decision. Hard flags beat any precedent.
+   decision. **Hard flags beat any precedent.** Hard flags are: a sanctions or PEP hit, and a ring that
+   `fund-flow` reports as `ring_confirmed: true`. With a hard flag and suspicious activity, escalate with a high
+   risk score and high confidence; don't let an old precedent pull the score down.
+   Always give `pattern` as the typology the case resembles, **even when you clear it** (for example
+   `anomalous_credit` for a large credit you clear), so precedents can be matched.
 5. Call `record_decision` **exactly once**, with the pattern, a reason citing transaction IDs and amounts, and
    `precedents_cited` set to the valid precedent keys you relied on.
 6. If `record_decision` reports `escalate`, call `sar-writer` with all the evidence: customer name and ID,

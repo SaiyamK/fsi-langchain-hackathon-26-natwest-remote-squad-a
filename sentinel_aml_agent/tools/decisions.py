@@ -48,8 +48,20 @@ def assess(store, ctx: MyAgentContext, transaction: dict | None, risk_score: int
     profile = db.get("customer_profiles", user_id=ctx.user_id) or {}
     flags = hard_flags_for(profile, ctx.as_of) if profile else []
     counterparty = transaction.get("counterparty_id") if transaction else None
-    found = classify_precedents(store, ctx.user_id, counterparty, pattern, ctx.as_of)
+    # Scope = customer + counterparty + pattern. When the agents clear a case they may call the pattern "none"; if
+    # they cite a precedent for this exact counterparty, scope it by that precedent's own pattern (DEC-015).
+    # Counterparty and expiry are still checked here, in code.
+    patterns = {pattern}
+    if pattern == "none":
+        patterns |= {k.split(":", 1)[1] for k in precedents_cited or [] if ":" in k
+                     and k.split(":", 1)[0] == (counterparty or "*")}
+    found = {"valid": [], "expired": [], "out_of_scope": []}
+    for pat in sorted(patterns):
+        part = classify_precedents(store, ctx.user_id, counterparty, pat, ctx.as_of)
+        for bucket in ("valid", "expired"):
+            found[bucket] += [p for p in part[bucket] if p["key"] not in {q["key"] for q in found[bucket]}]
     in_scope_keys = {p["key"] for p in found["valid"]}
+    ring_flag = any(f.startswith("confirmed fan-in ring") for f in flags)
 
     dropped = []
     for key in precedents_cited or []:
@@ -71,6 +83,9 @@ def assess(store, ctx: MyAgentContext, transaction: dict | None, risk_score: int
         checks.append(f"risk score {risk_score} is in the grey zone ({low}-{high - 1})")
     if flags and decision == "clear":
         checks.append("hard red flag present, so a human must decide any 'clear'")
+    if pattern == "mule_fan_in" and not ring_flag:
+        checks.append("mule network suspected but not confirmed by the graph check; it involves other "
+                      "customers, so a human decides (DEC-015)")
 
     final_confidence = min(confidence, ctx.checked_confidence) if checks else confidence
     needs_human = final_confidence < ctx.confidence_threshold or (flags and decision == "clear")

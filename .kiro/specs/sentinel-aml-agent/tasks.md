@@ -154,12 +154,12 @@ start times; if work starts before 10:00, pull everything forward. The two check
 
 ## Phase 4: Network, SAR and the remaining scenarios (finish by 14:40)
 
-- [ ] 4.1 Fund-flow sub-agent and Liam override
+- [x] 4.1 Fund-flow sub-agent and Liam override
   - `sub_agents/fund_flow.py` + `.md`; the only holder of `trace_fund_flows`. Add the mule scenario to `check_scenarios.py`: the 5th forward escalates, and Liam's precedent is in `precedents_overridden` with the reason.
   - **Done when:** `check_scenarios.py` passes, including the mule ring.
   - _Requirements: R4.1, R6.4, R7.1-R7.5_
 
-- [ ] 4.2 SAR writer sub-agent
+- [x] 4.2 SAR writer sub-agent
   - `sub_agents/sar_writer.py` + `.md`: no tools, `SarDraft` output with the fixed disclaimer. The supervisor calls it after an `escalate`.
   - Write `evals/sar_rubric.md` now (completeness criteria for a SAR draft), because 5.2 and 5.6 both use it.
   - **Done when:** Daniel's escalation produces a `SarDraft` whose evidence items all appear in the tool results, and whose `disclaimer` matches R10.4.
@@ -169,7 +169,7 @@ start times; if work starts before 10:00, pull everything forward. The two check
   - Add Marcus to `check_scenarios.py`; the fund-flow agent finds the round-trip and the PEP flag is a hard flag.
   - _Requirements: R2.2_
 
-- [ ] 4.4 Commit `feat(agents): fund-flow and SAR writer sub-agents (tasks 4.1-4.3)`.
+- [x] 4.4 Commit `feat(agents): fund-flow and SAR writer sub-agents (tasks 4.1-4.3)`.
 
 ## Phase 5: Evals (finish by 15:10)
 

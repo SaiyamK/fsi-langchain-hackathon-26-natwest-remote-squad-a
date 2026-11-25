@@ -106,6 +106,19 @@ check(c["hard_flags"] and c["precedents_overridden"] and c["needs_human"],
       "(c) Liam: ring hard flag overrides his precedent, and a 'clear' goes to a human")
 c2 = assess(store, l_ctx, liam_flat, 85, 0.9, "escalate", "mule_fan_in", [])
 check(c2["precedents_overridden"] and not c2["needs_human"], "(c) override is recorded even if the model didn't cite it")
+b3 = assess(store, MyAgentContext(user_id="CUS-0002", as_of=sophie2["timestamp"]), sophie2, 20, 0.85, "clear",
+            "none", ["EXT-0102:anomalous_credit"])
+check(b3["precedents_relied_on"] == ["EXT-0102:anomalous_credit"], "pattern 'none' + cited same-counterparty precedent: relied on (DEC-015)")
+b4 = assess(store, MyAgentContext(user_id="CUS-0002", as_of=sophie2["timestamp"]), sophie2, 20, 0.85, "clear",
+            "none", ["EXT-9999:anomalous_credit"])
+check(not b4["precedents_relied_on"] and b4["precedents_dropped"], "a cited precedent for another counterparty is still dropped")
+fourth = sorted((t for t in db.table("transactions") if t["counterparty_id"] == "ACC-0050" and t["direction"] == "out"
+                 and t["account_id"] in {f"ACC-00{n}" for n in range(40, 45)}), key=lambda t: t["timestamp"])[3]
+m4 = assess(store, MyAgentContext(user_id=fourth["user_id"], as_of=fourth["timestamp"]), fourth, 85, 0.9, "escalate",
+            "mule_fan_in", [])
+check(m4["needs_human"], "unconfirmed mule network suspicion goes to a human (DEC-015)")
+check(not c2["confidence_checks"] or "not confirmed" not in " ".join(c2["confidence_checks"]),
+      "a confirmed ring does not trigger the unconfirmed-network check")
 try:
     apply_review(store, s_ctx, "x", None, "none", {"decision": "approve"})
     check(False, "a bad analyst answer is rejected")
