@@ -9,9 +9,15 @@ import { useLive } from "@/stores/live";
 /** Preferred metric order and labels (EX-13.1). Anything else in the file is shown after these. */
 const METRICS: [string, string, boolean][] = [
   ["false_positive_rate", "False-positive rate", true],
+  ["false_positives", "False positives", true],
+  ["alert_precision", "Alert precision", false],
   ["recall_planted", "Recall on planted cases", false],
   ["decision_accuracy", "Decision accuracy", false],
+  ["decision_accuracy_eval", "Decision accuracy", false],
+  ["score_alignment_eval", "Score alignment", false],
   ["review_routing", "Review routing", false],
+  ["review_routing_eval", "Review routing", false],
+  ["human_review_rate", "Human review rate", true],
   ["reviews_month1", "Analyst reviews, month 1", true],
   ["reviews_month2", "Analyst reviews, month 2", true],
   ["override_correctness", "Correct precedent overrides", false],
@@ -22,7 +28,7 @@ const METRICS: [string, string, boolean][] = [
 function fmt(key: string, v: number | string | null | undefined): string {
   if (v === null || v === undefined || v === "") return "—";
   if (typeof v === "string") return v;
-  if (/rate|recall|accuracy|routing|share|correctness/.test(key) && v <= 1) return `${(v * 100).toFixed(1)}%`;
+  if (/rate|recall|accuracy|routing|share|correctness|precision|alignment/.test(key) && v <= 1) return `${(v * 100).toFixed(1)}%`;
   return Number.isInteger(v) ? count(v) : v.toFixed(2);
 }
 
@@ -77,8 +83,11 @@ function ResultsTable({ data }: { data: NonNullable<Awaited<ReturnType<typeof ap
       <p className="text-xs text-muted">
         {data.dataset && <>Dataset {data.dataset} · </>}
         {data.n_transactions !== undefined && <>{count(data.n_transactions)} transactions · </>}
+        {data.split && <>{data.split} split · </>}
+        {data.model && <>{data.model} · </>}
         {data.created_at && <>run {dateTime(data.created_at.slice(0, 16))}</>}
       </p>
+      {data.note && <p className="rounded-md bg-surface-2 px-3 py-2 text-xs text-muted">{data.note}</p>}
       <table className="w-full text-sm">
         <thead>
           <tr className="border-b border-border text-left text-xs text-muted">

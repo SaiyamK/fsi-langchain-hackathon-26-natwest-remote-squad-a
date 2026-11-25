@@ -314,6 +314,9 @@ export interface ResultsResponse {
     dataset?: string;
     n_transactions?: number;
     headline?: string;
+    note?: string;
+    split?: string;
+    model?: string;
     experiments?: Record<string, { name?: string; url?: string; metrics?: Record<string, number | string | null> }>;
   };
 }
