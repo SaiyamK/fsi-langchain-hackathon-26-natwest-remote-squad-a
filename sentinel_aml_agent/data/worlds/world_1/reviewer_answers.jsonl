@@ -1,0 +1,15 @@
+{"transaction_id": "TX-100130", "decision": "clear", "note": "Outbound investment noted; monitoring for return flows."}
+{"transaction_id": "TX-100185", "decision": "clear", "note": "Customer provided evidence: payment from private individual; legitimate."}
+{"transaction_id": "TX-100210", "decision": "clear", "note": "Customer showed the consultancy contract; quarterly retainer is legitimate."}
+{"transaction_id": "TX-100229", "decision": "clear", "note": "Customer showed the consultancy contract; quarterly retainer is legitimate."}
+{"transaction_id": "TX-100270", "decision": "clear", "note": "Customer showed the consultancy contract; quarterly retainer is legitimate."}
+{"transaction_id": "TX-100275", "decision": "clear", "note": "Customer provided evidence: invoice settlement from consultancy client; legitimate."}
+{"transaction_id": "TX-100379", "decision": "clear", "note": "Customer provided evidence: invoice settlement from consultancy client; legitimate."}
+{"transaction_id": "TX-100492", "decision": "escalate", "note": "Rapid pass-through to a new business account; possible mule activity."}
+{"transaction_id": "TX-100493", "decision": "escalate", "note": "Inbound from a pass-through account; possible collector account."}
+{"transaction_id": "TX-100503", "decision": "escalate", "note": "Rapid pass-through to a new business account; possible mule activity."}
+{"transaction_id": "TX-100504", "decision": "escalate", "note": "Inbound from a pass-through account; possible collector account."}
+{"transaction_id": "TX-100510", "decision": "escalate", "note": "Rapid pass-through to a new business account; possible mule activity."}
+{"transaction_id": "TX-100511", "decision": "escalate", "note": "Inbound from a pass-through account; possible collector account."}
+{"transaction_id": "TX-100522", "decision": "escalate", "note": "Rapid pass-through to a new business account; possible mule activity."}
+{"transaction_id": "TX-100523", "decision": "escalate", "note": "Inbound from a pass-through account; possible collector account."}

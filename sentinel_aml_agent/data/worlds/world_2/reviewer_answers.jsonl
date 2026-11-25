@@ -1,0 +1,14 @@
+{"transaction_id": "TX-200142", "decision": "clear", "note": "Customer provided evidence: invoice settlement from consultancy client; legitimate."}
+{"transaction_id": "TX-200157", "decision": "clear", "note": "Outbound investment noted; monitoring for return flows."}
+{"transaction_id": "TX-200171", "decision": "clear", "note": "Customer showed the consultancy contract; quarterly retainer is legitimate."}
+{"transaction_id": "TX-200251", "decision": "clear", "note": "Customer showed the consultancy contract; quarterly retainer is legitimate."}
+{"transaction_id": "TX-200287", "decision": "clear", "note": "Customer showed the consultancy contract; quarterly retainer is legitimate."}
+{"transaction_id": "TX-200393", "decision": "clear", "note": "Customer provided evidence: payment from private individual; legitimate."}
+{"transaction_id": "TX-200568", "decision": "escalate", "note": "Rapid pass-through to a new business account; possible mule activity."}
+{"transaction_id": "TX-200569", "decision": "escalate", "note": "Inbound from a pass-through account; possible collector account."}
+{"transaction_id": "TX-200582", "decision": "escalate", "note": "Rapid pass-through to a new business account; possible mule activity."}
+{"transaction_id": "TX-200583", "decision": "escalate", "note": "Inbound from a pass-through account; possible collector account."}
+{"transaction_id": "TX-200591", "decision": "escalate", "note": "Rapid pass-through to a new business account; possible mule activity."}
+{"transaction_id": "TX-200592", "decision": "escalate", "note": "Inbound from a pass-through account; possible collector account."}
+{"transaction_id": "TX-200604", "decision": "escalate", "note": "Rapid pass-through to a new business account; possible mule activity."}
+{"transaction_id": "TX-200605", "decision": "escalate", "note": "Inbound from a pass-through account; possible collector account."}

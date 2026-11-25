@@ -1,0 +1,3 @@
+{"user_id": "CUS-0004", "counterparty_id": "EXT-0401", "pattern": "anomalous_credit", "decision": "clear", "note": "Rental income from a let property", "analyst": "seed", "created_at": "2025-06-01", "expires_at": "2026-06-01"}
+{"user_id": "CUS-0005", "counterparty_id": "EXT-0501", "pattern": "anomalous_credit", "decision": "clear", "note": "Annual dividend from family company", "analyst": "seed", "created_at": "2026-04-10", "expires_at": "2027-04-10"}
+{"user_id": "CUS-0040", "counterparty_id": "EXT-FLAT-0040", "pattern": "mule_fan_in", "decision": "clear", "note": "Transfers from flatmates for rent", "analyst": "seed", "created_at": "2026-03-10", "expires_at": "2027-03-10"}

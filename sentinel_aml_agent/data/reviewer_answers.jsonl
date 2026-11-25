@@ -1,2 +1,13 @@
-{"transaction_id": "TX-1003", "decision": "approve", "note": "Customer confirmed by phone they are on holiday in Portugal from 9 to 16 October."}
-{"transaction_id": "TX-2005", "decision": "approve", "note": "Customer confirmed they booked a flight to a conference in Berlin."}
+{"transaction_id": "TX-000254", "decision": "clear", "note": "Annual bonus — employer verified via payslip"}
+{"transaction_id": "TX-000627", "decision": "clear", "note": "Outbound investment noted; monitoring for return flows."}
+{"transaction_id": "TX-000659", "decision": "clear", "note": "Lettings agent confirmed arrears settlement for the let property."}
+{"transaction_id": "TX-000717", "decision": "escalate", "note": "Rapid pass-through to a new business account; possible mule activity."}
+{"transaction_id": "TX-000718", "decision": "escalate", "note": "Inbound from a pass-through account; possible collector account."}
+{"transaction_id": "TX-000732", "decision": "escalate", "note": "Rapid pass-through to a new business account; possible mule activity."}
+{"transaction_id": "TX-000733", "decision": "escalate", "note": "Inbound from a pass-through account; possible collector account."}
+{"transaction_id": "TX-000748", "decision": "escalate", "note": "Rapid pass-through to a new business account; possible mule activity."}
+{"transaction_id": "TX-000749", "decision": "escalate", "note": "Inbound from a pass-through account; possible collector account."}
+{"transaction_id": "TX-000762", "decision": "escalate", "note": "Rapid pass-through to a new business account; possible mule activity."}
+{"transaction_id": "TX-000763", "decision": "escalate", "note": "Inbound from a pass-through account; possible collector account."}
+{"transaction_id": "TX-000880", "decision": "clear", "note": "Customer showed a sale agreement for a car; legitimate."}
+{"transaction_id": "TX-001032", "decision": "clear", "note": "Customer provided evidence: invoice settlement from consultancy client; legitimate."}

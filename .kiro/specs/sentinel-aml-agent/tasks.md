@@ -64,30 +64,30 @@ start times; if work starts before 10:00, pull everything forward. The two check
 
 ## Phase 1: Contracts and data (finish by 11:15)
 
-- [ ] 1.1 Context and schemas
+- [x] 1.1 Context and schemas
   - `utils/state.py`: extend `MyAgentContext` with `rules_clear_below=30`, `rules_escalate_at=30`, `precedent_ttl_days=365`, `as_of=""`; keep `confidence_threshold=0.7`, `checked_confidence=0.5`, `grey_zone=(30, 70)`.
   - `utils/schemas.py`: `PatternFindings`, `KycFindings`, `NetworkFindings`, `SarDraft` (Pydantic, fields from PLAN.md 4.4), `Precedent`, and the decision record as a `TypedDict` (PLAN.md 4.2).
   - **Done when:** `uv run python -c "from utils.schemas import *; from utils.state import MyAgentContext; MyAgentContext()"` succeeds.
   - _Requirements: R4.3, R6.1_
 
-- [ ] 1.2 World-aware database
+- [x] 1.2 World-aware database (verified by `scripts/check_db_worlds.py`, including LangChain worker threads)
   - Add a `ContextVar` data folder and a `use_world(n)` context manager to `utils/db.py` (design.md D1). Reference tables stay in `data/`.
   - **Done when:** inside `with db.use_world(1):` a query reads `data/worlds/world_1/`, and outside it reads `data/`.
   - _Requirements: R2.6_
 
-- [ ] 1.3 Generator: world 0 demo cast
+- [x] 1.3 Generator: world 0 demo cast (verified by `scripts/check_data.py`; includes DEC-010's expired, out-of-scope and control customers)
   - `data/generate.py --seed 42 --world 0` writes `customer_profiles`, `transactions`, `analyst_labels`, `reviewer_answers` and `seed_precedents` with the IDs, amounts and dates in design.md D4. Marcus is added to `pep_list.jsonl`.
   - **Done when:** running it twice gives identical file hashes (`shasum data/*.jsonl`), and the D4 events are in `transactions.jsonl`.
   - _Requirements: R2.1, R2.2, R2.4, R2.5_
 
-- [ ] 1.4 Generator: background customers and worlds 1-6
+- [x] 1.4 Generator: background customers and worlds 1-6 — **done with DEC-006 applied**: world 1 (dev) and world 2 (test), 36 customers and 863 / 950 transactions each, instead of 6 worlds × 200. Verified by `scripts/check_data.py`
   - About 200 background customers per world over 2 months: salaries, rent, card spend, benign large credits, benign cash-heavy businesses (rules false positives), plus planted cases of each pattern.
   - Add repeat benign-ambiguous cases in month 2 with reviewer notes in month 1, so the month 1 → month 2 metric can move.
   - Worlds 1-6 go to `data/worlds/world_<N>/`.
   - **Done when:** each world has 150-250 customers, at least one planted case of each pattern, labels for 100% of transactions, and stable hashes across two runs.
   - _Requirements: R2.3, R2.4, R2.6_
 
-- [ ] 1.5 Commit `feat(data): labelled synthetic generator (tasks 1.1-1.4)`.
+- [x] 1.5 Commit `feat(data): labelled synthetic generator (tasks 1.1-1.4)`.
 
 ## Phase 2: Rules, tools and routing (finish by 12:15)
 
