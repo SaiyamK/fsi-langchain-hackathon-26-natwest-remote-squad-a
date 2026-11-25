@@ -173,7 +173,7 @@ start times; if work starts before 10:00, pull everything forward. The two check
 
 ## Phase 5: Evals (finish by 15:10)
 
-- [ ] 5.1 New evaluators
+- [x] 5.1 New evaluators
   - Add `false_positive_rate`, `recall_planted`, `reviews_month1`, `reviews_month2`, `override_correctness`, `llm_share` and `cost_per_1k` to `evals/scoring_evals.py`. Leave 02's three evaluators unchanged.
   - **Done when:** on hand-made outputs and labels, each evaluator returns the value worked out by hand.
   - _Requirements: R9.1, R9.2_
@@ -182,26 +182,26 @@ start times; if work starts before 10:00, pull everything forward. The two check
   - `evals/sar_judge.py`: pass or fail per escalation for completeness, citing evidence, and no facts absent from the evidence.
   - _Requirements: R9.2_
 
-- [ ] 5.3 Experiment runner
+- [x] 5.3 Experiment runner
   - Update `scripts/run_experiments.py`: one example per world for worlds 1-6, with `dev`/`test` splits (design.md D2). The target wraps each run in `db.use_world(n)`, loads seed precedents, and returns decisions plus counters.
   - Experiments: `rules-only` and `sentinel` on the test split. Write `results/eval_summary.json`.
   - **Done when:** both experiments appear in LangSmith, and `results/eval_summary.json` has every metric for both.
   - _Requirements: R9.3, R9.4_
 
-- [ ] 5.4 Tune on dev
+- [x] 5.4 Tune on dev
   - Adjust rule weights and thresholds on worlds 1-4 only, until dev hits the R3.4 rules-tier share and `check_scenarios.py` still passes. Then rerun 5.3 on test once.
   - **Done when:** the test results come from one run made after tuning finished, and are recorded in `eval_summary.json`.
   - _Requirements: R9.5_
 
-- [ ] 5.5 Commit `feat(evals): rules-only vs sentinel experiments (tasks 5.1-5.4)`.
+- [x] 5.5 Commit `feat(evals): rules-only vs sentinel experiments (tasks 5.1-5.4)`.
 
-- [ ] 5.6 Online evaluator for SAR drafts (PLAN.md 7.1; timebox 15 min)
+- [ ] 5.6 Online evaluator for SAR drafts — settings written in `evals/online_evaluators.md`; WAITING ON THE USER to create it in the LangSmith UI (PLAN.md 7.1; timebox 15 min)
   - In the LangSmith UI: Tracing → `fsi-hackathon-<ATTENDEE_NAME>` → Online Evaluators → + Evaluator → LLM-as-a-Judge. Filter to `sar-writer` runs, sampling 100%, feedback key `sar_complete` (0-1), prompt from `evals/sar_rubric.md`. Turn on **Apply to past runs** with today's date.
   - Record every setting in `evals/online_evaluators.md`. Check the field names against the docs MCP (`docs-langchain`), page "Set up LLM-as-a-judge online evaluators", before writing them down.
   - **Done when:** after one new escalation (Daniel), the `sar-writer` run in LangSmith carries `sar_complete` feedback from the evaluator.
   - _Requirements: R12.1, R12.2_
 
-- [ ] 5.7 Annotation queue for analyst review (PLAN.md 7.1; timebox 30 min)
+- [ ] 5.7 Annotation queue for analyst review — queue created with 5 runs (4 human-decided, 1 spot-check); WAITING ON A PERSON to review, then `--collect` (PLAN.md 7.1; timebox 30 min)
   - `scripts/annotation_queue.py`, extending 02 Module 3's code: `create_feedback_config` for `correct_decision` (categorical `clear`/`escalate`) and `evidence_sufficient` (yes/no); `create_annotation_queue("sentinel-analyst-review-<ATTENDEE>", rubric_items=...)`; `add_runs_to_annotation_queue` for every `decided_by == "human"` decision's `trace_run_id`, plus a seeded 10% sample of agent decisions. Call `wait_for_all_tracers()` first, as 02 does.
   - `--collect` reads the queue's feedback with `list_feedback` and writes `results/annotation_summary.json`: reviewed count, agent-analyst agreement rate, disagreements, and `"simulated": true|false`.
   - A person reviews at least the human-decided cases in the LangSmith UI. Only if there's no time, `--simulate` writes feedback from `reviewer_answers.jsonl`, and the summary says `simulated: true` (DEC-003).

@@ -1,0 +1,188 @@
+[
+ {
+  "scenario": "anomalous credit -> analyst -> precedent (Sophie)",
+  "transaction_id": "TX-000254",
+  "ok": true,
+  "checks": {
+   "decision clear (label clear)": true,
+   "human asked: True (expected True)": true
+  },
+  "seconds": 17.0,
+  "model_calls": 9,
+  "trace_run_id": "b867995d-5a66-47e5-bca8-bbaa68937e61",
+  "decided_by": "human",
+  "final_decision": "clear",
+  "reason": "TX-000254 is an \u00a318,000 incoming payment from new counterparty EXT-0102, 5.14\u00d7 expected monthly credits of \u00a33,500, with an 'Annual bonus' reference that is plausible but unverified. The 30-day activity shows only TX-000005 (\u00a3980 rent out) and no related large outgoing payments or cash deposits; KYC screening found no hard flags or applicable precedents, so this is a provisional clear with low confidence.",
+  "precedents_relied_on": [],
+  "precedents_overridden": [],
+  "tool_calls": [
+   "write_todos",
+   "get_transaction",
+   "kyc-precedent",
+   "pattern-analyst",
+   "record_decision"
+  ],
+  "sar": null,
+  "why_queued": "human-decided"
+ },
+ {
+  "scenario": "expired precedent is not relied on (Grace)",
+  "transaction_id": "TX-000659",
+  "ok": true,
+  "checks": {
+   "decision clear (label clear)": true,
+   "human asked: True (expected True)": true
+  },
+  "seconds": 16.5,
+  "model_calls": 9,
+  "trace_run_id": "c3be3ba6-21b4-4ae0-a6ce-32097f8ca653",
+  "decided_by": "human",
+  "final_decision": "clear",
+  "reason": "TX-000659 is a \u00a315,000 incoming payment from a letting agent, 3.75\u00d7 expected monthly credits, with the plausible but unverified reference 'Rent arrears settlement'; TX-000550 shows a \u00a3980 rent payment, but does not independently verify the settlement. Recent activity includes ordinary \u00a32,800 salary credit TX-000413, with no visible cash structuring or round trip; screening found no hard flags and the same-counterparty precedent has expired.",
+  "precedents_relied_on": [],
+  "precedents_overridden": [],
+  "tool_calls": [
+   "write_todos",
+   "get_transaction",
+   "pattern-analyst",
+   "kyc-precedent",
+   "record_decision"
+  ],
+  "sar": null,
+  "why_queued": "human-decided"
+ },
+ {
+  "scenario": "out-of-scope precedent is ignored (Tom)",
+  "transaction_id": "TX-000880",
+  "ok": true,
+  "checks": {
+   "decision clear (label clear)": true,
+   "human asked: True (expected True)": true
+  },
+  "seconds": 20.3,
+  "model_calls": 12,
+  "trace_run_id": "922334ee-d1f2-40ce-8041-bcbf0bd83e49",
+  "decided_by": "human",
+  "final_decision": "clear",
+  "reason": "TX-000880 is a \u00a320,000 incoming payment from first-time counterparty EXT-0502, 4.8\u00d7 the teacher customer's \u00a34,200 expected monthly credits; its generic 'Payment' reference and reviewed 90-day activity provide no verified explanation. The prior \u00a34,200 salary credit TX-000414 is consistent with expected activity, and no cash deposits, related outgoing payments or hard screening flags were found; the isolated anomaly warrants analyst review.",
+  "precedents_relied_on": [],
+  "precedents_overridden": [],
+  "tool_calls": [
+   "write_todos",
+   "get_transaction",
+   "pattern-analyst",
+   "kyc-precedent",
+   "get_customer_profile",
+   "record_decision"
+  ],
+  "sar": null,
+  "why_queued": "human-decided"
+ },
+ {
+  "scenario": "mule ring: 4th forward (not yet confirmed) and 5th (confirmed)",
+  "transaction_id": "TX-000762",
+  "ok": true,
+  "checks": {
+   "decision escalate (label escalate)": true,
+   "human asked: True (expected True)": true,
+   "SAR draft saved": true,
+   "SAR grounded (1.0)": true
+  },
+  "seconds": 32.2,
+  "model_calls": 15,
+  "trace_run_id": "12ef148f-3d4f-4453-ada6-0e209663afed",
+  "decided_by": "human",
+  "final_decision": "escalate",
+  "reason": "TX-000759 (\u00a3529.95), TX-000760 (\u00a3452.90) and TX-000761 (\u00a3584.72) brought \u00a31,567.57 from three distinct individuals within 1 hour 40 minutes; TX-000762 sent \u00a31,489.19 (95%) three hours later to new counterparty ACC-0050, identified as a collector by fund-flow. This rapid fan-in/pass-through is suspicious despite unverified 'Money owed', 'Rent' and 'Invoice' references; no confirmed ring, screening hard flag or applicable precedent was found.",
+  "precedents_relied_on": [],
+  "precedents_overridden": [],
+  "tool_calls": [
+   "write_todos",
+   "get_transaction",
+   "kyc-precedent",
+   "pattern-analyst",
+   "fund-flow",
+   "get_customer_profile",
+   "record_decision",
+   "sar-writer"
+  ],
+  "sar": {
+   "subject": "Amira Khan, CUS-0043",
+   "pattern": "mule_fan_in",
+   "timeline": [
+    "2026-10-28: Plausible wages credit of \u00a3534.44 (TX-000482).",
+    "2026-11-10 21:20: \u00a3529.95 received from EXT-VIC-01011, reference 'Money owed' (TX-000759).",
+    "2026-11-10 22:10: \u00a3452.90 received from EXT-VIC-01012, reference 'Thanks' (TX-000760).",
+    "2026-11-10 23:00: \u00a3584.72 received from EXT-VIC-01013, reference 'Rent' (TX-000761).",
+    "2026-11-11 02:00: \u00a31,489.19 sent by online internal transfer from ACC-0043 to first-time counterparty ACC-0050, Northgate Trading Ltd, reference 'Invoice'; escalation recorded as mule_fan_in, risk 78, confidence .77 (TX-000762)."
+   ],
+   "evidence": [
+    "Three incoming payments from distinct private individuals total \u00a31,567.57 (TX-000759, TX-000760, TX-000761).",
+    "The \u00a31,489.19 outgoing transfer occurred three hours after the last incoming payment and was roughly 95% of the incoming total; fund-flow collector ACC-0050, pass_through_ratio .95, ring_confirmed false, and no other network transactions reported (TX-000759, TX-000760, TX-000761, TX-000762).",
+    "For this individual student in GB, ACC-0043 was opened 2023-09-03 and rated low risk; expected monthly credits were \u00a3900 and expected cash \u00a30, versus 30-day credits of \u00a32,102.01 and cash \u00a30; plausible wages of \u00a3534.44 were identified (TX-000482, TX-000759, TX-000760, TX-000761, TX-000762).",
+    "PEP false, screening hits none and hard flags none; payment labels could indicate legitimate activity but remain unverified (TX-000759, TX-000760, TX-000761, TX-000762).",
+    "No structuring, round trip or major one-off credit was found (TX-000759, TX-000760, TX-000761, TX-000762)."
+   ],
+   "narrative": "The three payments from distinct private individuals, followed three hours later by an outgoing transfer of roughly 95% of their combined value to a first-time counterparty, prompted a mule_fan_in escalation. The \u00a31,567.57 incoming total and \u00a31,489.19 outgoing transfer merit review against expected \u00a3900 monthly credits, although plausible wages and the payment references may have legitimate explanations. The fund-flow finding does not confirm a ring, and no other network transactions were reported; this draft does not establish laundering. An analyst should verify the sources and purposes of the incoming payments, the 'Invoice' transfer and the relationship to Northgate Trading Ltd before reaching a conclusion.",
+   "precedents_cited_or_overridden": [
+    "Applicable precedents: none; none cited or overridden.",
+    "Expired precedents: none; none cited or overridden."
+   ],
+   "disclaimer": "Draft for analyst review, not legal, compliance or regulatory advice. Synthetic data only."
+  },
+  "why_queued": "human-decided"
+ },
+ {
+  "scenario": "mule ring: 4th forward (not yet confirmed) and 5th (confirmed)",
+  "transaction_id": "TX-000770",
+  "ok": true,
+  "checks": {
+   "decision escalate (label escalate)": true,
+   "human asked: False (expected False)": true,
+   "SAR draft saved": true,
+   "SAR grounded (1.0)": true
+  },
+  "seconds": 39.4,
+  "model_calls": 17,
+  "trace_run_id": "69d51ec1-bf26-4f26-a3fb-2d89e4ab0ddf",
+  "decided_by": "agent",
+  "final_decision": "escalate",
+  "reason": "TX-000764 (\u00a3408.92), TX-000766 (\u00a3754.19) and TX-000768 (\u00a3742.46) brought in \u00a31,905.57 from three individuals on 2026-11-11; TX-000770 forwarded \u00a31,810.29 (95%) to first-time payee ACC-0050 within hours. Fund-flow confirms a fan-in ring converging on ACC-0050 involving ACC-0044 and four other feeder accounts, a hard flag outweighing the unverified 'Invoice' reference; no valid applicable precedents or screening hits were identified.",
+  "precedents_relied_on": [],
+  "precedents_overridden": [],
+  "tool_calls": [
+   "write_todos",
+   "get_transaction",
+   "pattern-analyst",
+   "kyc-precedent",
+   "fund-flow",
+   "get_customer_profile",
+   "record_decision",
+   "sar-writer"
+  ],
+  "sar": {
+   "subject": "Josh Patel, CUS-0044",
+   "pattern": "mule_fan_in",
+   "timeline": [
+    "2026-10-28T07:00 \u2014 TX-000483: \u00a3667.07 incoming wages (context).",
+    "2026-11-11T09:20 \u2014 TX-000764: \u00a3408.92 incoming from EXT-VIC-01014.",
+    "2026-11-11T10:10 \u2014 TX-000766: \u00a3754.19 incoming from EXT-VIC-01015.",
+    "2026-11-11T11:00 \u2014 TX-000768: \u00a3742.46 incoming from EXT-VIC-01016.",
+    "2026-11-11T14:00 \u2014 TX-000770: \u00a31,810.29 outgoing online internal transfer to first-time counterparty ACC-0050, Northgate Trading Ltd, reference 'Invoice'."
+   ],
+   "evidence": [
+    "TX-000764, TX-000766, TX-000768: three individual incoming credits total \u00a31,905.57, versus expected monthly credits of \u00a3900.",
+    "TX-000770: \u00a31,810.29 outgoing to ACC-0050 represents 95% of those credits passed on within 4h40 of the first credit.",
+    "TX-000770: network reports ring_confirmed true, collector ACC-0050 and feeder accounts ACC-0040, ACC-0041, ACC-0042, ACC-0043, ACC-0044; hard flag.",
+    "TX-000770: recorded escalation for mule_fan_in, risk 96, confidence .96; no verified invoice or independently established legitimate reason.",
+    "TX-000483: \u00a3667.07 incoming wages on 2026-10-28T07:00, included as context."
+   ],
+   "narrative": "Three incoming credits totaling \u00a31,905.57 exceeded Josh Patel's expected monthly credits of \u00a3900, and 95% was transferred to a first-time counterparty within 4h40 of the first credit. The reported confirmed ring and collector relationship raise suspicion of mule fan-in, but do not establish the purpose of these transfers. The 'Invoice' reference is not supported by a verified invoice or an independently established legitimate reason. An analyst should check the sources of the credits, the relationship with ACC-0050, and supporting documentation for the transfer.",
+   "precedents_cited_or_overridden": [
+    "No applicable or overridden precedents reported."
+   ],
+   "disclaimer": "Draft for analyst review, not legal, compliance or regulatory advice. Synthetic data only."
+  },
+  "why_queued": "spot-check"
+ }
+]

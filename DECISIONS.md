@@ -341,3 +341,46 @@ test problems. Both fixes are in `tools/decisions.py` and covered by new no-LLM 
 **After the fixes:** 9/9 on two consecutive live runs, and every SAR draft is grounded (`evals/sar_checks.py`: every
 cited transaction exists and was visible at the time, and the disclaimer is exact). Investigations take 16-52s;
 the mule cases are the slowest (28-52s).
+
+---
+
+## DEC-016 · Eval results (phase 5) and how they were produced
+**Status:** Info · 2026-11-25 · model `openai:gpt-6-sol` · `scripts/run_experiments.py`
+
+**Method.** World 1 (dev) was run once to check the pipeline; **nothing was tuned after it**. World 2 (test) was
+then run once, and those are the reported numbers. Human answers in the `sentinel` runs are scripted from
+`reviewer_answers.jsonl`; with no scripted answer, the agents' own decision is accepted (the starter's rule). The
+rules-only baseline uses the same tier 1, network check included (DEC-013). All data is synthetic (DEC-005).
+
+**Headline: benchmark test split (world 2: 36 customers, 950 transactions, 15 planted alerts)**
+
+| Metric | Rules only | Sentinel |
+|---|---|---|
+| False positives (alerts an analyst clears for nothing) | 30 | **2** (−93%) |
+| False-positive rate (of transactions labelled clear) | 3.2% | **0.2%** |
+| Alert precision | 33% | **88%** |
+| Recall on planted alerts (all 4 typologies) | 100% | **100%** (equal, as designed: DEC-002) |
+| Decision accuracy (starter evaluator) | 0.968 | **0.993** |
+| Score alignment (starter evaluator) | 0.938 | 0.942 |
+| Review routing (starter evaluator) | 0.990 | 0.975 (lower: Sentinel asks a human in some cases the labels don't mark ambiguous) |
+| Transactions reaching an LLM | 0% | **4.7%** (45 investigations) |
+| Model calls · tokens · median seconds per investigation | – | 12.1 · 36k · 22s |
+| Human reviews, month 1 → month 2 | – | 28 → 6 (the repeat cases are planted in the data: DEC-005) |
+
+Dev split (world 1) for comparison: false positives 28 → 4, precision 35% → 79%, recall 100% → 100%, LLM share 5.0%.
+
+**Scenario suite (world 0, 6 scenarios, 9 investigated transactions).** Memory safeguards, agent behaviour, SAR and
+network-scope evaluators all score 1.0: valid precedent used, no reliance on expired or out-of-scope precedents,
+hard flag overrides Liam's precedent, `kyc-precedent` called every time, `record_decision` once, specialists match
+the rule reasons, every SAR grounded, every network call audited. Rules-only on the same scenarios: equal recall,
+but it can't use or override precedents (0.0) and escalates the benign cases (FP rate 1.0).
+
+**Fixes made while running evals.**
+- Rules-only on the scenario dataset first scored only the selected transactions, so they had no history. It now
+  scores the whole world, then picks them. (The benchmark was unaffected: it always scored whole worlds.)
+- Evaluators with nothing to measure in an example (for example no planted alert in a scenario) now return no
+  score instead of 0 or 1, so averages aren't distorted.
+- Rules-tier records now carry `agent_decision="clear"`, which the starter's `decision_accuracy_eval` compares.
+
+**LangSmith.** Datasets `<project>-sentinel-benchmark` (dev/test splits) and `<project>-sentinel-scenarios`.
+Experiments `rules-only-*` and `sentinel-*` on both, viewable side by side in each dataset's comparison view.

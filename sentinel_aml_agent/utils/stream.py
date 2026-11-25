@@ -113,7 +113,7 @@ def process_stream(agent, ctx: MyAgentContext, transactions: list[dict], reviewe
 
         if not goes_to_agents(rule_score, ctx):
             record = {"transaction_id": tx["transaction_id"], "risk_score": rule_score, "final_decision": "clear",
-                      "agent_decision": None, "decided_by": "rules", "rule_score": rule_score,
+                      "agent_decision": "clear", "decided_by": "rules", "rule_score": rule_score,
                       "rule_reasons": reasons, "pattern": "none", "reason": "cleared by rules",
                       "confidence": None, "model_confidence": None, "confidence_checks": [], "hard_flags": [],
                       "precedents_cited": [], "precedents_overridden": [], "trace_run_id": None, "as_of": tx["timestamp"]}
@@ -173,7 +173,8 @@ def process_stream(agent, ctx: MyAgentContext, transactions: list[dict], reviewe
                          "model_calls": own.calls, "tokens": own.input_tokens + own.output_tokens,
                          "tool_calls": _new_tool_calls(messages, start_index),
                          "human": human, "reply": messages[-1].text if messages else "", "trace_run_id": run_id,
-                         "sar": sar}
+                         "sar": sar, "rule_reasons": reasons, "as_of": tx["timestamp"],
+                         "final_decision": record["final_decision"], "decided_by": record["decided_by"]}
         with lock:
             out["transactions"] += 1
             out["decisions"].append(record)
