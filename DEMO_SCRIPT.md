@@ -1,116 +1,177 @@
-# Demo Script — "Sentinel": Multi-Agent AML Transaction Monitoring
+# Demo Script: Sentinel, multi-agent AML transaction monitoring
 
-**Length:** strict **5:00** (judged), then Q&A.
-**Format:** slides on the standard template (provided on the day) + live **Jupyter notebook** demo.
-**Presenters:** Narrator (talks) + Driver (runs cells). Keep them separate people.
-**One-line pitch:** *Sentinel gives AML analysts a team of agents that investigate only what matters, remember every decision safely, find money-mule networks across accounts, and are measured against rules.*
+**Team:** Chain & Grab · **Length:** strict **5:00** (judged), then Q&A · **Timings:** the flight deck's demo shape
+(HACKATHON.md).
+**Format:** slides on the "FSI Hackathon — Submission Template", named `HACK_NATWEST_CHAINANDGRAB`, plus the live
+notebook `sentinel_aml_agent/modules/01_sentinel_demo.ipynb`.
+**Presenters:** a **Narrator** who talks and a **Driver** who runs cells. Keep them different people.
+**One-line pitch:** *Sentinel gives AML analysts a team of agents that investigate only what matters, remember
+every decision safely, find money-mule rings across accounts, and are measured against rules.*
 
-> Notebook header and SAR drafts carry: *"Draft for analyst review, not legal, compliance or regulatory advice. Synthetic data only."*
+> The notebook header and every SAR draft carry: *"Draft for analyst review, not legal, compliance or regulatory
+> advice. Synthetic data only."*
+
+All numbers below are real, from the LangSmith experiments in DECISIONS.md DEC-016 and the ROI estimate in
+README.md. Don't round them up on stage.
 
 ---
 
 ## Run of show
 
-| Time | Segment | Surface |
+| Time | Segment (flight deck) | Surface |
 |---|---|---|
-| 0:00–0:40 | Problem, user, value | Slides 1–2 |
-| 0:40–1:00 | Architecture + what we built on the starter | Slide 3 |
-| 1:00–1:20 | Normal traffic | Notebook |
-| 1:20–1:55 | Structuring | Notebook |
-| 1:55–2:35 | Human-in-the-loop → precedent | Notebook |
-| 2:35–3:00 | Precedent payoff | Notebook |
-| 3:00–3:45 | Mule ring + safeguard override | Notebook |
-| 3:45–4:30 | Eval results | Notebook / Slide 4 |
-| 4:30–5:00 | SAR draft + close | Notebook / Slide 5 |
+| 0:00–0:30 | User, problem and why it matters | Slide 1 |
+| 0:30–1:00 | What the agent does | Slide 2 |
+| 1:00–2:45 | End-to-end demonstration | Notebook sections 1–5 |
+| 2:45–3:30 | LangSmith trace and evaluation | LangSmith + notebook sections 6–7 |
+| 3:30–4:15 | Architecture, controls and human review | Slide 3 |
+| 4:15–4:45 | Results, value and limitations | Slide 4 |
+| 4:45–5:00 | Conclusion, next step and repository link | Slide 5 |
 
 ---
 
-## Slides (on the provided template)
+## Before going on stage
 
-1. **Problem & user:** AML analysts drown in false alerts; money mules and APP-fraud proceeds are spread across accounts; running an LLM on every transaction costs too much. *(Sourced false-positive statistic: about 90-95%, proposed source [Columbia SIPA](https://www.sipa.columbia.edu/detecting-financial-crimes-evaluating-efficacy-automated-transaction-monitoring); check before use.)*
-2. **Sentinel in one line + value targets:** ≥ 50% fewer false positives, equal or higher recall, falling analyst workload, ≤ 5% of transactions reach an LLM.
-3. **Architecture + delta:** rules → triage supervisor → 4 sub-agents (pattern, KYC & precedent, fund-flow, SAR writer) → confidence router → human-in-the-loop → precedent memory. One-line footer: *"Built on the organiser starter: we added the rules tier, multi-agent investigation, cross-account reasoning, safe precedents, and a baseline eval."*
-4. **Eval results:** rules-only vs Sentinel table (real numbers only).
-5. **Close:** what it does, what's next (real ML scorer, case-management integration, public AML benchmarks).
+1. From `sentinel_aml_agent/`, record a fresh live run: `REPLAY=record uv run jupyter notebook modules/01_sentinel_demo.ipynb`, then **Run All**. That takes about 4 minutes and fills the replay cache.
+2. Restart the kernel with `REPLAY=1` (`REPLAY=1 uv run jupyter notebook …`), then **Run All** up to section 3 so the analyst panel is waiting. The banner must read **"REPLAY: model responses recorded from the live run at …"**. Leave it on screen: it's the honest label (DEC-003).
+3. Open these tabs in this order:
+   - the notebook;
+   - LangSmith → the tracing project → Daniel's investigation trace (use the notebook's trace link);
+   - LangSmith → dataset `…-sentinel-benchmark` → **Compare** `rules-only-test-*` vs `sentinel-test-*`;
+   - the slides;
+   - a fully executed copy of the notebook (fallback).
+4. Have the fallback screenshots ready (`sentinel_aml_agent/results/screenshots/`).
+5. Rehearse to **4:45**.
 
 ---
 
-## Demo customers (seeded, deterministic)
+## Slides (on the submission template)
 
-| Customer | KYC profile | Role in demo |
+1. **Problem and user.**
+   - AML analysts in a UK bank's financial-crime team spend most of their time clearing false alerts. Rules-based monitoring is commonly put at 90–95% false positives ([Columbia SIPA](https://www.sipa.columbia.edu/detecting-financial-crimes-evaluating-efficacy-automated-transaction-monitoring); check the page first).
+   - Mule rings spread money across many low-risk accounts.
+   - Calling an LLM on every transaction is too slow and too costly.
+2. **What Sentinel does.**
+   - Rules first, so about 95% of transactions never reach an LLM.
+   - A Deep Agents supervisor and four specialists investigate the rest.
+   - A human decides when the agents are unsure, and the answer becomes a precedent.
+   - Memory can't clear a launderer.
+3. **Architecture and controls.**
+   - Rules tier (with ring check) → supervisor → pattern analyst · KYC & precedent · fund-flow · SAR writer → `record_decision` → `interrupt()` → analyst → precedent store.
+   - Controls in code: hard flags beat precedents; scope and expiry; an unconfirmed mule network goes to a human; the one audited cross-customer tool; call limits per investigation.
+   - Footer: *"Built from the organiser starters: we added the rules tier, multi-agent investigation, cross-account reasoning, safe precedents, SAR drafting and a rules-only baseline eval."*
+4. **Results, value and limitations.**
+   - KPI table: false positives **30 → 2**; precision **33% → 88%**; recall **100% = 100%**; **4.7%** of transactions reach an LLM.
+   - ROI: **37% less analyst time** per million transactions, about **8,800 hours or £395k**, with the assumptions shown.
+   - Limitations: synthetic data; scripted human answers in the evals; a small benchmark.
+5. **Close.** One sentence on what it does. Next steps: an ML scorer in tier 1, case-management integration, public AML benchmarks. The repository link: https://github.com/SaiyamK/fsi-langchain-hackathon-26-natwest-remote-squad-a.
+
+---
+
+## Demo customers (world 0, seeded)
+
+| Customer | Profile | Role |
 |---|---|---|
-| **Daniel Hughes** | Low risk, market trader, cash-heavy, ~£12k cash/month | Structuring |
-| **Sophie Clarke** | Low risk, salaried, ~£3,500/month | Ambiguous credit → human → precedent payoff |
-| **Marcus Reid** | High risk (PEP-linked) | Round-tripping (one line, or in Q&A) |
-| **Mule ring**: Liam Walsh, Chloe Evans, Ben Taylor, Amira Khan, Josh Patel → **Northgate Trading Ltd** | Low-risk students / new accounts → new business account | Fan-in network; Liam has an old analyst clearance that must be overridden |
-| ~200 others | Mixed | Background noise + eval set |
+| **Daniel Hughes** | Market trader, about £12k cash a month | Structuring: four £9,500 deposits, three branches, 48 hours |
+| **Sophie Clarke** | Salaried, about £3,500 a month | £18,000 from a new payer → human → precedent; £19,200 ten months later → auto-cleared |
+| **Mule ring:** Liam Walsh, Chloe Evans, Ben Taylor, Amira Khan, Josh Patel → **Northgate Trading Ltd** | Students → a new business account | 4th forward goes to a human; the ring is confirmed at the 5th; Liam's old clearance is overridden |
+| Marcus Reid | PEP-linked | Round trip (Q&A only) |
+| About 35 others | Mixed | Background traffic |
 
 ---
 
 ## Script
 
-### Slides 1–2 — Problem, user, value (0:00–0:40)
+### 0:00–0:30 · User, problem and why it matters (Slide 1)
 **Say:**
-> "Fraud teams stop the payment, but the money still lands in a mule network. That's where AML analysts come in, and they spend most of their day clearing false alerts. Rules look at one transaction at a time, so laundering spread across transactions or across accounts slips through. Analysts re-investigate customers they cleared last month. And running an LLM on every transaction is too slow and expensive. Sentinel's goals: halve false positives without missing more laundering, cut analyst workload over time, and send fewer than 5% of transactions to an LLM."
+> "We're Chain & Grab. Our user is the AML analyst. Rules-based monitoring buries them in false alerts, around nine
+> in ten by common industry estimates. And the laundering that matters is spread out: across several deposits, or
+> across a ring of mule accounts that each look fine alone. Putting an LLM on every transaction would be far too
+> slow and expensive. So we built Sentinel."
 
-### Slide 3 — Architecture (0:40–1:00)
+### 0:30–1:00 · What the agent does (Slide 2)
 **Say:**
-> "We started from the organiser's transaction-monitoring agent and moved it from card fraud to AML. Rules now clear most traffic. Grey-zone cases go to a triage supervisor built on Deep Agents. It hands the work to four specialists: a pattern analyst, a KYC and precedent agent, a fund-flow network agent, and a SAR writer. If it's confident, it acts. If not, it asks the analyst and remembers the answer."
+> "Rules go first and clear about 95% of traffic with no LLM call. What's left goes to a supervisor built on Deep
+> Agents, which plans and sends four specialists out in parallel: patterns, KYC and past decisions, money flows
+> across accounts, and a SAR writer. If the agents are sure, they act. If they're not, they ask the analyst, and
+> the answer becomes a precedent. And no precedent can ever clear a launderer."
 
-### Notebook — Normal traffic (1:00–1:20)
-**Driver:** Run *Stream: day 1*.
-**Output:** Live counter: transactions processed, % cleared by rules, LLM calls so far.
+### 1:00–2:45 · End-to-end demonstration (Notebook)
+
+**1:00–1:10 · Section 1, normal traffic** *(already run)*.
+**Driver:** Point at the counter and the banner.
 **Say:**
-> "Hundreds of transactions, about 95% cleared by rules in milliseconds with no LLM call. The starter sent every one of these to the model."
+> "Five days of transactions: about 96% cleared by rules in milliseconds. The few flagged went to the agents, who
+> found the legitimate explanation. This is a replay of a live run, and the banner says so."
 
-### Notebook — Structuring (1:20–1:55)
-**Output:** Daniel's 4 × £9,500 cash deposits at 3 branches in 48h; the 4th is flagged. Trace summary printed:
-1. Supervisor plan → *pattern analyst*
-2. Recalls 3 prior deposits, £28,500 total, 3 branches
-3. KYC: expected cash ~£12k/**month**; this is £38k in **2 days**
-4. Verdict: **Structuring, confidence 0.92 → escalate**
+**1:10–1:35 · Section 2, structuring.**
+**Driver:** Scroll to Daniel's deposits 3 and 4.
+**Say:**
+> "Daniel deposits £9,500 cash, four times, at three branches in two days. That's just under the £10,000
+> monitoring threshold every time. Deposit three already raises an alert, and deposit four has the full picture:
+> £38,000 in two days against £12,000 expected a month. The supervisor delegated to the pattern analyst and the KYC
+> agent in parallel, escalated with confidence 0.86, and the SAR writer drafted the report. We'll see that at the
+> end."
+
+**1:35–2:05 · Section 3, unsure, so it asks a human.**
+**Driver:** In the analyst panel, type *"Annual bonus — employer verified via payslip"* → click **Clear**.
+**Say:**
+> "Sophie receives £18,000, five times her salary, from someone who's never paid her. Bonus? Fraud? The agents
+> aren't sure, so the graph pauses and asks. The analyst checks the payslip and clears it, and that note is saved
+> as a precedent with a twelve-month expiry."
+
+**2:05–2:15 · Section 4, the precedent pays off.**
+**Driver:** Scroll to TX-001130.
+**Say:**
+> "Ten months later, the same employer pays £19,200. The agents find the analyst's precedent, still valid, with no
+> red flags, and clear it on their own. Nobody investigates it twice."
+
+**2:15–2:45 · Section 5, mule ring and safeguard override.**
+**Driver:** Scroll through the three verdicts, then the network graph.
+**Say:**
+> "Five student accounts pass almost everything on to a new business account within hours. On the fourth forward
+> the ring isn't confirmed yet, so a human decides. At the fifth, our graph check confirms it, and the fund-flow
+> agent, the only one allowed to look across customers and fully audited, explains it. Then Liam: an analyst
+> cleared his 'flatmate' transfers in March. Ring membership is a hard red flag, so the code overrides that
+> precedent. Memory helps, but it can't let a launderer through."
+
+### 2:45–3:30 · LangSmith trace and evaluation
+**Driver:**
+1. Switch to the LangSmith trace of Daniel's investigation, about 15 seconds. Point to the supervisor's plan (`write_todos`), the parallel `task` calls to the sub-agents, and `record_decision`.
+2. Switch to the benchmark **Compare** view, about 10 seconds.
+3. Back in the notebook, show section 6 (the coverage table) and section 7 (monitoring), about 15 seconds.
 
 **Say:**
-> "Each deposit sits just under the bank's £10,000 cash-monitoring threshold, so each one looks fine alone. The pattern analyst recalls the earlier three. Confidence is high, so it escalates with the evidence already gathered."
+> "Every decision is traced: the plan, each specialist, the tools and the verdict. We evaluated on a held-out
+> synthetic world against the same rules on their own: eight categories, from detection to memory safeguards to
+> whether the agent calls the right specialists. Safeguards and behaviour score 100% on our scenarios. After
+> go-live, an online evaluator scores every SAR, and an annotation queue puts the human-decided cases in front of
+> an analyst."
 
-### Notebook — Unsure → asks a human (1:55–2:35)
-**Output:** Sophie receives £18,000 from a new counterparty. Supervisor verdict: confidence 0.55 → graph **pauses** (`interrupt()`); an `ipywidgets` analyst panel shows the evidence summary and why it's unsure.
-**Driver:** Type *"Annual bonus — employer verified via payslip"* → click **Clear**.
+*(If the online evaluator or queue reviews aren't set up yet, the monitoring cell says so; say "it's configured,
+waiting for its first scores".)*
+
+### 3:30–4:15 · Architecture, controls and human review (Slide 3)
 **Say:**
-> "About five times her monthly salary, from someone new. It could be fraud, a bonus, or a property sale. The agent isn't sure, so it pauses and asks. The analyst's decision becomes a precedent with an expiry date, stored in long-term memory."
+> "The architecture has three tiers: rules, agents, human. The controls are code, not prompts. Hard flags (sanctions,
+> PEP, a confirmed ring) beat any precedent. A precedent must match the customer, counterparty and pattern, and it
+> expires. A suspected mule network always goes to a human. Only the supervisor can pause the graph, and only the
+> fund-flow agent can look across customers, logged on every call. Middleware caps model calls per investigation,
+> and the filesystem tools are hidden from the model."
 
-### Notebook — Precedent payoff (2:35–3:00)
-**Driver:** Run *Fast-forward 10 months*.
-**Output:** Sophie receives £19,200 from the same employer → **auto-cleared**: *"Precedent 2026-10-14 'Annual bonus — employer verified', valid until 2027-10-14. Hard red flags: none."*
+### 4:15–4:45 · Results, value and limitations (Slide 4)
 **Say:**
-> "Same case ten months later. The agent clears it on its own and cites the analyst. The analyst doesn't have to investigate it twice."
+> "On the test world, 950 transactions: false positives fell from 30 to 2, precision rose from 33% to 88%, and we
+> caught every planted case, the same as the rules. Only 4.7% of transactions touched an LLM. Scaled to a million
+> transactions, that's about 37% less analyst time, roughly 8,800 hours a year at our stated assumptions. Not 93%,
+> because Sentinel asks quick questions instead of guessing. The limits: synthetic data, scripted human answers in
+> the eval, and a small benchmark."
 
-### Notebook — Mule ring + safeguard (3:00–3:45)
-**Output:** Five low-risk accounts receive many small transfers and forward almost everything to **Northgate Trading Ltd** within hours. The 5th forward is flagged. The fund-flow agent's network graph is drawn (matplotlib): senders → 5 mules → Northgate highlighted.
-**Then:** *"Liam Walsh: precedent found ('transfers from flatmates', cleared 2026-03-10). **Overridden**: confirmed fan-in network membership (hard red flag)."*
-**Say:**
-> "No single customer here looks suspicious. The fund-flow agent traced money across accounts and found a mule ring, which per-customer rules can't see. It's the only agent allowed to look across customers, and every call it makes is logged. And note Liam: an analyst cleared him months ago, but the KYC and precedent agent **refused to follow that precedent** because network membership is a hard red flag. Memory helps the agent, but it can't be used to let a launderer through. The same agent also catches round-tripping, for example on our PEP-linked customer."
-
-### Eval results (3:45–4:30)
-**Output:** Table loaded from `results/eval_summary.json`, saved from the pre-run LangSmith experiments `rules-only` and `sentinel` (real numbers only):
-
-| Held-out test set (worlds 5-6, [N] tx) | Rules only | Sentinel |
-|---|---|---|
-| False-positive rate | [X%] | [Y%] |
-| Recall on planted cases | [X / N] | [Y / N] |
-| Decision accuracy · review routing (starter evaluators) | [a · r] | [a · r] |
-| Analyst reviews, month 1 → month 2 | [A → A] | [A → B] |
-| Correct precedent overrides | n/a | [K / K] |
-| % tx reaching LLM · cost / 1k tx | 0% · £0 | [Z%] · [£C] |
-
-**Driver:** Flash the LangSmith experiment comparison (3–5 seconds), then the monitoring cell: the online evaluator's score on Daniel's SAR and the annotation queue's agreement rate (about 10 seconds).
-**Say:**
-> "On a held-out labelled set, Sentinel cut false positives by [X]% while catching [as many / more] planted cases. The starter's own evaluators improved too. Analyst reviews dropped from month one to month two as precedents built up, and only [Z]% of transactions ever reached an LLM. After go-live, an online evaluator in LangSmith judges every SAR as it's written, and weak ones, plus a sample of the agent's own decisions, land in the analyst's review queue. Their corrections become new test cases."
-
-### SAR draft + close (4:30–5:00)
-**Output:** SAR draft for Daniel (subject, pattern, timeline, evidence, narrative, cited precedents/overrides), stamped *"Draft for analyst review, not regulatory advice."*
+### 4:45–5:00 · Conclusion and next step (Slide 5)
 **Say (final line):**
-> "Rules handle most of the volume. Agents investigate the grey zone, a human steps in only when the agents are unsure, every decision is remembered safely, and we measured that it beats rules. That's Sentinel."
+> "Rules take the volume, agents investigate the grey zone, a human decides when they're unsure, and memory never
+> clears a launderer. Next: a real ML scorer and public AML benchmarks. The repo link is on the slide. We're Chain
+> & Grab; that's Sentinel."
 
 ---
 
@@ -118,50 +179,34 @@
 
 | Likely question | Answer |
 |---|---|
-| What did you add beyond the starter? | Rules tier (the starter sent every transaction to the LLM), a Deep Agents supervisor + 4 sub-agents, cross-account network reasoning, structured precedents with safeguards, SAR drafting, AML data with a labelled generator, and a rules-only baseline plus 6 new eval metrics. We kept the starter's memory, `interrupt()` and evaluators. |
-| Why AML and not card fraud? | Fraud is decided one payment at a time. AML needs reasoning across transactions, across accounts and over time, which is where agents and memory add the most. Mule networks are also a top UK priority. |
-| Why agents and not just an ML model? | ML scores; it can't investigate, explain itself, weigh an analyst's written note, or decide to ask a human. We use rules (or ML) to score and agents to investigate. |
-| The starter limits tools to one customer. Doesn't the network agent break that? | Deliberately and narrowly. Only the fund-flow agent has one privileged tool; it returns graph summaries, not profiles, and every call is logged. Network laundering can't be found without that view. |
-| What if the analyst's precedent is wrong? | Precedents expire, apply only to the exact customer + counterparty + pattern, and can never override hard red flags. We showed this with Liam. Every cited precedent is in the audit trail. |
-| How do you stop hallucination? | Verdicts are structured output grounded in tool results; the SAR writer has no tools and only uses the evidence it's given; LLM-as-judge checks SAR drafts for invented facts. Safeguards (hard flags, precedent scope and expiry) are enforced in code, not by the model. |
-| You said checks only add oversight. How did Sophie's second credit auto-clear? | That's the one stated exception. A valid precedent for the same customer, counterparty and pattern, with no hard red flags, satisfies the grey-zone check, because an analyst already decided that exact case. Expired or out-of-scope precedents don't count, and hard flags always override. |
-| What if the agent wants to clear a case with a hard red flag? | It can't. The code forces human review: an analyst decides every hard-flag case the agent would clear. |
-| Can the network agent be pointed at any customer? | No. Its starting account comes from the run's context, not from the model, and every call is written to an audit log. |
-| Cost at bank scale? | About 95% of transactions never touch an LLM. We show % of transactions reaching an LLM and cost per 1,000 transactions from the eval. |
-| Customer data privacy with LLMs? | Synthetic data here. In production: mask identifiers before LLM calls, keep raw data inside the bank, and use a private model deployment through the gateway. |
-| Is your eval just testing your own synthetic data? | Yes, and we say so. It is a controlled benchmark with a held-out split and a fair baseline using the same rules, plus the starter's own evaluators. Next step: public AML datasets (e.g. IBM AML synthetic) and real bank pilots. |
-| Why multi-agent instead of one agent? | Each specialist has a narrow toolset and prompt, so it's easier to test, evaluate and swap; the supervisor only combines findings. It also contains the cross-customer privilege to a single agent. |
-| What does a regulator see? | Every verdict has its evidence, tool calls, cited/overridden precedents and confidence in the trace and the `decisions` audit store, all exportable. |
+| What did you add beyond the starter? | A rules tier (the starter sent every transaction to the LLM), a Deep Agents supervisor with 4 sub-agents, cross-account ring detection, structured precedents with safeguards in code, SAR drafting, a labelled AML data generator, a rules-only baseline and 8 eval categories. We kept the starter's memory, `interrupt()` and its 3 evaluators unchanged. |
+| Recall is 100% for both. What do the agents add? | Precision. Both catch every planted case, because the agents only see what the rules flag, and the baseline escalates everything flagged. The agents remove the false alerts: 30 down to 2. That's the analyst's time. |
+| Isn't your ring check just another rule? | Yes, the confirmation is deterministic, and the baseline gets it too, so the comparison is fair. Per-customer rules can't see a ring at all. The agents turn the flag into an explained case, send the unconfirmed early forwards to a human, and override the old precedent. |
+| Why AML and not card fraud? | Fraud is decided one payment at a time. AML needs reasoning across transactions, accounts and time, which is where agents and memory add the most. |
+| Why agents and not an ML model? | ML scores; it can't investigate, explain itself, weigh an analyst's written note, or decide to ask a human. Rules (or ML) score; agents investigate. |
+| Doesn't the network agent break the one-customer rule? | Deliberately and narrowly. One tool, held by one agent. Its starting account comes from the run context, not the model. It returns account IDs and amounts, never profiles, and every call is audited. |
+| What if the analyst's precedent is wrong? | It expires, applies only to the same customer, counterparty and pattern, and can't override a hard flag. We showed Liam's being overridden. Every precedent relied on or overridden is in the audit record. |
+| How did Sophie's second credit auto-clear if checks only add oversight? | That's the one stated exception: a valid, in-scope precedent with no hard flags satisfies the grey-zone check, because an analyst already decided that exact case. Expired or out-of-scope precedents don't count; our evals check both. |
+| Can the agent clear a hard-flag case? | No. The code forces a human decision on any hard-flag case the agent wants to clear. |
+| How do you stop hallucination? | Findings are structured output from tool results. The SAR writer has no tools and only sees the evidence. Code checks that every transaction a SAR cites exists and was visible at the time: 100% on our runs. |
+| How did you get the ROI? | From the test-world rates, scaled to a million transactions, with stated assumptions: 30 minutes per alert, 10 per review question, £45 an hour. Replace them with a bank's figures. LLM cost depends on the gateway price, so we report tokens. |
+| Cost and speed? | About 95% of transactions never touch an LLM. Each investigation takes about 12 model calls, 36k tokens and 22 seconds median, with hard caps in middleware. |
+| Isn't the demo a replay? | Yes, and the banner says so: the responses were recorded from a live run, with the trace linked. Rules, safeguards and memory run for real, and the analyst's click is live. We can run it fully live if there's time. |
+| Is your eval just your own synthetic data? | Yes, and we say so: a held-out world, a fair baseline using the same rules, tuning on dev only, and the starter's own evaluators. Next: public AML datasets and a pilot. |
+| Why multi-agent? | Each specialist has a narrow toolset, so it's easier to test, evaluate and swap, and the cross-customer privilege is contained in one agent. Our trajectory evals check that the right specialists are called. |
+| Data privacy with LLMs? | Synthetic data here. In production: mask identifiers before LLM calls, keep raw data in the bank, and use a private deployment through the gateway. |
+| What does a regulator see? | For every decision: the evidence, tool calls, precedents relied on or overridden, confidence and who decided, in the trace and the decision audit store. |
 
 ---
 
 ## Points judges should come away with
-1. **Relevance:** a real UK FSI problem (money mules, false positives), a named user (AML analyst), measurable value vs baseline
-2. **Clear delta over the starter:** rules tier, multi-agent, cross-account reasoning, safe precedents, SAR, baseline eval
-3. **Multi-agent:** supervisor + 4 sub-agents, each doing real work
-4. **Memory:** across transactions and across analyst decisions, with safeguards
-5. **Evals:** starter evaluators + baseline + new metrics + LLM-as-judge in LangSmith
-6. **Presentation:** clean 5:00, deterministic run, confident Q&A
-
-## Build requirements derived from this script
-All paths below are inside `sentinel_aml_agent/`. File-level detail, contracts and the timetable are in [PLAN.md](PLAN.md).
-- [ ] AML schema in `data/transactions.jsonl` (`account_id`, `counterparty_id`, `direction`, `txn_type`, `branch`) + `pattern`, `expect_override`, `month` in `analyst_labels`
-- [ ] `data/generate.py`: seeded worlds. World 0 is the demo cast (Daniel, Sophie ×2, Marcus, mule ring + Liam's old precedent in `seed_precedents.jsonl`); worlds 1-4 dev, 5-6 test, ~200 noise customers each
-- [ ] `rules/scorer.py` before `agent.invoke` (also the rules-only baseline); global timestamp-ordered stream in `utils/stream.py`
-- [ ] `agents.py` (submission file; holds the code, no `agent.py`): `create_deep_agent` supervisor + pattern analyst, KYC & precedent agent (screening copied from `01_kyc_agent`), fund-flow agent (privileged, audited graph tool), SAR writer
-- [ ] Decision vocabulary `clear | escalate` in `record_decision`, `instructions.md`, labels and evaluators
-- [ ] Precedent store replacing free-text `customer_notes`: expiry, scope match, hard-flag override, override logging, all enforced in `record_decision`
-- [ ] `scripts/check_scenarios.py`: every scripted demo transaction lands in the expected tier and verdict
-- [ ] Notebook `modules/01_sentinel_demo.ipynb` (submission file; imports from `agents.py`): header disclaimer, `REPLAY` toggle, stream cells, live counter, trace summaries, `ipywidgets` analyst panel, Fast-forward cell, network graph (NetworkX + matplotlib), eval results table, SAR draft
-- [ ] Extend `scripts/run_experiments.py` + `evals/scoring_evals.py`: rules-only baseline, new metrics, LLM-as-judge for SARs (`evals/sar_judge.py`); save `results/eval_summary.json`
-- [ ] LangSmith tracing enabled; `MODEL_NAME="openai:gpt-6-sol"`
-- [ ] Repo: forked, `README.md` updated, `.env` never committed, starter folders removed at the 15:45 freeze
-- [ ] Slides 1–5 on the provided template
+1. **Impact:** a recognisable FSI problem, a named user, KPIs against a baseline (false positives 30 → 2) and an ROI estimate with stated assumptions.
+2. **Technical depth:** LangGraph, LangChain and Deep Agents; a supervisor with 4 sub-agents; memory with safeguards in code; middleware; human review; 8 eval categories in LangSmith.
+3. **Presentation:** 5:00 end to end, honest about replay and limitations, confident Q&A.
 
 ## Demo-day safety net
-- **Deterministic mode:** fixed seeds, IDs and timestamps; scripted scenario order. Temperature 0 where the model accepts it
-- **Pre-computed eval:** run it beforehand; the notebook only loads `results/eval_summary.json`
-- **Pre-run notebook:** keep a fully executed copy open in a second tab as a fallback
-- **Replay mode, on by default on stage:** `REPLAY=1` uses LLM responses cached from a good rehearsal run. It only replays if prompts are identical, so verify it on a fresh kernel beforehand. Run live only if Daniel's case takes under ~30s
-- **Backup video:** screen-record a clean full run the night before
-- **Rehearse to 4:45** so there's slack for latency
+- **Replay with the banner** (`REPLAY=1`), re-recorded on the day. The analyst click is live.
+- **The eval is pre-computed;** the notebook only loads `results/eval_summary.json`.
+- **A fully executed notebook** is open in a second tab.
+- **Screenshots** are in `sentinel_aml_agent/results/screenshots/`.
+- **Rehearse to 4:45.**
