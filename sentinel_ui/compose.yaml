@@ -1,0 +1,27 @@
+# Runs on the VPS behind coolify-proxy (Traefik) via the *.justpush.cloud Cloudflare tunnel.
+# Traefik entrypoint is plain http: Cloudflare terminates HTTPS (never make Traefik redirect to https).
+# SENTINEL_BASIC_AUTH is an htpasswd line (user:hash) kept in sentinel_ui/.env on the server only.
+services:
+  sentinel-aml-ui:
+    build:
+      context: ..
+      dockerfile: sentinel_ui/Dockerfile
+    image: sentinel-aml-ui:latest
+    container_name: sentinel-aml-ui
+    restart: unless-stopped
+    environment:
+      SENTINEL_UI_MODE: ${SENTINEL_UI_MODE:-}
+      SENTINEL_LIVE_TX: ${SENTINEL_LIVE_TX:-}
+      SENTINEL_SPEED: ${SENTINEL_SPEED:-8}
+    labels:
+      traefik.enable: "true"
+      traefik.http.routers.sentinel-aml.entryPoints: http
+      traefik.http.routers.sentinel-aml.rule: Host(`sentinel-aml.justpush.cloud`)
+      traefik.http.routers.sentinel-aml.middlewares: sentinel-aml-auth
+      traefik.http.middlewares.sentinel-aml-auth.basicauth.users: ${SENTINEL_BASIC_AUTH:?set SENTINEL_BASIC_AUTH in sentinel_ui/.env}
+      traefik.http.services.sentinel-aml.loadbalancer.server.port: "8000"
+    networks: [coolify]
+
+networks:
+  coolify:
+    external: true

@@ -198,3 +198,9 @@ cython_debug/
 # Sentinel replay cache (re-created with REPLAY=record) and debug logs
 sentinel_aml_agent/results/llm_cache.sqlite
 sentinel_aml_agent/results/llm_cache.*.prompts.txt
+
+# Sentinel UI
+node_modules/
+sentinel_ui/web/dist/
+*.tsbuildinfo
+.gstack/
