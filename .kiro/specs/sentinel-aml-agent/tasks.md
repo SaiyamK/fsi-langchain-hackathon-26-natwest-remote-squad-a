@@ -131,23 +131,23 @@ start times; if work starts before 10:00, pull everything forward. The two check
 
 ## Phase 3: Agents (finish by 13:00, Checkpoint A)
 
-- [ ] 3.1 Pattern analyst and KYC & precedent sub-agents
+- [x] 3.1 Pattern analyst and KYC & precedent sub-agents
   - `sub_agents/pattern_analyst.py` + `.md`, `sub_agents/kyc_precedent.py` + `.md`, as `SubAgent` dicts with `response_format` (03's pattern). Apply the spike outcome from 0.3.
   - **Done when:** each returns a valid findings object for Daniel's 4th deposit.
   - _Requirements: R4.1, R4.3_
 
-- [ ] 3.2 Supervisor in `agents.py`
+- [x] 3.2 Supervisor in `agents.py`
   - `create_deep_agent` with `get_transaction`, `get_customer_profile`, `record_decision`, the sub-agents and `instructions.md` (PLAN.md 5.2).
   - Opens with a judge-readable docstring: what Sentinel is, the three tiers, the four sub-agents, where human review happens, and the disclaimer.
   - **Done when:** `uv run langgraph dev` loads graph `sentinel`. With context `{"user_id": "CUS-0001"}` and Daniel's 4th deposit as the message, the trace shows the supervisor calling `kyc-precedent` and `pattern-analyst` in one turn, then `record_decision` once, with `escalate`.
   - _Requirements: R1.1, R1.3, R4.1, R4.2, R4.4_
 
-- [ ] 3.3 Scenario checks
+- [x] 3.3 Scenario checks
   - `scripts/check_scenarios.py` runs world 0 with seed precedents and scripted answers, then asserts the expected tier and verdict for each scripted transaction: Daniel escalates; Sophie's first credit interrupts; after the note, her second credit auto-clears and cites the precedent; at least 90% clear in the rules tier.
   - **Done when:** it prints PASS for each scenario and exits 0.
   - _Requirements: R3.4, R5.1, R5.4, R6.5_
 
-- [ ] 3.4 **Checkpoint A (by 13:00)**
+- [x] 3.4 **Checkpoint A (by 13:00)**
   - `check_scenarios.py` passes.
   - Time Daniel's case from rule flag to verdict on `gpt-6-sol`, and record the seconds in PLAN.md section 11. Above ~30s, plan for `REPLAY=1` on stage.
   - Commit `feat(agents): supervisor with pattern and KYC sub-agents (tasks 3.1-3.3)` and push.

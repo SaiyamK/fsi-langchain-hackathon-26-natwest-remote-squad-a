@@ -129,12 +129,12 @@ def process_stream(agent, ctx: MyAgentContext, transactions: list[dict], reviewe
         run_id = str(uuid.uuid4())
         run_ctx = replace(ctx, user_id=tx["user_id"], as_of=tx["timestamp"], rule_score=rule_score,
                           rule_reasons=tuple(reasons), trace_run_id=run_id)
+        own = UsageCounter()  # this investigation only (the shared counter is updated by several threads)
         config = {"configurable": {"thread_id": tx["user_id"]}, "run_id": run_id, "recursion_limit": 80,
-                  "callbacks": [counter], "run_name": "sentinel-investigation",
+                  "callbacks": [counter, own], "run_name": "sentinel-investigation",
                   "tags": ["sentinel", "investigation", *(extra_tags or [])],
                   "metadata": {"transaction_id": tx["transaction_id"], "user_id": tx["user_id"],
                                "rule_score": rule_score}}
-        calls_before = counter.calls
         started = time.perf_counter()
         start_index = msg_index.get(tx["user_id"], 0)
         result = agent.invoke(investigation_message(tx, rule_score, reasons), config, context=run_ctx)
@@ -170,7 +170,8 @@ def process_stream(agent, ctx: MyAgentContext, transactions: list[dict], reviewe
         store.put(("decisions", tx["user_id"]), tx["transaction_id"], record)
 
         investigation = {"transaction_id": tx["transaction_id"], "user_id": tx["user_id"], "seconds": round(seconds, 1),
-                         "model_calls": counter.calls - calls_before, "tool_calls": _new_tool_calls(messages, start_index),
+                         "model_calls": own.calls, "tokens": own.input_tokens + own.output_tokens,
+                         "tool_calls": _new_tool_calls(messages, start_index),
                          "human": human, "reply": messages[-1].text if messages else "", "trace_run_id": run_id,
                          "sar": sar}
         with lock:

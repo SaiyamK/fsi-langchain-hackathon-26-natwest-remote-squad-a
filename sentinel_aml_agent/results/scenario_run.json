@@ -1,0 +1,114 @@
+{
+ "results": [
+  {
+   "scenario": "structuring (Daniel, deposits 3 and 4)",
+   "transaction_id": "TX-000159",
+   "ok": true,
+   "checks": {
+    "decision escalate (label escalate)": true,
+    "human asked: False (expected False)": true,
+    "SAR draft saved": true
+   },
+   "seconds": 34.2,
+   "model_calls": 53,
+   "trace_run_id": "e9bb7c94-fbec-4f15-9476-9dfd9deace86",
+   "decided_by": "agent",
+   "final_decision": "escalate",
+   "reason": "TX-000131, TX-000149 and TX-000159 were each \u00a39,500 cash deposits at different branches within 25.5 hours, totaling \u00a328,500 versus \u00a312,000 expected monthly cash and repeatedly falling just below \u00a310,000. Although market-trading takings are plausible, their source is undocumented; no applicable precedent or hard flag was found."
+  },
+  {
+   "scenario": "structuring (Daniel, deposits 3 and 4)",
+   "transaction_id": "TX-000167",
+   "ok": true,
+   "checks": {
+    "decision escalate (label escalate)": true,
+    "human asked: False (expected False)": true,
+    "SAR draft saved": true
+   },
+   "seconds": 35.9,
+   "model_calls": 15,
+   "trace_run_id": "f51b6aba-5416-482f-a11c-fe766928c4c6",
+   "decided_by": "agent",
+   "final_decision": "escalate",
+   "reason": "TX-000131, TX-000149, TX-000159 and TX-000167 were four \u00a39,500 cash deposits across three branches within 47 hours 18 minutes, totaling \u00a338,000 versus \u00a312,000 expected monthly cash; each fell just below \u00a310,000. The customer's market-trader occupation makes cash takings plausible, but no supporting source records are documented, and no applicable precedents or hard flags were found."
+  },
+  {
+   "scenario": "anomalous credit -> analyst -> precedent (Sophie)",
+   "transaction_id": "TX-000254",
+   "ok": true,
+   "checks": {
+    "decision clear (label clear)": true,
+    "human asked: True (expected True)": true
+   },
+   "seconds": 18.8,
+   "model_calls": 36,
+   "trace_run_id": "44ec4b6e-cf7d-451a-8910-84d834dd6b9f",
+   "decided_by": "human",
+   "final_decision": "clear",
+   "reason": "TX-000254 is a first-time \u00a318,000 incoming payment from EXT-0102 on 2026-10-14, approximately 5.1\u00d7 expected monthly credits of \u00a33,500, but its 'Annual bonus' reference is plausible for a product manager, though the employer connection and bonus remain unverified. The 30-day activity shows only TX-000005 (\u00a3980 rent), no cash deposits, related return or other suspicious transfer pattern; KYC screening found no hard flags or applicable precedents."
+  },
+  {
+   "scenario": "anomalous credit -> analyst -> precedent (Sophie)",
+   "transaction_id": "TX-001130",
+   "ok": true,
+   "checks": {
+    "decision clear (label clear)": true,
+    "human asked: False (expected False)": true,
+    "precedent relied on": true
+   },
+   "seconds": 21.3,
+   "model_calls": 22,
+   "trace_run_id": "c407a6de-307f-489a-90d7-0a637ea9d9cb",
+   "decided_by": "agent",
+   "final_decision": "clear",
+   "reason": "TX-001130 is a \u00a319,200 incoming payment from EXT-0102 on 2027-08-14 (5.5\u00d7 expected monthly credits), with an 'Annual bonus' reference, similar to the previously cleared TX-000254 (\u00a318,000 from EXT-0102 on 2026-10-14); KYC identified a valid same-counterparty anomalous-credit precedent and no hard flags. The customer's product-manager occupation makes a bonus plausible, and the available 90-day activity shows no other transfers or suspicious movement, though the employer connection and bonus entitlement are unverified."
+  },
+  {
+   "scenario": "expired precedent is not relied on (Grace)",
+   "transaction_id": "TX-000659",
+   "ok": true,
+   "checks": {
+    "decision clear (label clear)": true,
+    "human asked: True (expected True)": true
+   },
+   "seconds": 19.4,
+   "model_calls": 38,
+   "trace_run_id": "bfc06a48-ab84-46c5-932f-f32b19fe1db1",
+   "decided_by": "human",
+   "final_decision": "clear",
+   "reason": "TX-000659 is a \u00a315,000 incoming payment from a lettings agent, 3.75\u00d7 expected monthly credits, with a rent-arrears-settlement reference; TX-000550 (\u00a3980 rent outflow) supplies plausible rental context but does not verify the settlement. The available 30-day history shows no structuring or round-trip, screening found no hard flags, and the counterparty's anomalous-credit precedent is expired and was not relied on."
+  },
+  {
+   "scenario": "out-of-scope precedent is ignored (Tom)",
+   "transaction_id": "TX-000880",
+   "ok": true,
+   "checks": {
+    "decision clear (label clear)": true,
+    "human asked: True (expected True)": true
+   },
+   "seconds": 22.3,
+   "model_calls": 42,
+   "trace_run_id": "63e8c1c4-2aac-43ee-bb1b-a616735f81e1",
+   "decided_by": "human",
+   "final_decision": "clear",
+   "reason": "TX-000880 is a \u00a320,000 incoming payment on 2026-11-18 from first-time private individual EXT-0502, 4.8\u00d7 the customer's \u00a34,200 expected monthly credits, with only the generic reference 'Payment'; compare the \u00a34,200 salary in TX-000414. The available history shows no earlier round trip or subsequent outflow and KYC screening found no hard flags or applicable precedent, but there is no verified explanation for this unusually large credit."
+  }
+ ],
+ "rules_tier_share": 0.9699381078691424,
+ "counters": {
+  "transactions": 6,
+  "investigations": 6,
+  "llm_share": 1.0,
+  "model_calls": 68,
+  "input_tokens": 175927,
+  "output_tokens": 11495,
+  "seconds": [
+   18.8,
+   19.4,
+   22.3,
+   34.2,
+   21.3,
+   35.9
+  ]
+ }
+}

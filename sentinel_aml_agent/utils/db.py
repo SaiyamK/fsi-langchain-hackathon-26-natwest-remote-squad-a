@@ -48,7 +48,7 @@ def table(name: str, /) -> list[dict]:
 
 
 def query(name: str, /, **where) -> list[dict]:
-    """The rows whose fields equal the given values, for example `query("transactions", user_id="CUS-0001")`.
+    """The rows whose fields equal the given values, for example `query("transactions", user_id="CUS-0100")`.
 
     The table name is positional-only, so a column called `name` can be filtered on (`get("pep_list", name=...)`).
     """

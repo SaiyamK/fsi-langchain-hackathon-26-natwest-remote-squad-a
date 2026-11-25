@@ -286,3 +286,32 @@ World 2 (test) is not scored until the reported eval run (R9.5).
 
 **Backlog.** Report a second baseline, "per-customer rules only" (`score_all(..., network=False)`), next to the
 main one. It shows separately what the graph check adds (recall) and what the agents add (false positives).
+
+---
+
+## DEC-014 · Checkpoint A results and what the build taught us
+**Status:** Info · 2026-11-25
+
+**Checkpoint A passed** (`uv run python scripts/check_scenarios.py`, live on `gpt-6-sol`, traced to LangSmith):
+6/6 scenario transactions match their analyst labels.
+- Daniel, deposits 3 and 4: escalate, no human, SAR draft saved (34-36s each).
+- Sophie's first credit: the agents were unsure, the analyst cleared it with a note, and the note became a precedent.
+  Her second credit ten months later was auto-cleared, relying on that precedent (19-21s).
+- Grace (expired precedent) and Tom (precedent for a different counterparty): neither precedent was relied on, and
+  both went to a human (19-22s).
+- The rules tier clears 97.0% of world 0, with no LLM call.
+- `uv run langgraph dev` serves graph `sentinel`. Daniel's case run through the server API with
+  `context={"user_id": "CUS-0001", ...}` escalated with the same reason.
+
+**Built differently from the plan, on purpose:**
+- **Structured output retries.** The first live run crashed because a sub-agent left out a required field. Each
+  sub-agent's schema is now wrapped in `ToolStrategy(..., handle_errors=True)`, so a schema error goes back to the
+  model to fix, without loosening the schemas.
+- **Harness profile.** `agents.py` registers a profile for the configured model that hides the built-in filesystem
+  tools and the general-purpose sub-agent. Checked: every supervisor model call is offered only
+  `get_transaction`, `get_customer_profile`, `record_decision`, `task` and `write_todos` (DEC-009).
+- **Limits.** `ModelCallLimitMiddleware(run_limit=20)` and `ToolCallLimitMiddleware("task", run_limit=6)` cap each
+  investigation (DEC-009).
+- **Planning.** The supervisor called `write_todos` five times in one run, so the prompt now says to call it once.
+- **Per-investigation counters.** Model-call counts were mixed up across parallel customers; each investigation
+  now has its own counter.
