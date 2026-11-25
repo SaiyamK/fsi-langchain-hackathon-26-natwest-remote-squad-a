@@ -413,3 +413,25 @@ have no scripted analyst answer, so the agents' decision (clear) stands, as in t
 - the LangSmith online evaluator (`evals/online_evaluators.md`, about 5 minutes in the UI);
 - reviewing the annotation queue `sentinel-analyst-review-saiyam-kalra`, then `scripts/annotation_queue.py --collect`;
 - the slides (template on the day), the source check for the false-positive statistic, and rehearsal.
+
+---
+
+## DEC-018 · The flight deck becomes today's source of truth
+**Status:** Required · 2026-11-25
+
+The LangChain FSI Hackathon Flight Deck v1.0, shared after the kick-off, replaces the attendee guide for today.
+HACKATHON.md now follows it, at the user's request.
+
+- **Agent file name: keep `agents.py`.** The flight deck lists `agent.py`; the attendee guide said `agents.py`. The
+  team chose to keep `agents.py`. The README and HACKATHON.md point to it. If the organisers insist on `agent.py`,
+  rename it and update `langgraph.json` and the 5 imports in `scripts/` and `utils/demo.py`.
+- **README format.** The root README now has the team name, company, use case and run instructions, plus where the
+  notebook, the agent, the evaluations and the datasets are. Team name used: **Remote Squad A | NatWest** (to
+  confirm). Slides: `HACK_NATWEST_REMOTESQUADA` (to confirm).
+- **ROI is now judged.** The README gives an illustrative estimate per million transactions, with stated
+  assumptions: 30 minutes per alert, 10 minutes per review question, £45 per hour. Analyst time falls by **37%**,
+  not 93%, because Sentinel replaces some alerts with quick review questions. We show the honest figure.
+- **Demo shape.** The flight deck's run of show (problem 0:30, what it does 1:00, demo to 2:45, trace and evals to
+  3:30, architecture and controls to 4:15, results and value to 4:45, close) supersedes DEMO_SCRIPT.md's timings.
+- **Screenshots** for the fallback go in `sentinel_aml_agent/results/screenshots/` (list of what to capture there).
+- **Deadline** is 15:45 for submission through https://langch.in/hack-sub. Final commit by 15:35.

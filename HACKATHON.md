@@ -1,116 +1,151 @@
 # HACKATHON.md
 
-Context for AI coding agents (and humans) working in this repo during the FSI Hackathon. Read this before making changes.
+Context for AI coding agents (and humans) working in this repo during the FSI Hackathon. Read this before making
+changes.
+
+**Sources, in order:** the **LangChain FSI Hackathon Flight Deck v1.0** (25 November 2026, shared after the
+kick-off) is the source of truth for today. The attendee guide PDF it replaces is kept below only where the flight
+deck says nothing new.
 
 ## Event
 
-- **Event:** FSI Hackathon, London. GridIron, 8th floor. Wednesday 25 November 2026, 08:15 to 19:00.
-- **Team:** NatWest Remote Squad A (LangSmith workspace "NatWest - Remote A").
-- **Goal:** Teams of 4 to 6 build a working AI agent for a financial services problem using LangChain, LangGraph,
-  Deep Agents and LangSmith. The aim is to cover the full lifecycle: build, test, deploy, monitor, govern, improve.
+- **Event:** LangChain FSI Hackathon, London. GridIron, 8th floor. Wednesday 25 November 2026.
+- **Team:** NatWest Remote Squad A (LangSmith workspace "NatWest - Remote A"). Submission name format:
+  **`Team name | NatWest`**, so **`Remote Squad A | NatWest`** unless LangChain says otherwise.
+- **Goal:** build the smallest complete solution that solves one clear FSI problem, works end to end, has a control
+  or human decision, produces a LangSmith trace, has measurable evaluation evidence, and can be explained in 5 minutes.
 - **Fork/remote:** `origin` is `https://github.com/SaiyamK/fsi-langchain-hackathon-26-natwest-remote-squad-a.git`.
+- **Our project:** Sentinel, multi-agent AML transaction monitoring, in `sentinel_aml_agent/`.
 
-### Schedule
+### Hard stops today
 
 | Time | What happens |
 |------|--------------|
-| 08:15-09:00 | Registration, breakfast, laptop and LangSmith access check |
-| 09:00-10:00 | Welcome, LangSmith walkthrough, setup check, concepts (Deep Agents, LangGraph), live demo |
-| 10:00-13:00 | Build block 1 (LangChain engineers circulating) |
+| 10:00-13:00 | Build block 1 |
 | 13:00-14:00 | Lunch |
-| 14:00-16:00 | Build block 2 |
-| 16:00-17:00 | Team demos and judging (about 5 minutes per team plus Q&A) |
-| 17:00-17:15 | Winners, prizes, close |
-| 17:15-19:00 | Networking and drinks |
+| 14:00-15:45 | Build block 2 and submission |
+| **15:45** | **Submission deadline** |
+| 16:00 | Demos and judging begin: 5 minutes per team, then Q&A |
 
-## Ground rules (must follow)
+### Target checkpoints (recommended)
 
-1. **Synthetic or public data only.** Never add real customer or confidential data to the repo, prompts or traces.
-2. **Keep `.env` and API keys out of git.** `.env` holds the LangSmith key. Never print, log, commit or paste its
-   values into files, commands, issues or PR text. Edit `.env.example` (placeholders only) when adding new variables.
-3. **Outputs are not legal, compliance or regulatory advice.** Keep that disclaimer in any user-facing text or demo.
-4. Keep the use case industry-generic. Do not reference NatWest-internal systems, policies or data.
-5. The team keeps the rights to its project code.
+| By | Done |
+|---|---|
+| 13:00 | One working happy path · one LangSmith trace · one control or human-review point · problem statement and architecture drafted |
+| 15:00 | Normal and difficult cases tested · evaluation results captured · trace and result screenshots saved · main demo path stable |
+| 15:15 | Major features frozen · README and presentation finished · demo rehearsed · fallback screenshots ready |
+| 15:35 | Final commit done · repository and presentation links checked · submitted early enough to recover from errors |
 
 ## Judging (30 points)
 
-Work should be steered toward these three areas:
-
 | Area | What scores |
 |------|-------------|
-| Use case relevance and impact | A real FSI problem, a clear user, measurable value |
-| Technical complexity | Sound use of LangChain fundamentals, multi-agent patterns, memory, evals |
-| Presentation | A clear 5-minute demo on the standard slide template, and good handling of Q&A |
+| **1. Use-case impact** | A recognisable financial-services problem · a clearly identified user · measurable KPIs · **estimated ROI or value** |
+| **2. Technical depth** | Appropriate use of LangGraph, LangChain or Deep Agents · complete system design and architecture · evidence of controls, evaluations, memory, middleware or human review |
+| **3. Presentation** | Demo finishes within 5 minutes · solution works end to end · team explains the design and answers questions |
 
-## Submission
+## Required submission
 
-- A **Jupyter notebook** plus the agent code file (the guide calls it `agents.py`; the starters here use `agent.py`),
-  in a forked GitHub repo. Confirm the exact expected filename on the day.
-- The slide template and full submission guidance are shared on the day.
-- Keep the notebook runnable top to bottom with `.venv/bin/python` as the kernel.
+**In the forked repository:**
+- the **notebook**;
+- the **agent file**. The flight deck says `agent.py`; the attendee guide said `agents.py`. **The team decided to
+  keep `agents.py`** (DECISIONS.md DEC-018);
+- a **README containing team name, company, use case and run instructions**;
+- **any evaluations or datasets created**.
 
-## Starter templates
+**In the presentation:** the problem and who it helps · an end-to-end demonstration · results, KPIs, estimated ROI and
+evaluation scores · how the solution was built · the repository link.
 
-These are starting points, not requirements. Build on one, adapt one, or build a new use case with the same tools.
+**Submission steps:**
+1. Use the name format `Team name | NatWest`.
+2. Fork one repository per team.
+3. Commit the notebook and the agent file.
+4. Complete the 5-minute presentation template ("FSI Hackathon — Submission Template.pptx").
+5. Name the slides **`HACK_NATWEST_TEAMNAME`** (ours: `HACK_NATWEST_REMOTESQUADA`, to confirm).
+6. Submit the fork link and slides through the official route, https://langch.in/hack-sub, **before 15:45**.
 
-| Difficulty | Folder | Pattern | What it does |
-|------------|--------|---------|--------------|
-| Easy | `01_kyc_agent` | LangGraph | Extracts applicant details, screens sanctions and PEP lists, scores risk, routes high-risk cases to a human |
-| Medium | `02_transaction_monitoring_agent` | Deep Agents / `create_agent` | Scores a transaction stream, remembers earlier ones, asks a human when unsure, evals with LangSmith |
-| Hard | `03_document_summary_agent` | Deep Agents, map-reduce | Summarises a long regulatory document into a reviewable brief using parallel sub-agents |
-| Optional | `00_dcode_setup` | `dcode` CLI | Terminal coding agent setup (not part of the submission) |
+### Where our deliverables are
 
-Each folder has its own `README.md`. Read it before editing that folder.
+| Required | Path |
+|---|---|
+| Notebook | `sentinel_aml_agent/modules/01_sentinel_demo.ipynb` (committed with outputs of a live run) |
+| Agent file | `sentinel_aml_agent/agents.py` |
+| README (team, company, use case, run instructions) | `README.md` (repo root) |
+| Evaluations | `sentinel_aml_agent/evals/` (evaluators, SAR rubric, online evaluator setup), `sentinel_aml_agent/results/eval_summary.json` (scores), `sentinel_aml_agent/scripts/run_experiments.py` |
+| Datasets | `sentinel_aml_agent/data/` (generator + synthetic JSONL tables) and the LangSmith datasets `fsi-hackathon-remote-squad-a-sentinel-benchmark` and `-sentinel-scenarios` |
+| Screenshots (fallback) | `sentinel_aml_agent/results/screenshots/` |
+
+## Five-minute demo shape (recommended)
+
+| Time | Segment |
+|---|---|
+| 0:00-0:30 | User, problem and why it matters |
+| 0:30-1:00 | What the agent does |
+| 1:00-2:45 | End-to-end demonstration |
+| 2:45-3:30 | LangSmith trace and evaluation |
+| 3:30-4:15 | Architecture, controls and human review |
+| 4:15-4:45 | Results, value and limitations |
+| 4:45-5:00 | Conclusion and next step |
+
+DEMO_SCRIPT.md uses an older run of show; where they differ, follow this shape.
+
+## Non-negotiable controls
+
+1. **Synthetic or public data only.** No NatWest, customer or proprietary data.
+2. **No NatWest code.**
+3. **Never commit `.env` files, keys, tokens or credentials.** Never print, log or paste them into files, commands,
+   issues, PR text, Teams or Copilot prompts. Edit `.env.example` (placeholders only) when adding variables.
+4. Outputs are not legal, compliance or regulatory advice. Keep that disclaimer in user-facing text and the demo.
+5. The team keeps the rights to its project code.
+
+## Recommended ownership
+
+Product/story (problem, user, KPI, value) · Agent (workflow, tools, end-to-end build) · Controls (guardrails, human
+review, failure handling) · Evaluation (datasets, traces, scores, screenshots) · Submission (README, repository,
+slides, links) · Demo (narration, timing, Q&A).
+
+## Open points (from the flight deck)
+
+- Final remote demonstration and judging arrangements still need confirmation.
+- Several NatWest squads compete as separate teams. Use `Team name | NatWest` unless LangChain says otherwise.
+
+## Resources
+
+- Master deck: "FSI Hackathon London _ 25 Nov 2026 _ Master Deck.pdf"
+- Presentation template: "FSI Hackathon — Submission Template.pptx"
+- Starter repository: https://langch.in/fsi-hack
+- Submission: https://langch.in/hack-sub
+- LangChain Chat: https://chat.langchain.com
+- LangSmith: https://smith.langchain.com · Docs: https://docs.langchain.com (also as MCP servers `docs-langchain` and `reference-langchain`)
+- Questions before the day: Avtar (avtar.raikmo@langchain.dev) or Tanmaiyii (tanmaiyii.rao@langchain.dev)
 
 ## Working in this repo
 
 ### Environment
-
-- Python 3.11+ managed with [uv](https://docs.astral.sh/uv/). One shared `.venv` at the repo root serves all topics.
-- Install from the repo root: `uv sync --all-packages`.
-- **Do not run plain `uv sync` inside a topic folder.** It trims the shared environment and breaks the other topics.
-  `uv run` and `uv add` are fine inside a topic folder.
-- Run Python files from inside their topic folder (for example `uv run python agent.py`), or imports of `utils`
-  and `tools` fail.
+- Python 3.11+ managed with [uv](https://docs.astral.sh/uv/). One `.venv` at the repo root.
+- Install from the repo root: `uv sync --all-packages`. **Don't run plain `uv sync` inside `sentinel_aml_agent/`.**
+- Run Python from inside `sentinel_aml_agent/` (for example `uv run python scripts/check_core.py`), or imports of
+  `utils` and `tools` fail.
 
 ### Configuration
-
-- A single `.env` at the repo root, copied from `.env.example`. Required: `ATTENDEE_NAME`, `LANGSMITH_API_KEY`,
-  `LANGSMITH_WORKSPACE_ID`, `LANGSMITH_PROJECT`.
-- Models go through the LangSmith LLM Gateway. Change the model with `MODEL_NAME` (`provider:model`) in `.env`.
-  Do not hardcode model names or keys in code.
-- Tracing is on (`LANGSMITH_TRACING=true`). Traces appear in the project `fsi-hackathon-<ATTENDEE_NAME>`.
+- One `.env` at the repo root, from `.env.example`: `ATTENDEE_NAME`, `LANGSMITH_API_KEY`, `LANGSMITH_WORKSPACE_ID`,
+  `LANGSMITH_PROJECT`, `MODEL_NAME` (we use `openai:gpt-6-sol`).
+- Models go through the LangSmith LLM Gateway. Don't hardcode model names or keys.
+- Tracing is on; traces go to project `fsi-hackathon-<ATTENDEE_NAME>`.
 
 ### Running
-
-- Agent in LangGraph Studio, from the topic folder: `uv run langgraph dev` (serves on `http://127.0.0.1:2024`).
-- Notebooks, from the topic folder: `uv run jupyter notebook`.
-- KYC input is `{"customer_id": "CUST-001"}`. High-risk customers pause at `human_review` and wait for
-  `{"decision": "approve" | "reject", "notes": "..."}`.
-- Transaction monitoring context is `{"user_id": "USR-001"}` and the message is `New transaction: TX-1003`.
-- Document summary message is `Summarise document PS26-4 for FIRM-001`.
+See the run instructions in `README.md`. Studio: `uv run langgraph dev` in `sentinel_aml_agent/` (graph `sentinel`).
 
 ### Code conventions
-
-- Each agent folder follows the same layout: `agent.py` (exports `agent`), `instructions.md` (system prompt),
-  `tools/`, `utils/`, `data/` (JSONL tables read via `utils/db.py`), `modules/` (notebooks), `langgraph.json`.
-- Tools read data through `utils/db.py` (`table`, `query`, `get`). Data files are re-read on every query, so edits
-  to `data/*.jsonl` apply without a restart.
-- Notebooks have mirrored `.py` files in some topics. Keep the two in sync when changing either.
-- Keep changes small and runnable. A working end-to-end demo matters more than breadth.
+- Layout: `agents.py` (exports `agent`), `instructions.md`, `sub_agents/`, `tools/`, `rules/`, `utils/`, `data/`
+  (JSONL tables read through `utils/db.py`), `evals/`, `scripts/`, `results/`, `modules/` (notebook), `langgraph.json`.
+- The notebook is generated by `scripts/build_notebook.py`; change the script, not the notebook.
+- Safeguards live in code (`tools/decisions.py`), not prompts. No code or prompt may refer to demo customers (DEC-004).
 
 ## Priorities for agents working here
 
-1. Keep the project runnable at all times. Verify with a real run before reporting done.
-2. Favor features that raise the judging score: a clear FSI use case, human-in-the-loop, memory, evals in
-   LangSmith, and a demo that can be shown in 5 minutes.
-3. Add evals and traces where they show the agent is measurably good, not as decoration.
-4. Never commit secrets. Check `git status` and `git diff --staged` before any commit.
-5. Do not push, force-push or change the git remote unless the user asks.
-
-## Useful links
-
-- LangSmith: https://smith.langchain.com
-- Docs: https://docs.langchain.com
-- Courses: https://academy.langchain.com (LangSmith Essentials, Intro to LangChain, Intro to LangGraph, Intro to Deep Agents)
-- Questions: Avtar (avtar.raikmo@langchain.dev) or Tanmaiyii (tanmaiyii.rao@langchain.dev)
+1. Keep the project runnable. Verify with a real run before reporting done.
+2. Favour what the judges score: impact with KPIs and ROI, technical depth with controls and evals, a 5-minute demo.
+3. Never commit secrets. Check `git status` and `git diff --staged` before any commit.
+4. Don't push, force-push or change the git remote unless the user asks.
+5. Planning docs: PLAN.md is the plan; DECISIONS.md records later decisions and wins where they conflict.
