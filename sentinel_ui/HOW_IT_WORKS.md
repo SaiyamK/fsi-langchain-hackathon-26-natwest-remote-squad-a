@@ -77,6 +77,29 @@ In **replay**, the analyst step is still real: pauses still wait for you, and yo
 Only the agents' steps and verdicts come from the recording. Transactions listed in `SENTINEL_LIVE_TX` run live
 even in replay.
 
+### The stream buttons
+
+| Button | What it does |
+|---|---|
+| **Start / Resume** | Releases transactions at the chosen speed |
+| **Pause** | Stops releasing new transactions. Investigations already running carry on and finish |
+| **Fast-forward 10 months** | Releases the next 300 days of transactions at once (rules run on all of them; the agents work through any flagged ones) |
+| **Speed** | Transactions released per second (2–60) |
+| **Reset** | Throws the session away and starts a fresh one at the beginning (below) |
+
+**Reset, exactly** (`POST /api/stream/reset`):
+
+| Cleared | Kept |
+|---|---|
+| The stream position (back to 1 Oct 2026, nothing released) | The data files (`data/*.jsonl`) |
+| Every row, case, alert, counter and the Agent activity panel | The recording file: a new record session **adds to it** |
+| Agent **memory**: precedents saved from analyst notes this session, and the agents' per-customer conversation history (only `seed_precedents.jsonl` is reloaded) | LangSmith traces of runs that already happened |
+| Pending "Needs your decision" pauses (dropped, not answered) | The mode (offline / live / record / replay) |
+
+The site has **one shared session**: Reset restarts it for everyone watching. An investigation that's mid-way through
+model calls when you press Reset finishes in the background, but its result is discarded. During a recording, don't
+reset unless you mean to start over.
+
 ## 4. Where to see what happened
 
 | What | Where |

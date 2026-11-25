@@ -36,8 +36,10 @@ class RecordingInvestigator:
         self.inner = inner
         self.path = path
         self.lock = threading.Lock()
-        self.data = {"recorded_at": datetime.now(timezone.utc).isoformat(timespec="seconds"), "model": model,
-                     "investigations": {}}
+        # Keep what earlier sessions recorded (a Reset or restart must never wipe the recording); same-ID entries
+        # are replaced by the newer run.
+        self.data = load(path) or {"recorded_at": datetime.now(timezone.utc).isoformat(timespec="seconds"),
+                                   "model": model, "investigations": {}}
 
     def run(self, tx, rule_score, reasons, on_step: OnStep, ask_human: AskHuman) -> Outcome:
         started = time.perf_counter()
