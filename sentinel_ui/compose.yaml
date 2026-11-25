@@ -13,6 +13,11 @@ services:
       SENTINEL_UI_MODE: ${SENTINEL_UI_MODE:-}
       SENTINEL_LIVE_TX: ${SENTINEL_LIVE_TX:-}
       SENTINEL_SPEED: ${SENTINEL_SPEED:-8}
+    volumes:
+      # Model + LangSmith keys (repo-root .env on the server only, chmod 600). The agents load /app/.env themselves.
+      - ../.env:/app/.env:ro
+      # Keep recordings across rebuilds
+      - ./recordings:/app/sentinel_ui/recordings
     labels:
       traefik.enable: "true"
       traefik.http.routers.sentinel-aml.entryPoints: http
