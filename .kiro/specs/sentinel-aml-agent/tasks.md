@@ -239,16 +239,16 @@ start times; if work starts before 10:00, pull everything forward. The two check
 
 ## Phase 7: Submission (15:45-16:00)
 
-- [ ] 7.1 README
+- [x] 7.1 README
   - The top section names the two submission files (`agents.py`, `modules/01_sentinel_demo.ipynb`). Then: one-paragraph summary, quick start (`uv sync --all-packages`, `.env` from `.env.example`), how to run the notebook, Studio, `check_scenarios.py` and `run_experiments.py`, the architecture diagram, eval results, and the disclaimer.
   - _Requirements: R1.4_
 
-- [ ] 7.2 Final checks
+- [x] 7.2 Final checks
   - Run every item in PLAN.md section 12 (definition of done) and tick it.
   - `git grep -nE "lsv2_[a-z]{2}_[0-9a-f]{16}" $(git rev-list --all)` returns nothing; `.env` isn't tracked.
   - _Requirements: R1.6_
 
-- [ ] 7.3 Commit, push and tag
+- [x] 7.3 Commit, push and tag
   - Commit `docs: submission README (task 7.1)`, push, then `git tag submission && git push origin submission`.
   - **Done when:** the tag is on GitHub and the repo's file list shows `sentinel_aml_agent/agents.py` and the notebook.
 

@@ -345,17 +345,17 @@ Never cut: rules tier, human-in-the-loop with a precedent, the hard-flag overrid
 | `uv sync` inside `sentinel_aml_agent/` breaks other topics | | Only `uv sync --all-packages` at the root |
 
 ## 12. Definition of done
-- [ ] `uv sync --all-packages` installs cleanly with `sentinel_aml_agent/` in the workspace
-- [ ] `uv run langgraph dev` in `sentinel_aml_agent/` loads graph `sentinel`. Context `{"user_id": "CUS-0001"}` plus `New transaction: TX-…` runs end to end
-- [ ] `uv run python scripts/check_scenarios.py` passes: every scripted demo transaction lands in the expected tier and verdict
-- [ ] `uv run python scripts/run_experiments.py` creates both experiments in LangSmith and writes `results/eval_summary.json`
-- [ ] The online evaluator scores new `sar-writer` runs with `sar_complete` in the tracing project, and its settings are in `evals/online_evaluators.md`
-- [ ] The annotation queue `sentinel-analyst-review-<ATTENDEE>` holds the human-decided cases, and `annotation_queue.py --collect` writes `results/annotation_summary.json` (marked "simulated" if reviews were simulated)
-- [ ] The notebook runs top to bottom on a fresh kernel, live and with `REPLAY=1`
-- [ ] Traces visible in project `fsi-hackathon-<ATTENDEE_NAME>`
-- [ ] Submission files present in `sentinel_aml_agent/`: `agents.py` (the real supervisor code, no `agent.py`) and `modules/01_sentinel_demo.ipynb` (imports from `agents`)
-- [ ] README updated and names the two submission files at the top; disclaimer on the notebook header and SARs
-- [ ] `git status` / `git diff --staged` show no `.env` or keys before push
+- [x] `uv sync --all-packages` installs cleanly with `sentinel_aml_agent/` in the workspace
+- [x] `uv run langgraph dev` in `sentinel_aml_agent/` loads graph `sentinel`. Context `{"user_id": "CUS-0001"}` plus `New transaction: TX-…` runs end to end
+- [x] `uv run python scripts/check_scenarios.py` passes: every scripted demo transaction lands in the expected tier and verdict
+- [x] `uv run python scripts/run_experiments.py` creates both experiments in LangSmith and writes `results/eval_summary.json`
+- [ ] The online evaluator scores new `sar-writer` runs with `sar_complete` in the tracing project, and its settings are in `evals/online_evaluators.md` — **settings written; waiting on the user to create it in the LangSmith UI**
+- [ ] The annotation queue `sentinel-analyst-review-<ATTENDEE>` holds the human-decided cases, and `annotation_queue.py --collect` writes `results/annotation_summary.json` (marked "simulated" if reviews were simulated) — **queue created with 5 runs; waiting on a person to review, then `--collect`**
+- [x] The notebook runs top to bottom on a fresh kernel, live and with `REPLAY=1`
+- [x] Traces visible in project `fsi-hackathon-<ATTENDEE_NAME>`
+- [x] Submission files present in `sentinel_aml_agent/`: `agents.py` (the real supervisor code, no `agent.py`) and `modules/01_sentinel_demo.ipynb` (imports from `agents`)
+- [x] README updated and names the two submission files at the top; disclaimer on the notebook header and SARs
+- [x] `git status` / `git diff --staged` show no `.env` or keys before push
 
 ## 13. Open questions
 - [x] Folder: `sentinel_aml_agent/`, self-contained; starters removed before submission

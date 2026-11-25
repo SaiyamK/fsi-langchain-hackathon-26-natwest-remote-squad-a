@@ -1,71 +1,42 @@
-# FSI Hackathon Workshops
+# Sentinel · NatWest Remote Squad A · LangChain FSI Hackathon, London, 25 Nov 2026
 
-Hands-on notebooks, with mirrored `.py` files, for building financial-services agents with LangChain, LangGraph
-and LangSmith. Each topic has its own folder and README:
+> **Draft for analyst review, not legal, compliance or regulatory advice. Synthetic data only.**
 
-| Folder | Topic | What you build |
-|--------|-------|----------------|
-| [`00_dcode_setup`](00_dcode_setup/README.md) | Deep Agents Code setup | Install and configure `dcode`, a terminal coding agent that helps you build and debug the agents below (optional) |
-| [`01_kyc_agent`](01_kyc_agent/README.md) | KYC onboarding | A LangGraph agent that extracts application details, screens against sanctions and PEP lists, and scores risk |
-| [`02_transaction_monitoring_agent`](02_transaction_monitoring_agent/README.md) | Transaction monitoring | A deep agent with memory and human review, then evaluated and improved with LangSmith |
-| [`03_document_summary_agent`](03_document_summary_agent/README.md) | Compliance brief | A LangGraph map-reduce workflow that summarises a long regulatory document into a reviewable brief |
+**Sentinel** is a multi-agent AML transaction monitoring system for AML analysts: rules clear most traffic, a
+Deep Agents supervisor and four specialists investigate the grey zone, a human decides when the agents are unsure,
+and analyst decisions become precedents that can never clear a launderer. It's measured against a rules-only
+baseline in LangSmith.
 
-## Prerequisites
+## Submission
 
-- Python 3.11+
-- [uv](https://docs.astral.sh/uv/) (recommended)
-- **Windows only:** the Microsoft Visual C++ runtime and build tools (install
-  [Visual Studio Build Tools](https://visualstudio.microsoft.com/visual-cpp-build-tools/) with the "Desktop
-  development with C++" workload). Some packages have to compile during install.
+| File | What it is |
+|---|---|
+| [`sentinel_aml_agent/agents.py`](sentinel_aml_agent/agents.py) | The agent |
+| [`sentinel_aml_agent/modules/01_sentinel_demo.ipynb`](sentinel_aml_agent/modules/01_sentinel_demo.ipynb) | The demo notebook, with outputs from a live run |
+
+Start with [`sentinel_aml_agent/README.md`](sentinel_aml_agent/README.md): results, how to run it, and the layout.
 
 ## Setup
 
-All three topics share one Python environment, `.venv` in this folder. Install it once, from the top level folder:
+Python 3.11+ and [uv](https://docs.astral.sh/uv/). From this folder:
 
 ```bash
 uv sync --all-packages
+cp .env.example .env    # fill in ATTENDEE_NAME, LANGSMITH_API_KEY, LANGSMITH_WORKSPACE_ID
 ```
 
-To work through a topic, `cd` into its folder and follow that folder's README. For example, for the KYC agent:
+Models are reached through the LangSmith LLM Gateway; set `MODEL_NAME` in `.env` (we used `openai:gpt-6-sol`).
 
-```bash
-cd 01_kyc_agent
-```
+## Documents
 
-Then follow [`01_kyc_agent/README.md`](01_kyc_agent/README.md).
+| Doc | Purpose |
+|---|---|
+| [`USE_CASE.md`](USE_CASE.md) | The problem, the user, the architecture and the evaluation design |
+| [`DEMO_SCRIPT.md`](DEMO_SCRIPT.md) | The 5-minute demo and Q&A prep |
+| [`PLAN.md`](PLAN.md) | The implementation plan |
+| [`DECISIONS.md`](DECISIONS.md) | Decisions made while building, including the eval results (DEC-016) |
+| [`HACKATHON.md`](HACKATHON.md) | The hackathon's rules, from the attendee guide |
+| [`.kiro/specs/sentinel-aml-agent/`](.kiro/specs/sentinel-aml-agent/) | Requirements, design notes and the task list we built from |
 
-## Deep Agents Code (optional)
-
-Deep Agents Code (`dcode`) is a terminal coding agent you can use alongside the workshops. It is installed as a
-standalone tool, separate from the shared `.venv`, and keeps its own settings in `~/.deepagents/.env`:
-
-```bash
-uv tool install deepagents-code
-mkdir -p ~/.deepagents
-cp 00_dcode_setup/.env.example ~/.deepagents/.env
-chmod 600 ~/.deepagents/.env
-# Edit ~/.deepagents/.env: set ATTENDEE_NAME, your LangSmith API key and workspace ID
-```
-
-Then run `dcode` from any topic folder. See [`00_dcode_setup/README.md`](00_dcode_setup/README.md) for the full
-setup and troubleshooting.
-
-## Environment variables
-
-All three topics (`01_kyc_agent`, `02_transaction_monitoring_agent`, `03_document_summary_agent`) share one `.env` in this folder:
-
-```bash
-cp .env.example .env
-# Edit .env and fill in your keys
-```
-
-The agents reach their model through the LangSmith LLM Gateway set up in `.env`. They use `openai:gpt-6-terra` by
-default; set `MODEL_NAME` (as `provider:model`) in `.env` to choose another.
-
-## Project layout
-
-Each sub project contains two things to get you going:
-
-- **Notebooks** (in `modules/`) that explains the concepts behind building that kind of agent, with concise
-  examples.
-- **Python starter code** (`agent.py`, with its `tools/` and `utils/`) to get you started with the project.
+Built from the organiser's starter templates (`01_kyc_agent`, `02_transaction_monitoring_agent`,
+`03_document_summary_agent`), which were removed before submission and remain in the git history.
