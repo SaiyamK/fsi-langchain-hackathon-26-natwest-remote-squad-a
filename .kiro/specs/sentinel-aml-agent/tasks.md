@@ -231,7 +231,7 @@ start times; if work starts before 10:00, pull everything forward. The two check
   - A monitoring cell: Daniel's SAR `sar_complete` score from the online evaluator (read with `list_feedback`), and the queue's reviewed count and agreement rate from `results/annotation_summary.json`, with "simulated" shown if it applies. Links to the online evaluator and the queue.
   - _Requirements: R9.4, R10.1, R10.4, R12.6_
 
-- [ ] 6.5 **Checkpoint B / feature freeze (by 15:45)**
+- [x] 6.5 **Checkpoint B / feature freeze (by 15:45)**
   - Remove `01_`-`03_` (and `00_dcode_setup`) and their entries in `/pyproject.toml`. Run `uv sync --all-packages` from the root.
   - Run `check_scenarios.py`, then the notebook top to bottom on a fresh kernel with `REPLAY=1`, then once live if time allows.
   - Commit `chore(submission): remove starters; notebook verified (tasks 6.1-6.5)` and push.

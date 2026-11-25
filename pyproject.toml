@@ -1,5 +1,5 @@
-# One environment for all three topics. Run `uv sync --all-packages` here, in the repo root, to install everything
-# into .venv. Each topic keeps its own pyproject.toml, which lists that topic's dependencies.
+# One environment for the Sentinel project. Run `uv sync --all-packages` here, in the repo root, to install it into .venv.
+# sentinel_aml_agent/pyproject.toml lists its dependencies.
 [project]
 name = "fsi-hackathon"
 version = "1.0.0"
@@ -8,4 +8,4 @@ requires-python = ">=3.11"
 dependencies = []
 
 [tool.uv.workspace]
-members = ["01_kyc_agent", "02_transaction_monitoring_agent", "03_document_summary_agent", "sentinel_aml_agent"]
+members = ["sentinel_aml_agent"]
