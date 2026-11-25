@@ -91,12 +91,12 @@ start times; if work starts before 10:00, pull everything forward. The two check
 
 ## Phase 2: Rules, tools and routing (finish by 12:15)
 
-- [ ] 2.1 Rule scorer and baseline
+- [x] 2.1 Rule scorer and baseline (verified by `scripts/check_rules.py`; network watchlist added, DEC-013)
   - `rules/scorer.py`: `score(tx, history, profile, ctx) -> (int, list[str])` with the features in PLAN.md 5.1, and `baseline_decision(score, ctx)`.
   - **Done when:** on world 0, Daniel's 4th deposit, Sophie's credits and every mule forward score ≥ 30, and at least 90% of world 0 transactions score < 30.
   - _Requirements: R3.1-R3.4_
 
-- [ ] 2.2 Fund-flow graph
+- [x] 2.2 Fund-flow graph (verified by `scripts/check_graph.py`; signature is `fan_in_summary(account_id, as_of)`, reading the active world)
   - `utils/graph.py`: `build_graph(as_of)` (edges only from transactions before `as_of`) and `fan_in_summary(g, account_id, window_hours=72)`.
   - **Done when:** in world 0, `ring_confirmed` is false at the 4th mule forward and true at the 5th.
   - _Requirements: R7.4, R7.5_

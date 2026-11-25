@@ -235,3 +235,54 @@ Experiments: `rules-only` and `sentinel` on both datasets, so every number has a
 **Decision.** `docs-langchain` (`https://docs.langchain.com/mcp`) and `reference-langchain` (`https://reference.langchain.com/mcp`) are in the user-level Kiro MCP config, added by the user. Both were verified with real queries on 2026-11-25.
 
 **First finding.** The Python Deep Agents docs ([Subagents → Context management](https://docs.langchain.com/oss/python/deepagents/subagents#context-management)) say the runtime context passed to the parent `invoke` propagates to every subagent, so subagent tools can read `runtime.context`. Task 0.3's spike still runs, but now to confirm this on our installed `deepagents 0.7.28` and to check `runtime.store`, which that section doesn't cover.
+
+---
+
+## DEC-012 · Labels judge each transaction by what was visible at that moment
+**Status:** Required (no cheating) · found while building, before the rule scorer
+
+**Decision.** An alert label goes on every transaction where an analyst, seeing only the history up to that
+moment, should raise an alert. Not just on the last step of a pattern.
+- **Structuring:** the 3rd near-threshold cash deposit within about 72 hours, and every one after it, are labelled
+  `escalate`. The first two are `clear` (pattern `structuring`). For Daniel, that means deposits 3 and 4 both alert.
+- **Mule ring:** a mule's forward to the collector is labelled as before (ambiguous + escalate until the ring is
+  confirmable). The **collector's inbound leg** is labelled `clear` until the ring is confirmable, and `escalate` after.
+
+**Why.** With "only the last step alerts", the label depends on future transactions that nobody could see yet.
+A scorer that correctly alerts on Daniel's 3rd deposit (£28,500 cash in 30 hours against £12,000 expected per
+month) would be scored as a false positive, which unfairly penalises both rules-only and Sentinel.
+
+**Overrides.** DEMO_SCRIPT.md says Daniel's "4th is flagged". With this rule the 3rd is flagged first, and the 4th
+again. The demo shows the **4th** deposit's investigation, because it has the most evidence (all four deposits),
+and mentions that the 3rd already raised an alert.
+
+**Task impact.** 1.3 / 1.4 regenerated; `check_data.py` still passes. 3.3 expects alerts on deposits 3 and 4.
+
+---
+
+## DEC-013 · Tier 1 includes a deterministic network watchlist, and so does the baseline
+**Status:** Required (no cheating) for "the baseline gets it too". The second baseline is Backlog
+
+**Found while building (task 2.1).** Per-customer rules scored two late mule transactions at 0: Liam receiving from
+his "flatmate" after the ring is confirmed, and the collector's offshore payout. No per-customer rule can see a
+ring, so without a cross-account check these never reach any agent, and the Liam override can't happen.
+
+**Decision.**
+- `utils/graph.py` detects confirmed fan-in rings deterministically: 5 accounts, each forwarding ≥ 90% of what it
+  received in the previous 24h to one collector, within 72h. The generator's labels use the same definition.
+- `rules/scorer.score_with_network` raises any money movement by a ring member to at least 60, with the reason
+  "account is a feeder/collector in a fan-in ring … (network check)". Card spending and salaries are excluded.
+- **The rules-only baseline uses the same tier 1, network check included.** So recall stays equal by construction
+  (DEC-002), and the headline comparison is purely "what do the agents add on top of the same deterministic checks".
+- The fund-flow agent still has a real job: explaining the ring with evidence, finding rings the deterministic check
+  doesn't confirm yet (the earlier forwards go to a human), and feeding the hard flag that overrides Liam's precedent.
+
+**What to say in the demo.** Not "rules can't see mule rings", but: "a per-customer rule can't; our graph check
+can, and the agents turn it into an explained, filing-ready case, and override the old clearance."
+
+**Results so far (rules only, tier 1).** World 0: 97.0% cleared by rules, 34 sent to agents, recall 100% of 14
+alerts, 20 false positives. World 1 (dev): 95.0% cleared, 43 sent to agents, recall 100% of 15, 28 false positives.
+World 2 (test) is not scored until the reported eval run (R9.5).
+
+**Backlog.** Report a second baseline, "per-customer rules only" (`score_all(..., network=False)`), next to the
+main one. It shows separately what the graph check adds (recall) and what the agents add (false positives).

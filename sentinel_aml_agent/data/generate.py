@@ -220,11 +220,15 @@ def benign_large_credit(w: World, p: dict, when: datetime, multiple: float, vagu
 # Scenarios (used for the demo cast and for planted eval cases)
 #
 def structuring(w: World, p: dict, first: datetime, amounts: list[float], branches: list[str], gaps_hours: list[float]):
-    """Cash deposits just under £10,000 at several branches in about 48 hours. The alert belongs on the last one."""
+    """Cash deposits just under £10,000 at several branches within about 72 hours.
+
+    Labels follow the textbook typology (DEC-012): three or more near-threshold deposits in a few days is
+    structuring, so the 3rd deposit and every one after it should alert. The first two alone are not suspicious.
+    """
     when = first
     for i, amount in enumerate(amounts):
         last = i == len(amounts) - 1
-        label = alert_label("structuring", 90) if last else clear_label("structuring")
+        label = alert_label("structuring", 90) if i >= 2 else clear_label("structuring")
         w.tx(p, when, "in", "cash_deposit", amount, branch=branches[i % len(branches)], channel="branch",
              reference="Cash deposit", label=label)
         if not last:
@@ -260,6 +264,9 @@ def mule_ring(w: World, mules: list[dict], collector: dict, start: datetime, fla
               offshore_id: str):
     """Several low-risk accounts receive small transfers and pass almost all of it to one new business account.
 
+    The ring is "confirmable" under the same definition as `utils/graph.py`: 5 distinct accounts each forwarding
+    at least 90% of what they received in the previous 24 hours to one collector, within 72 hours.
+
     Round 1: each mule receives 3 small payments and forwards ~95% to the collector, 12 hours apart. The ring is
     confirmable once the 5th mule has forwarded. Round 2: the first mule receives money from its "flatmate"
     counterparty (the one an old precedent cleared) and forwards it again; that's where the precedent must be
@@ -282,13 +289,13 @@ def mule_ring(w: World, mules: list[dict], collector: dict, start: datetime, fla
         confirmed = forwarded >= confirm_at
         out_label = alert_label("mule_fan_in", 85 if confirmed else 60, ambiguous=not confirmed,
                                 expect_human=not confirmed)
-        in_label = alert_label("mule_fan_in", 85 if confirmed else 60, ambiguous=not confirmed,
-                               expect_human=not confirmed)
-        out_leg, in_leg = w.transfer(mule, collector, base + timedelta(hours=5), total * 0.95, "Invoice",
-                                     out_label, in_label)
+        # The collector's inbound leg only carries a signal once the ring is confirmed (DEC-012); before that the
+        # alert belongs on the mule's forward.
+        in_label = alert_label("mule_fan_in", 85) if confirmed else clear_label("mule_fan_in")
+        out_leg, _ = w.transfer(mule, collector, base + timedelta(hours=5), total * 0.95, "Invoice",
+                                out_label, in_label)
         if not confirmed:
             w.answer(out_leg, "escalate", "Rapid pass-through to a new business account; possible mule activity.")
-            w.answer(in_leg, "escalate", "Inbound from a pass-through account; possible collector account.")
     round1_end = start + timedelta(hours=12 * (len(mules) - 1) + 6)
     w.tx(collector, round1_end, "out", "faster_payment", 0.0, counterparty_id=offshore_id,
          counterparty_name="Kestrel Exports FZE", country="AE", reference="Goods",

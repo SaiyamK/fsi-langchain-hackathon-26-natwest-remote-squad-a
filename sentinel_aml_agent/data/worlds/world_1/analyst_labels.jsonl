@@ -170,7 +170,7 @@
 {"transaction_id": "TX-100170", "decision": "clear", "risk_score": 5, "ambiguous": false, "pattern": "none", "expect_override": false, "expect_precedent_use": false, "expect_human": false, "month": 1}
 {"transaction_id": "TX-100171", "decision": "clear", "risk_score": 5, "ambiguous": false, "pattern": "none", "expect_override": false, "expect_precedent_use": false, "expect_human": false, "month": 1}
 {"transaction_id": "TX-100172", "decision": "clear", "risk_score": 25, "ambiguous": false, "pattern": "structuring", "expect_override": false, "expect_precedent_use": false, "expect_human": false, "month": 1}
-{"transaction_id": "TX-100173", "decision": "clear", "risk_score": 25, "ambiguous": false, "pattern": "structuring", "expect_override": false, "expect_precedent_use": false, "expect_human": false, "month": 1}
+{"transaction_id": "TX-100173", "decision": "escalate", "risk_score": 90, "ambiguous": false, "pattern": "structuring", "expect_override": false, "expect_precedent_use": false, "expect_human": false, "month": 1}
 {"transaction_id": "TX-100174", "decision": "clear", "risk_score": 5, "ambiguous": false, "pattern": "none", "expect_override": false, "expect_precedent_use": false, "expect_human": false, "month": 1}
 {"transaction_id": "TX-100175", "decision": "clear", "risk_score": 5, "ambiguous": false, "pattern": "none", "expect_override": false, "expect_precedent_use": false, "expect_human": false, "month": 1}
 {"transaction_id": "TX-100176", "decision": "clear", "risk_score": 5, "ambiguous": false, "pattern": "none", "expect_override": false, "expect_precedent_use": false, "expect_human": false, "month": 1}
@@ -490,7 +490,7 @@
 {"transaction_id": "TX-100490", "decision": "clear", "risk_score": 5, "ambiguous": false, "pattern": "none", "expect_override": false, "expect_precedent_use": false, "expect_human": false, "month": 2}
 {"transaction_id": "TX-100491", "decision": "clear", "risk_score": 5, "ambiguous": false, "pattern": "none", "expect_override": false, "expect_precedent_use": false, "expect_human": false, "month": 2}
 {"transaction_id": "TX-100492", "decision": "escalate", "risk_score": 60, "ambiguous": true, "pattern": "mule_fan_in", "expect_override": false, "expect_precedent_use": false, "expect_human": true, "month": 2}
-{"transaction_id": "TX-100493", "decision": "escalate", "risk_score": 60, "ambiguous": true, "pattern": "mule_fan_in", "expect_override": false, "expect_precedent_use": false, "expect_human": true, "month": 2}
+{"transaction_id": "TX-100493", "decision": "clear", "risk_score": 25, "ambiguous": false, "pattern": "mule_fan_in", "expect_override": false, "expect_precedent_use": false, "expect_human": false, "month": 2}
 {"transaction_id": "TX-100494", "decision": "clear", "risk_score": 5, "ambiguous": false, "pattern": "none", "expect_override": false, "expect_precedent_use": false, "expect_human": false, "month": 2}
 {"transaction_id": "TX-100495", "decision": "clear", "risk_score": 5, "ambiguous": false, "pattern": "none", "expect_override": false, "expect_precedent_use": false, "expect_human": false, "month": 2}
 {"transaction_id": "TX-100496", "decision": "clear", "risk_score": 5, "ambiguous": false, "pattern": "none", "expect_override": false, "expect_precedent_use": false, "expect_human": false, "month": 2}
@@ -501,14 +501,14 @@
 {"transaction_id": "TX-100501", "decision": "clear", "risk_score": 25, "ambiguous": false, "pattern": "mule_fan_in", "expect_override": false, "expect_precedent_use": false, "expect_human": false, "month": 2}
 {"transaction_id": "TX-100502", "decision": "clear", "risk_score": 25, "ambiguous": false, "pattern": "mule_fan_in", "expect_override": false, "expect_precedent_use": false, "expect_human": false, "month": 2}
 {"transaction_id": "TX-100503", "decision": "escalate", "risk_score": 60, "ambiguous": true, "pattern": "mule_fan_in", "expect_override": false, "expect_precedent_use": false, "expect_human": true, "month": 2}
-{"transaction_id": "TX-100504", "decision": "escalate", "risk_score": 60, "ambiguous": true, "pattern": "mule_fan_in", "expect_override": false, "expect_precedent_use": false, "expect_human": true, "month": 2}
+{"transaction_id": "TX-100504", "decision": "clear", "risk_score": 25, "ambiguous": false, "pattern": "mule_fan_in", "expect_override": false, "expect_precedent_use": false, "expect_human": false, "month": 2}
 {"transaction_id": "TX-100505", "decision": "clear", "risk_score": 5, "ambiguous": false, "pattern": "none", "expect_override": false, "expect_precedent_use": false, "expect_human": false, "month": 2}
 {"transaction_id": "TX-100506", "decision": "clear", "risk_score": 25, "ambiguous": false, "pattern": "mule_fan_in", "expect_override": false, "expect_precedent_use": false, "expect_human": false, "month": 2}
 {"transaction_id": "TX-100507", "decision": "clear", "risk_score": 25, "ambiguous": false, "pattern": "mule_fan_in", "expect_override": false, "expect_precedent_use": false, "expect_human": false, "month": 2}
 {"transaction_id": "TX-100508", "decision": "clear", "risk_score": 5, "ambiguous": false, "pattern": "none", "expect_override": false, "expect_precedent_use": false, "expect_human": false, "month": 2}
 {"transaction_id": "TX-100509", "decision": "clear", "risk_score": 25, "ambiguous": false, "pattern": "mule_fan_in", "expect_override": false, "expect_precedent_use": false, "expect_human": false, "month": 2}
 {"transaction_id": "TX-100510", "decision": "escalate", "risk_score": 60, "ambiguous": true, "pattern": "mule_fan_in", "expect_override": false, "expect_precedent_use": false, "expect_human": true, "month": 2}
-{"transaction_id": "TX-100511", "decision": "escalate", "risk_score": 60, "ambiguous": true, "pattern": "mule_fan_in", "expect_override": false, "expect_precedent_use": false, "expect_human": true, "month": 2}
+{"transaction_id": "TX-100511", "decision": "clear", "risk_score": 25, "ambiguous": false, "pattern": "mule_fan_in", "expect_override": false, "expect_precedent_use": false, "expect_human": false, "month": 2}
 {"transaction_id": "TX-100512", "decision": "clear", "risk_score": 5, "ambiguous": false, "pattern": "none", "expect_override": false, "expect_precedent_use": false, "expect_human": false, "month": 2}
 {"transaction_id": "TX-100513", "decision": "clear", "risk_score": 5, "ambiguous": false, "pattern": "none", "expect_override": false, "expect_precedent_use": false, "expect_human": false, "month": 2}
 {"transaction_id": "TX-100514", "decision": "clear", "risk_score": 5, "ambiguous": false, "pattern": "none", "expect_override": false, "expect_precedent_use": false, "expect_human": false, "month": 2}
@@ -520,7 +520,7 @@
 {"transaction_id": "TX-100520", "decision": "clear", "risk_score": 25, "ambiguous": false, "pattern": "mule_fan_in", "expect_override": false, "expect_precedent_use": false, "expect_human": false, "month": 2}
 {"transaction_id": "TX-100521", "decision": "clear", "risk_score": 25, "ambiguous": false, "pattern": "mule_fan_in", "expect_override": false, "expect_precedent_use": false, "expect_human": false, "month": 2}
 {"transaction_id": "TX-100522", "decision": "escalate", "risk_score": 60, "ambiguous": true, "pattern": "mule_fan_in", "expect_override": false, "expect_precedent_use": false, "expect_human": true, "month": 2}
-{"transaction_id": "TX-100523", "decision": "escalate", "risk_score": 60, "ambiguous": true, "pattern": "mule_fan_in", "expect_override": false, "expect_precedent_use": false, "expect_human": true, "month": 2}
+{"transaction_id": "TX-100523", "decision": "clear", "risk_score": 25, "ambiguous": false, "pattern": "mule_fan_in", "expect_override": false, "expect_precedent_use": false, "expect_human": false, "month": 2}
 {"transaction_id": "TX-100524", "decision": "clear", "risk_score": 25, "ambiguous": false, "pattern": "mule_fan_in", "expect_override": false, "expect_precedent_use": false, "expect_human": false, "month": 2}
 {"transaction_id": "TX-100525", "decision": "clear", "risk_score": 5, "ambiguous": false, "pattern": "none", "expect_override": false, "expect_precedent_use": false, "expect_human": false, "month": 2}
 {"transaction_id": "TX-100526", "decision": "clear", "risk_score": 25, "ambiguous": false, "pattern": "mule_fan_in", "expect_override": false, "expect_precedent_use": false, "expect_human": false, "month": 2}
